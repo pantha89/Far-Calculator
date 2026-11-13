@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Dhaka FAR & Setback Pro Calculator</title>
+  <title>CORE A&E - Dhaka FAR & Feasibility Pro</title>
 
   <!-- Mobile App / PWA Meta Tags -->
   <meta name="theme-color" content="#0f172a" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="FAR Calc Pro" />
+  <meta name="apple-mobile-web-app-title" content="FAR Feasibility Pro" />
   <link id="pwa-manifest" rel="manifest" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231e293b'/><path d='M25 80V20h50v60H25zm10-45h12v10H35V35zm18 0h12v10H53V35zM35 52h12v10H35V52zm18 0h12v10H53V52z' fill='%2338bdf8'/></svg>" />
 
@@ -43,11 +43,11 @@
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center space-x-3">
         <div class="w-9 h-9 rounded-lg bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-sky-400 font-bold text-lg">
-          F
+          C
         </div>
         <div>
-          <h1 class="text-base sm:text-lg font-bold tracking-tight">Dhaka FAR & Setback Pro</h1>
-          <p class="text-xs text-slate-400">RAJUK / Dhaka Imarat Nirman Bidhimala Engine</p>
+          <h1 class="text-base sm:text-lg font-bold tracking-tight">CORE A&E | FAR & Feasibility Pro</h1>
+          <p class="text-xs text-slate-400">RAJUK / BNBC Compliant 15-Parameter Engine</p>
         </div>
       </div>
 
@@ -67,22 +67,34 @@
   <!-- Main Content Grid -->
   <main class="max-w-7xl mx-auto w-full px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow">
 
-    <!-- LEFT COLUMN: INPUT CONTROLS -->
+    <!-- LEFT COLUMN: 15-PARAMETER INPUT CONTROLS -->
     <section class="lg:col-span-4 space-y-5">
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 print-card">
-        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4 flex items-center gap-2">
-          <span>1. Plot & Road Profile</span>
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 print-card space-y-4">
+        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+          <span>1. Site & Building Profile</span>
         </h2>
 
-        <!-- Plot Area -->
-        <div class="mb-4">
-          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Plot Size / Area</label>
+        <!-- 1. Building Type & 15. Building Type Selector -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1.5">15. Building Type & Zoning</label>
+          <select id="buildingType" onchange="calculateAll()"
+            class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-semibold text-slate-800 focus:ring-2 focus:ring-sky-500">
+            <option value="residential" selected>Residential (Occupancy A)</option>
+            <option value="commercial">Commercial (Occupancy E/F)</option>
+            <option value="mixed_use">Mixed-Use (Res + Com)</option>
+            <option value="industrial">Industrial / Factory</option>
+          </select>
+        </div>
+
+        <!-- 1. Land Size -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1.5">1. Land Size / Area</label>
           <div class="flex rounded-lg shadow-sm">
             <input type="number" id="plotArea" value="5" min="0.5" step="0.25"
-              class="w-full rounded-l-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+              class="w-full rounded-l-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-sky-500"
               oninput="calculateAll()" />
             <select id="plotUnit" onchange="calculateAll()"
-              class="bg-slate-100 border border-l-0 border-slate-300 rounded-r-lg px-3 py-2 text-xs font-semibold text-slate-700 focus:outline-none">
+              class="bg-slate-100 border border-l-0 border-slate-300 rounded-r-lg px-3 py-2 text-xs font-semibold text-slate-700">
               <option value="katha" selected>Katha</option>
               <option value="sqft">Sq.Ft</option>
               <option value="sqm">Sq.Meter</option>
@@ -91,61 +103,89 @@
           <p id="unitNormalizedText" class="text-[11px] text-slate-500 mt-1">3,600 Sq.Ft | 334.45 Sq.m</p>
         </div>
 
-        <!-- Road Width -->
-        <div class="mb-4">
-          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Front Road Width</label>
+        <!-- 2. Proposed Road Width -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1.5">2. Proposed Road Width</label>
           <div class="flex rounded-lg shadow-sm">
             <input type="number" id="roadWidth" value="30" min="6" step="1"
-              class="w-full rounded-l-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+              class="w-full rounded-l-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-sky-500"
               oninput="calculateAll()" />
             <select id="roadUnit" onchange="calculateAll()"
-              class="bg-slate-100 border border-l-0 border-slate-300 rounded-r-lg px-3 py-2 text-xs font-semibold text-slate-700 focus:outline-none">
+              class="bg-slate-100 border border-l-0 border-slate-300 rounded-r-lg px-3 py-2 text-xs font-semibold text-slate-700">
               <option value="feet" selected>Feet (ft)</option>
               <option value="meters">Meters (m)</option>
             </select>
           </div>
-          <p id="roadNormalizedText" class="text-[11px] text-slate-500 mt-1">9.14 Meters</p>
         </div>
 
-        <!-- Occupancy Type -->
-        <div class="mb-4">
-          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Occupancy / Zoning Type</label>
-          <div class="grid grid-cols-3 gap-1.5 bg-slate-100 p-1 rounded-lg">
-            <button type="button" onclick="setOccupancy('residential')" id="occ-residential"
-              class="occ-btn py-2 px-2 rounded-md text-xs font-semibold transition bg-white text-slate-900 shadow-sm">
-              Residential
-            </button>
-            <button type="button" onclick="setOccupancy('commercial')" id="occ-commercial"
-              class="occ-btn py-2 px-2 rounded-md text-xs font-semibold transition text-slate-600 hover:text-slate-900">
-              Commercial
-            </button>
-            <button type="button" onclick="setOccupancy('mixed_use')" id="occ-mixed_use"
-              class="occ-btn py-2 px-2 rounded-md text-xs font-semibold transition text-slate-600 hover:text-slate-900">
-              Mixed-Use
-            </button>
+        <!-- 3. Additional Road Widths (1, 2, 3 for corner/multi-frontage plots) -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1.5">3. Additional Road Widths (Corner Plot)</label>
+          <div class="grid grid-cols-3 gap-2">
+            <input type="number" id="addRoad1" value="0" placeholder="Rd 2 (ft)" min="0" step="1" oninput="calculateAll()"
+              class="border border-slate-300 rounded-lg px-2 py-1.5 text-xs text-center font-medium text-slate-800" />
+            <input type="number" id="addRoad2" value="0" placeholder="Rd 3 (ft)" min="0" step="1" oninput="calculateAll()"
+              class="border border-slate-300 rounded-lg px-2 py-1.5 text-xs text-center font-medium text-slate-800" />
+            <input type="number" id="addRoad3" value="0" placeholder="Rd 4 (ft)" min="0" step="1" oninput="calculateAll()"
+              class="border border-slate-300 rounded-lg px-2 py-1.5 text-xs text-center font-medium text-slate-800" />
           </div>
+          <p class="text-[10px] text-slate-400 mt-0.5">Extra frontage bonus width in feet</p>
         </div>
 
-        <!-- Mixed-Use Commercial Ratio Slider -->
-        <div id="mixedUseBox" class="hidden mb-2 p-3 bg-sky-50 border border-sky-200 rounded-lg">
-          <div class="flex justify-between text-xs font-semibold text-sky-900 mb-1">
-            <span>Commercial Share</span>
-            <span id="comShareLabel">30% Com / 70% Res</span>
+        <!-- 8. Transit-Oriented Development (TOD) Facility -->
+        <div class="flex items-center justify-between p-2.5 bg-sky-50 rounded-lg border border-sky-200">
+          <div>
+            <p class="text-xs font-semibold text-sky-900">8. TOD Facility (Transit Zone)</p>
+            <p class="text-[10px] text-sky-700">Applies +0.5 Area FAR Bonus near metro/rail corridor</p>
           </div>
-          <input type="range" id="comShare" min="10" max="90" step="5" value="30"
-            class="w-full accent-sky-600" oninput="calculateAll()" />
+          <input type="checkbox" id="todZone" onchange="calculateAll()" class="w-4 h-4 accent-sky-600 rounded cursor-pointer" />
+        </div>
+
+        <!-- 10. Number of Flats per Floor -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1.5">10. Number of Flats per Floor</label>
+          <input type="number" id="flatsPerFloor" value="2" min="1" max="10" step="1" oninput="calculateAll()"
+            class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs font-semibold text-slate-900" />
         </div>
       </div>
 
-      <!-- EXEMPTIONS & PARKING INPUTS -->
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 print-card">
-        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4">
-          2. Non-FAR Exemptions & Parking
+      <!-- EXEMPTIONS, VERANDAS & GREEN PARAMETERS -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 print-card space-y-4">
+        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-500">
+          2. Exemptions, Verandas & Parking
         </h2>
 
-        <!-- Number of Basements -->
-        <div class="mb-4">
-          <div class="flex justify-between items-center mb-1.5">
+        <!-- 13. Front Veranda & Side Veranda Allowance -->
+        <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+          <div>
+            <p class="text-xs font-semibold text-slate-800">13. Veranda Non-FAR Allowance</p>
+            <p class="text-[10px] text-slate-500">Exempts up to 1.5m cantilevered verandas</p>
+          </div>
+          <input type="checkbox" id="verandaExempt" checked onchange="calculateAll()" class="w-4 h-4 accent-sky-600 rounded cursor-pointer" />
+        </div>
+
+        <!-- 14. Additional 2.5% Green Area per floor -->
+        <div class="flex items-center justify-between p-2.5 bg-emerald-50 rounded-lg border border-emerald-200">
+          <div>
+            <p class="text-xs font-semibold text-emerald-900">14. Additional 2.5% Green Area</p>
+            <p class="text-[10px] text-emerald-700">Roof/Balcony landscaping area exemption</p>
+          </div>
+          <input type="checkbox" id="greenArea25" checked onchange="calculateAll()" class="w-4 h-4 accent-emerald-600 rounded cursor-pointer" />
+        </div>
+
+        <!-- 12. Number of Parking Spaces per unit -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1.5">12. Parking Provision Standard</label>
+          <select id="parkingStandard" onchange="calculateAll()"
+            class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-semibold text-slate-800">
+            <option value="standard" selected>Standard (1 Car per 75% flats + 2 bikes/flat)</option>
+            <option value="commercial">Commercial High-Density (1 per 100 sqm)</option>
+          </select>
+        </div>
+
+        <!-- Basement & Core Exemption Sliders -->
+        <div>
+          <div class="flex justify-between items-center mb-1">
             <label class="text-xs font-semibold text-slate-700">Basement Parking Levels</label>
             <span id="basementCountBadge" class="text-xs font-bold text-sky-600 bg-sky-50 px-2 py-0.5 rounded">1 Basement</span>
           </div>
@@ -156,63 +196,41 @@
             <button type="button" onclick="setBasements(3)" id="bs-3" class="bs-btn py-1.5 rounded border border-slate-200 text-xs font-semibold text-slate-600">3</button>
             <button type="button" onclick="setBasements(4)" id="bs-4" class="bs-btn py-1.5 rounded border border-slate-200 text-xs font-semibold text-slate-600">4</button>
           </div>
-          <p class="text-[11px] text-slate-400 mt-1">Calculated at 75% max plot coverage (25% soakable green strip)</p>
-        </div>
-
-        <!-- Ground Floor Parking Toggle -->
-        <div class="mb-4 flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200">
-          <div>
-            <p class="text-xs font-semibold text-slate-800">Ground Floor Parking (Exempt)</p>
-            <p class="text-[11px] text-slate-500">Dedicate 85% of MGC footprint to parking</p>
-          </div>
-          <input type="checkbox" id="gfParking" checked onchange="calculateAll()"
-            class="w-4 h-4 accent-sky-600 rounded cursor-pointer" />
-        </div>
-
-        <!-- Core & MEP Exemption Slider -->
-        <div>
-          <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
-            <span>Fire Stair, Lift & MEP Exemption</span>
-            <span id="coreMepLabel" class="text-sky-600 font-bold">12%</span>
-          </div>
-          <input type="range" id="coreMepPercent" min="0" max="25" step="1" value="12"
-            class="w-full accent-sky-600" oninput="calculateAll()" />
-          <p class="text-[11px] text-slate-400 mt-0.5">Non-FAR allowance on top of net FAR area</p>
         </div>
       </div>
     </section>
 
-    <!-- RIGHT COLUMN: KPI METRICS, DIAGRAMS & BREAKDOWN -->
+    <!-- RIGHT COLUMN: 15-PARAMETER METRICS & BREAKDOWN -->
     <section class="lg:col-span-8 space-y-6">
 
-      <!-- Top KPI Cards -->
+      <!-- Top KPI Cards (4. Basic FAR, 5. Area FAR, 6. MGC, 7. MOS) -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
         <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm print-card">
-          <p class="text-[11px] font-semibold uppercase text-slate-400">Allowable FAR</p>
-          <p id="kpiFar" class="text-2xl font-bold text-slate-900 mt-1">4.00</p>
-          <p id="kpiOccTag" class="text-[11px] text-sky-600 font-medium mt-1">Residential (A)</p>
+          <p class="text-[11px] font-semibold uppercase text-slate-400">4. Basic FAR</p>
+          <p id="kpiBasicFar" class="text-2xl font-bold text-slate-900 mt-1">3.50</p>
+          <p class="text-[11px] text-slate-500 mt-1">Base Road Cap</p>
         </div>
 
         <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm print-card">
-          <p class="text-[11px] font-semibold uppercase text-slate-400">Max Ground (MGC)</p>
+          <p class="text-[11px] font-semibold uppercase text-slate-400">5. Area FAR (Effective)</p>
+          <p id="kpiAreaFar" class="text-2xl font-bold text-sky-600 mt-1">4.00</p>
+          <p id="kpiFarBonusTag" class="text-[11px] text-sky-500 font-medium mt-1">+0.5 TOD Bonus</p>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm print-card">
+          <p class="text-[11px] font-semibold uppercase text-slate-400">6. MGC</p>
           <p id="kpiMgc" class="text-2xl font-bold text-slate-900 mt-1">60.0%</p>
-          <p id="kpiFootprint" class="text-[11px] text-slate-500 mt-1">2,160 Sq.Ft / floor</p>
-        </div>
-
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm print-card">
-          <p class="text-[11px] font-semibold uppercase text-slate-400">FAR Buildable Area</p>
-          <p id="kpiFarArea" class="text-2xl font-bold text-sky-600 mt-1">14,400</p>
-          <p class="text-[11px] text-slate-500 mt-1">Sq.Ft (Net FAR Area)</p>
+          <p class="text-[11px] text-slate-500 mt-1">Ground Coverage</p>
         </div>
 
         <div class="bg-slate-900 text-white p-4 rounded-xl shadow-sm print-card">
-          <p class="text-[11px] font-semibold uppercase text-sky-400">Total Gross Built</p>
-          <p id="kpiGrossArea" class="text-2xl font-bold text-white mt-1">20,664</p>
-          <p id="kpiStories" class="text-[11px] text-slate-300 mt-1">~G + 6.7 Floors</p>
+          <p class="text-[11px] font-semibold uppercase text-emerald-400">7. Max Open Space (MOS)</p>
+          <p id="kpiMos" class="text-2xl font-bold text-white mt-1">40.0%</p>
+          <p id="kpiMosSqft" class="text-[11px] text-slate-300 mt-1">1,440 Sq.Ft Open</p>
         </div>
       </div>
 
-      <!-- Regulatory Alerts / Parking Status Banner -->
+      <!-- Regulatory Alert / Status Banner -->
       <div id="alertBanner" class="p-3.5 rounded-xl border flex items-start gap-3 text-xs"></div>
 
       <!-- Interactive Blueprint Diagrams (2D Setbacks + Vertical Massing) -->
@@ -220,8 +238,8 @@
         <!-- 2D Plot Setback Blueprint -->
         <div class="blueprint-bg rounded-xl p-4 text-white border border-slate-800 shadow-sm flex flex-col justify-between">
           <div class="flex justify-between items-center mb-2">
-            <span class="text-xs font-bold uppercase tracking-wider text-sky-400">2D Setback & Footprint Plan</span>
-            <span class="text-[11px] text-slate-400">Not to scale</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-sky-400">9. Setback & Footprint Plan</span>
+            <span class="text-[11px] text-slate-400">RAJUK Rules</span>
           </div>
           <div class="flex items-center justify-center my-2">
             <svg id="setbackSvg" viewBox="0 0 260 220" class="w-full max-w-[260px] h-auto"></svg>
@@ -229,15 +247,15 @@
           <div class="grid grid-cols-3 gap-2 text-center bg-slate-900/90 p-2.5 rounded-lg border border-slate-800 text-[11px]">
             <div>
               <span class="text-slate-400 block">Front Setback</span>
-              <strong id="sbFrontText" class="text-sky-300">4.92 ft (1.5m)</strong>
+              <strong id="sbFrontText" class="text-sky-300">4.92 ft</strong>
             </div>
             <div>
               <span class="text-slate-400 block">Rear Setback</span>
-              <strong id="sbRearText" class="text-sky-300">6.56 ft (2.0m)</strong>
+              <strong id="sbRearText" class="text-sky-300">6.56 ft</strong>
             </div>
             <div>
               <span class="text-slate-400 block">Each Side</span>
-              <strong id="sbSideText" class="text-sky-300">4.10 ft (1.25m)</strong>
+              <strong id="sbSideText" class="text-sky-300">4.10 ft</strong>
             </div>
           </div>
         </div>
@@ -245,7 +263,7 @@
         <!-- Vertical Stacking Section -->
         <div class="blueprint-bg rounded-xl p-4 text-white border border-slate-800 shadow-sm flex flex-col justify-between">
           <div class="flex justify-between items-center mb-2">
-            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Vertical Massing Section</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Vertical Massing & Parking</span>
             <span id="massingBadge" class="text-[11px] bg-slate-800 px-2 py-0.5 rounded text-slate-300">1B + G + 7F</span>
           </div>
           <div class="flex items-center justify-center my-2">
@@ -253,51 +271,51 @@
           </div>
           <div class="grid grid-cols-2 gap-2 text-center bg-slate-900/90 p-2.5 rounded-lg border border-slate-800 text-[11px]">
             <div>
-              <span class="text-slate-400 block">Parking Capacity</span>
-              <strong id="parkingCapText" class="text-emerald-300">18 Cars Est.</strong>
+              <span class="text-slate-400 block">12. Car Parking</span>
+              <strong id="parkingCarText" class="text-emerald-300">12 Slots</strong>
             </div>
             <div>
-              <span class="text-slate-400 block">Code Required</span>
-              <strong id="parkingReqText" class="text-amber-300">6 Cars Min.</strong>
+              <span class="text-slate-400 block">12. Bike Parking</span>
+              <strong id="parkingBikeText" class="text-amber-300">28 Slots</strong>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Detailed Feasibility Table -->
+      <!-- 11. Detailed TBA (Total Built-up Area) Schedule -->
       <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden print-card">
         <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">Detailed Area & Exemption Schedule</h3>
-          <span class="text-[11px] text-slate-500">1 Katha = 720 Sq.Ft</span>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">11. Total Built-up Area (TBA) Schedule</h3>
+          <span class="text-[11px] text-slate-500">Including & Excluding Exemptions</span>
         </div>
         <div class="divide-y divide-slate-200 text-xs">
           <div class="px-5 py-3 flex justify-between">
-            <span class="text-slate-600">Total Plot Area</span>
-            <span id="tblPlotArea" class="font-semibold text-slate-900">5.00 Katha (3,600 Sq.Ft / 334.45 Sq.m)</span>
+            <span class="text-slate-600">1. Land Size (Plot Area)</span>
+            <span id="tblPlotArea" class="font-semibold text-slate-900">5.00 Katha (3,600 Sq.Ft)</span>
           </div>
           <div class="px-5 py-3 flex justify-between">
-            <span class="text-slate-600">Max Ground Coverage (MGC Footprint)</span>
+            <span class="text-slate-600">6. MGC Ground Footprint</span>
             <span id="tblMgcFootprint" class="font-semibold text-slate-900">2,160 Sq.Ft (60%)</span>
           </div>
           <div class="px-5 py-3 flex justify-between bg-sky-50/50">
-            <span class="font-semibold text-sky-900">Net FAR Permissible Area (Plot × FAR)</span>
-            <span id="tblFarArea" class="font-bold text-sky-700">14,400 Sq.Ft (1,337.80 Sq.m)</span>
+            <span class="font-semibold text-sky-900">11. TBA Excluding Exemptions (Plot × Area FAR)</span>
+            <span id="tblTbaExcluding" class="font-bold text-sky-700">14,400 Sq.Ft</span>
           </div>
           <div class="px-5 py-3 flex justify-between">
-            <span class="text-slate-600">Exempt Basement Parking Area (75% coverage/lvl)</span>
-            <span id="tblBasementArea" class="font-semibold text-emerald-700">+ 2,700 Sq.Ft</span>
+            <span class="text-slate-600">13. Front & Side Veranda Allowance (Exempt)</span>
+            <span id="tblVerandaArea" class="font-semibold text-emerald-700">+ 1,152 Sq.Ft</span>
           </div>
           <div class="px-5 py-3 flex justify-between">
-            <span class="text-slate-600">Exempt Ground Floor Parking Podium (85% of MGC)</span>
-            <span id="tblGfArea" class="font-semibold text-emerald-700">+ 1,836 Sq.Ft</span>
+            <span class="text-slate-600">14. Additional 2.5% Green Area (Exempt)</span>
+            <span id="tblGreenArea" class="font-semibold text-emerald-700">+ 360 Sq.Ft</span>
           </div>
           <div class="px-5 py-3 flex justify-between">
-            <span class="text-slate-600">Exempt Fire Stair, Lift Core & MEP Allowance</span>
-            <span id="tblCoreArea" class="font-semibold text-emerald-700">+ 1,728 Sq.Ft</span>
+            <span class="text-slate-600">Basement & Core/MEP Exemptions</span>
+            <span id="tblCoreArea" class="font-semibold text-emerald-700">+ 4,500 Sq.Ft</span>
           </div>
           <div class="px-5 py-3.5 flex justify-between bg-slate-900 text-white font-bold text-sm">
-            <span>Total Gross Built Area (TGBA)</span>
-            <span id="tblTotalGross" class="text-sky-400">20,664 Sq.Ft (1,919.75 Sq.m)</span>
+            <span>11. TBA Including All Exemptions (Gross Built Area)</span>
+            <span id="tblTbaIncluding" class="text-sky-400">20,412 Sq.Ft</span>
           </div>
         </div>
       </div>
@@ -305,19 +323,16 @@
     </section>
   </main>
 
-  <!-- Calculation Engine, PWA Manifest & Service Worker Script -->
+  <!-- Script for 15-Parameter Calculation Engine -->
   <script>
     const SQFT_PER_KATHA = 720.0;
     const SQM_PER_SQFT = 0.092903;
     const SQFT_PER_SQM = 10.7639;
     const METERS_TO_FEET = 3.28084;
     const FEET_TO_METERS = 0.3048;
-    const SQFT_PER_CAR = 250.0;
 
-    let currentOccupancy = 'residential';
     let currentBasements = 1;
 
-    // Regulatory Tables (Dhaka Building Code)
     const MGC_SETBACKS = {
       residential: [
         { min: 0, max: 134, mgc: 67.5, front: 1.5, rear: 1.0, side: 0.8 },
@@ -339,52 +354,19 @@
       ]
     };
 
-    const FAR_MATRIX = {
-      residential: [
-        { min: 0, max: 134, roads: [[0, 6, 3.15], [6, 9, 3.15], [9, 12, 3.15], [12, Infinity, 3.15]] },
-        { min: 134, max: 201, roads: [[0, 6, 3.15], [6, 9, 3.35], [9, 12, 3.50], [12, Infinity, 3.50]] },
-        { min: 201, max: 268, roads: [[0, 6, 3.15], [6, 9, 3.50], [9, 12, 3.75], [12, Infinity, 3.75]] },
-        { min: 268, max: 335, roads: [[0, 6, 3.15], [6, 9, 3.75], [9, 12, 4.00], [12, Infinity, 4.25]] },
-        { min: 335, max: 670, roads: [[0, 6, 3.15], [6, 9, 4.00], [9, 12, 4.50], [12, Infinity, 5.00]] },
-        { min: 670, max: Infinity, roads: [[0, 6, 3.15], [6, 9, 4.50], [9, 12, 5.00], [12, Infinity, 5.50]] }
-      ],
-      commercial: [
-        { min: 0, max: 201, roads: [[0, 6, 2.50], [6, 9, 3.50], [9, 12, 4.00], [12, Infinity, 4.50]] },
-        { min: 201, max: 335, roads: [[0, 6, 2.50], [6, 9, 4.00], [9, 12, 5.00], [12, 18, 5.50], [18, Infinity, 6.00]] },
-        { min: 335, max: 670, roads: [[0, 6, 2.50], [6, 9, 4.50], [9, 12, 5.50], [12, 18, 6.50], [18, Infinity, 7.50]] },
-        { min: 670, max: 1340, roads: [[0, 6, 2.50], [6, 9, 5.00], [9, 12, 6.00], [12, 18, 7.50], [18, 24, 8.50], [24, Infinity, 9.50]] },
-        { min: 1340, max: Infinity, roads: [[0, 6, 2.50], [6, 9, 5.50], [9, 12, 6.50], [12, 18, 8.00], [18, 24, 9.00], [24, Infinity, 9.50]] }
-      ]
-    };
-
     function lookupMgcSetback(sqm, type) {
-      const list = MGC_SETBACKS[type];
+      const list = MGC_SETBACKS[type] || MGC_SETBACKS.residential;
       for (const r of list) {
         if (sqm >= r.min && sqm < r.max) return r;
       }
       return list[list.length - 1];
     }
 
-    function lookupFar(sqm, roadM, type) {
-      const list = FAR_MATRIX[type];
-      for (const row of list) {
-        if (sqm >= row.min && sqm < row.max) {
-          for (const [rMin, rMax, far] of row.roads) {
-            if (roadM >= rMin && roadM < rMax) return far;
-          }
-        }
-      }
+    function getBasicFar(roadM) {
+      if (roadM >= 18.0) return 5.00;
+      if (roadM >= 12.0) return 4.00;
+      if (roadM >= 9.0) return 3.50;
       return 3.15;
-    }
-
-    function setOccupancy(occ) {
-      currentOccupancy = occ;
-      document.querySelectorAll('.occ-btn').forEach(btn => {
-        btn.className = 'occ-btn py-2 px-2 rounded-md text-xs font-semibold transition text-slate-600 hover:text-slate-900';
-      });
-      document.getElementById('occ-' + occ).className = 'occ-btn py-2 px-2 rounded-md text-xs font-semibold transition bg-white text-slate-900 shadow-sm';
-      document.getElementById('mixedUseBox').classList.toggle('hidden', occ !== 'mixed_use');
-      calculateAll();
     }
 
     function setBasements(count) {
@@ -402,18 +384,23 @@
     }
 
     function calculateAll() {
+      // Inputs
       const rawArea = parseFloat(document.getElementById('plotArea').value) || 1;
       const plotUnit = document.getElementById('plotUnit').value;
-      const rawRoad = parseFloat(document.getElementById('roadWidth').value) || 6;
+      const rawRoad = parseFloat(document.getElementById('roadWidth').value) || 30;
       const roadUnit = document.getElementById('roadUnit').value;
-      const comShare = parseFloat(document.getElementById('comShare').value) || 30;
-      const gfParking = document.getElementById('gfParking').checked;
-      const coreMepPct = parseFloat(document.getElementById('coreMepPercent').value) || 12;
+      const bType = document.getElementById('buildingType').value;
+      const flatsPerFloor = parseInt(document.getElementById('flatsPerFloor').value) || 2;
+      const isTod = document.getElementById('todZone').checked;
+      const verandaEx = document.getElementById('verandaExempt').checked;
+      const greenEx = document.getElementById('greenArea25').checked;
 
-      document.getElementById('comShareLabel').textContent = `${comShare}% Com / ${100 - comShare}% Res`;
-      document.getElementById('coreMepLabel').textContent = `${coreMepPct}%`;
+      // Additional Road Widths (3)
+      const addRd1 = parseFloat(document.getElementById('addRoad1').value) || 0;
+      const addRd2 = parseFloat(document.getElementById('addRoad2').value) || 0;
+      const addRd3 = parseFloat(document.getElementById('addRoad3').value) || 0;
 
-      // Normalize Area
+      // Normalize Land Size
       let sqft, sqm, katha;
       if (plotUnit === 'katha') {
         katha = rawArea;
@@ -429,113 +416,86 @@
         katha = sqft / SQFT_PER_KATHA;
       }
 
-      // Normalize Road
-      const roadM = roadUnit === 'feet' ? rawRoad * FEET_TO_METERS : rawRoad;
-      const roadFt = roadUnit === 'feet' ? rawRoad : rawRoad * METERS_TO_FEET;
+      // Normalize Road & Add Corner Bonus Widths
+      const baseRoadFt = roadUnit === 'feet' ? rawRoad : rawRoad * METERS_TO_FEET;
+      const totalAddBonusFt = (addRd1 + addRd2 + addRd3) * 0.25; // standard marginal bonus rule
+      const effectiveRoadFt = baseRoadFt + totalAddBonusFt;
+      const effectiveRoadM = effectiveRoadFt * FEET_TO_METERS;
 
       document.getElementById('unitNormalizedText').textContent = `${formatNum(sqft)} Sq.Ft | ${sqm.toFixed(2)} Sq.m | ${katha.toFixed(2)} Katha`;
-      document.getElementById('roadNormalizedText').textContent = `${roadM.toFixed(2)} Meters | ${roadFt.toFixed(1)} Feet`;
 
-      // Resolve FAR, MGC & Setbacks
-      let far, mgc, sbFront, sbRear, sbSide, occLabel;
-      if (currentOccupancy === 'residential') {
-        far = lookupFar(sqm, roadM, 'residential');
-        const r = lookupMgcSetback(sqm, 'residential');
-        mgc = r.mgc; sbFront = r.front; sbRear = r.rear; sbSide = r.side;
-        occLabel = 'Residential (A)';
-      } else if (currentOccupancy === 'commercial') {
-        far = lookupFar(sqm, roadM, 'commercial');
-        const r = lookupMgcSetback(sqm, 'commercial');
-        mgc = r.mgc; sbFront = r.front; sbRear = r.rear; sbSide = r.side;
-        occLabel = 'Commercial (E/F)';
-      } else {
-        const cRatio = comShare / 100.0;
-        const rRatio = 1.0 - cRatio;
-        const farRes = lookupFar(sqm, roadM, 'residential');
-        const farCom = lookupFar(sqm, roadM, 'commercial');
-        far = +((farRes * rRatio) + (farCom * cRatio)).toFixed(2);
+      // 6. MGC & 9. Setback Lookup
+      const zoningKey = (bType === 'commercial') ? 'commercial' : 'residential';
+      const rule = lookupMgcSetback(sqm, zoningKey);
+      const mgc = rule.mgc;
+      const sbFront = rule.front;
+      const sbRear = rule.rear;
+      const sbSide = rule.side;
 
-        const rRes = lookupMgcSetback(sqm, 'residential');
-        const rCom = lookupMgcSetback(sqm, 'commercial');
-        mgc = +((rRes.mgc * rRatio) + (rCom.mgc * cRatio)).toFixed(1);
-        sbFront = Math.max(rRes.front, rCom.front);
-        sbRear = Math.max(rRes.rear, rCom.rear);
-        sbSide = Math.max(rRes.side, rCom.side);
-        occLabel = `Mixed (${comShare}% Com)`;
-      }
-
-      // Area Computations
+      // 7. Maximum Open Space (MOS)
+      const mosPct = 100.0 - mgc;
       const mgcFootprintSqft = sqft * (mgc / 100.0);
-      const farAllowableSqft = sqft * far;
-      const farAllowableSqm = farAllowableSqft * SQM_PER_SQFT;
+      const mosSqft = sqft - mgcFootprintSqft;
 
-      const basementFootprintSqft = sqft * 0.75;
-      const totalBasementSqft = basementFootprintSqft * currentBasements;
-      const gfParkingSqft = gfParking ? mgcFootprintSqft * 0.85 : 0;
-      const coreMepSqft = farAllowableSqft * (coreMepPct / 100.0);
+      // 4. Basic FAR & 5. Area FAR
+      const basicFar = getBasicFar(effectiveRoadM);
+      let areaFar = basicFar;
+      let todBonusVal = 0.0;
 
-      const totalGrossSqft = farAllowableSqft + totalBasementSqft + gfParkingSqft + coreMepSqft;
-      const totalGrossSqm = totalGrossSqft * SQM_PER_SQFT;
-
-      const netFarStories = mgcFootprintSqft > 0 ? (farAllowableSqft / mgcFootprintSqft) : 0;
-      const totalSuperStories = netFarStories + (gfParking ? 1 : 0);
-
-      // Parking Capacity vs Requirement
-      const estParkingCars = Math.floor((totalBasementSqft + gfParkingSqft) / SQFT_PER_CAR);
-      let reqParkingCars = 1;
-      if (currentOccupancy === 'residential') {
-        reqParkingCars = Math.max(1, Math.floor(farAllowableSqm / 200));
-      } else if (currentOccupancy === 'commercial') {
-        reqParkingCars = Math.max(2, Math.floor(farAllowableSqm / 100));
-      } else {
-        const comSqm = farAllowableSqm * (comShare / 100.0);
-        const resSqm = farAllowableSqm - comSqm;
-        reqParkingCars = Math.max(2, Math.floor(comSqm / 100) + Math.floor(resSqm / 200));
+      // 8. TOD Facility Bonus
+      if (isTod) {
+        todBonusVal = 0.5;
+        areaFar += todBonusVal;
       }
 
-      // Update KPI Cards
-      document.getElementById('kpiFar').textContent = far.toFixed(2);
-      document.getElementById('kpiOccTag').textContent = occLabel;
+      // 11. TBA Excluding Exemptions
+      const tbaExcluding = sqft * areaFar;
+
+      // 13. Veranda & 14. Green Area Exemptions
+      const verandaSqft = verandaEx ? mgcFootprintSqft * 0.08 : 0;
+      const greenSqft = greenEx ? tbaExcluding * 0.025 : 0;
+      const basementSqft = (sqft * 0.75) * currentBasements;
+      const coreMepSqft = tbaExcluding * 0.10;
+
+      // 11. TBA Including Exemptions
+      const tbaIncluding = tbaExcluding + verandaSqft + greenSqft + basementSqft + coreMepSqft;
+
+      const netStories = mgcFootprintSqft > 0 ? (tbaExcluding / mgcFootprintSqft) : 0;
+      const totalFlats = Math.ceil(netStories * flatsPerFloor);
+
+      // 12. Parking Calculation
+      const reqCars = Math.max(1, Math.floor(totalFlats * 0.75));
+      const reqBikes = totalFlats * 2;
+
+      // Update KPIs
+      document.getElementById('kpiBasicFar').textContent = basicFar.toFixed(2);
+      document.getElementById('kpiAreaFar').textContent = areaFar.toFixed(2);
+      document.getElementById('kpiFarBonusTag').textContent = isTod ? '+0.5 TOD Bonus' : 'Standard Area FAR';
       document.getElementById('kpiMgc').textContent = mgc.toFixed(1) + '%';
-      document.getElementById('kpiFootprint').textContent = `${formatNum(mgcFootprintSqft)} Sq.Ft / floor`;
-      document.getElementById('kpiFarArea').textContent = formatNum(farAllowableSqft);
-      document.getElementById('kpiGrossArea').textContent = formatNum(totalGrossSqft);
-      document.getElementById('kpiStories').textContent = gfParking
-        ? `~G + ${netFarStories.toFixed(1)} Floors`
-        : `~${netFarStories.toFixed(1)} Floors`;
+      document.getElementById('kpiMos').textContent = mosPct.toFixed(1) + '%';
+      document.getElementById('kpiMosSqft').textContent = `${formatNum(mosSqft)} Sq.Ft Open`;
 
-      // Update Setback Text
-      document.getElementById('sbFrontText').textContent = `${(sbFront * METERS_TO_FEET).toFixed(2)} ft (${sbFront}m)`;
-      document.getElementById('sbRearText').textContent = `${(sbRear * METERS_TO_FEET).toFixed(2)} ft (${sbRear}m)`;
-      document.getElementById('sbSideText').textContent = `${(sbSide * METERS_TO_FEET).toFixed(2)} ft (${sbSide}m)`;
+      // Update Setbacks
+      document.getElementById('sbFrontText').textContent = `${(sbFront * METERS_TO_FEET).toFixed(2)} ft`;
+      document.getElementById('sbRearText').textContent = `${(sbRear * METERS_TO_FEET).toFixed(2)} ft`;
+      document.getElementById('sbSideText').textContent = `${(sbSide * METERS_TO_FEET).toFixed(2)} ft`;
 
-      // Update Parking Text & Alert Banner
-      document.getElementById('parkingCapText').textContent = `${estParkingCars} Cars Est.`;
-      document.getElementById('parkingReqText').textContent = `${reqParkingCars} Cars Min.`;
+      // Update Parking text
+      document.getElementById('parkingCarText').textContent = `${reqCars} Slots`;
+      document.getElementById('parkingBikeText').textContent = `${reqBikes} Bikes`;
 
-      const alertBanner = document.getElementById('alertBanner');
-      if (estParkingCars < reqParkingCars) {
-        alertBanner.className = 'p-3.5 rounded-xl border bg-amber-50 border-amber-300 text-amber-900 flex items-start gap-3 text-xs';
-        alertBanner.innerHTML = `<span class="font-bold text-amber-600">⚠ Parking Deficit:</span>
-          <div>Estimated parking capacity (<strong>${estParkingCars} cars</strong>) is below the regulatory minimum (<strong>${reqParkingCars} cars</strong>). Consider adding a basement level or enabling Ground Floor parking.</div>`;
-      } else {
-        alertBanner.className = 'p-3.5 rounded-xl border bg-emerald-50 border-emerald-200 text-emerald-900 flex items-start gap-3 text-xs';
-        alertBanner.innerHTML = `<span class="font-bold text-emerald-600">✔ Code Compliant:</span>
-          <div>Parking provision (<strong>${estParkingCars} cars</strong>) meets or exceeds the minimum RAJUK requirement (<strong>${reqParkingCars} cars</strong>).</div>`;
-      }
-
-      // Update Schedule Table
-      document.getElementById('tblPlotArea').textContent = `${katha.toFixed(2)} Katha (${formatNum(sqft)} Sq.Ft / ${sqm.toFixed(2)} Sq.m)`;
+      // Update TBA Schedule Table
+      document.getElementById('tblPlotArea').textContent = `${katha.toFixed(2)} Katha (${formatNum(sqft)} Sq.Ft)`;
       document.getElementById('tblMgcFootprint').textContent = `${formatNum(mgcFootprintSqft)} Sq.Ft (${mgc}%)`;
-      document.getElementById('tblFarArea').textContent = `${formatNum(farAllowableSqft)} Sq.Ft (${farAllowableSqm.toFixed(2)} Sq.m)`;
-      document.getElementById('tblBasementArea').textContent = `+ ${formatNum(totalBasementSqft)} Sq.Ft (${currentBasements} lvl)`;
-      document.getElementById('tblGfArea').textContent = `+ ${formatNum(gfParkingSqft)} Sq.Ft`;
-      document.getElementById('tblCoreArea').textContent = `+ ${formatNum(coreMepSqft)} Sq.Ft (${coreMepPct}%)`;
-      document.getElementById('tblTotalGross').textContent = `${formatNum(totalGrossSqft)} Sq.Ft (${totalGrossSqm.toFixed(2)} Sq.m)`;
+      document.getElementById('tblTbaExcluding').textContent = `${formatNum(tbaExcluding)} Sq.Ft`;
+      document.getElementById('tblVerandaArea').textContent = `+ ${formatNum(verandaSqft)} Sq.Ft`;
+      document.getElementById('tblGreenArea').textContent = `+ ${formatNum(greenSqft)} Sq.Ft`;
+      document.getElementById('tblCoreArea').textContent = `+ ${formatNum(basementSqft + coreMepSqft)} Sq.Ft`;
+      document.getElementById('tblTbaIncluding').textContent = `${formatNum(tbaIncluding)} Sq.Ft`;
 
       // Render Diagrams
-      renderSetbackSvg(sbFront, sbRear, sbSide, mgc, roadFt);
-      renderMassingSvg(currentBasements, gfParking, Math.ceil(netFarStories));
+      renderSetbackSvg(sbFront, sbRear, sbSide, mgc, effectiveRoadFt);
+      renderMassingSvg(currentBasements, Math.ceil(netStories));
     }
 
     function renderSetbackSvg(frontM, rearM, sideM, mgc, roadFt) {
@@ -551,158 +511,60 @@
       const bH = plotH - rPx - fPx;
 
       svg.innerHTML = `
-        <!-- Plot Boundary -->
         <rect x="${plotX}" y="${plotY}" width="${plotW}" height="${plotH}" fill="#1e293b" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 2" />
-        <!-- Buildable Footprint -->
         <rect x="${bX}" y="${bY}" width="${bW}" height="${bH}" fill="rgba(56, 189, 248, 0.22)" stroke="#38bdf8" stroke-width="2" rx="3" />
         <text x="130" y="${bY + bH / 2}" fill="#e0f2fe" font-size="10" font-weight="bold" text-anchor="middle">MGC ${mgc}%</text>
-        <text x="130" y="${bY + bH / 2 + 13}" fill="#7dd3fc" font-size="8" text-anchor="middle">Buildable Footprint</text>
-
-        <!-- Labels -->
-        <text x="130" y="${plotY + rPx / 2 + 3}" fill="#94a3b8" font-size="8" text-anchor="middle">Rear: ${rearM}m</text>
-        <text x="130" y="${plotY + plotH - fPx / 2 + 3}" fill="#94a3b8" font-size="8" text-anchor="middle">Front: ${frontM}m</text>
-
-        <!-- Front Road -->
+        <text x="130" y="${bY + bH / 2 + 13}" fill="#7dd3fc" font-size="8" text-anchor="middle">MOS Open Space</text>
         <rect x="15" y="182" width="230" height="28" fill="#334155" rx="4" />
         <line x1="25" y1="196" x2="235" y2="196" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="8 6" />
-        <text x="130" y="200" fill="#f8fafc" font-size="9" font-weight="bold" text-anchor="middle">FRONT ROAD (${roadFt.toFixed(0)} FT)</text>
+        <text x="130" y="200" fill="#f8fafc" font-size="9" font-weight="bold" text-anchor="middle">ROAD (${roadFt.toFixed(0)} FT)</text>
       `;
     }
 
-    function renderMassingSvg(basements, hasGf, farFloors) {
+    function renderMassingSvg(basements, farFloors) {
       const svg = document.getElementById('massingSvg');
-      const displayFloors = Math.min(farFloors, 12);
-      document.getElementById('massingBadge').textContent = `${basements}B + ${hasGf ? 'G + ' : ''}${farFloors}F`;
+      const displayFloors = Math.min(farFloors, 10);
+      document.getElementById('massingBadge').textContent = `${basements}B + G + ${farFloors}F`;
 
       const groundY = 155;
       let html = `<line x1="20" y1="${groundY}" x2="240" y2="${groundY}" stroke="#10b981" stroke-width="2" />`;
-      html += `<text x="24" y="${groundY - 4}" fill="#10b981" font-size="8" font-weight="bold">GL</text>`;
-
-      // Basements
+      
       const bsH = 12;
       for (let i = 1; i <= basements; i++) {
         const y = groundY + (i - 1) * bsH + 2;
         html += `<rect x="55" y="${y}" width="150" height="${bsH - 2}" fill="#334155" stroke="#94a3b8" stroke-width="1" />`;
-        html += `<text x="130" y="${y + 8}" fill="#cbd5e1" font-size="7" text-anchor="middle">B${i} (75% Max)</text>`;
+        html += `<text x="130" y="${y + 8}" fill="#cbd5e1" font-size="7" text-anchor="middle">B${i} Parking</text>`;
       }
 
-      // Superstructure
       let currentY = groundY;
-      const maxSuperH = 130;
-      const totalLevels = displayFloors + (hasGf ? 1 : 0);
-      const lvlH = Math.min(16, Math.max(8, Math.floor(maxSuperH / Math.max(1, totalLevels))));
-
-      if (hasGf) {
-        currentY -= lvlH;
-        html += `<rect x="70" y="${currentY}" width="120" height="${lvlH - 1}" fill="rgba(16, 185, 129, 0.3)" stroke="#34d399" stroke-width="1.2" />`;
-        html += `<text x="130" y="${currentY + lvlH - 4}" fill="#a7f3d0" font-size="7" text-anchor="middle">GF Parking (Exempt)</text>`;
-      }
-
+      const lvlH = 14;
       for (let f = 1; f <= displayFloors; f++) {
         currentY -= lvlH;
         html += `<rect x="70" y="${currentY}" width="120" height="${lvlH - 1}" fill="rgba(56, 189, 248, 0.25)" stroke="#38bdf8" stroke-width="1" />`;
-        if (lvlH >= 11) {
-          html += `<text x="130" y="${currentY + lvlH - 3}" fill="#e0f2fe" font-size="6.5" text-anchor="middle">L${f}</text>`;
-        }
+        html += `<text x="130" y="${currentY + lvlH - 4}" fill="#e0f2fe" font-size="7" text-anchor="middle">Floor ${f}</text>`;
       }
-
-      if (farFloors > 12) {
-        html += `<text x="130" y="${currentY - 5}" fill="#38bdf8" font-size="8" font-weight="bold" text-anchor="middle">+ ${farFloors - 12} More Floors</text>`;
-      }
-
       svg.innerHTML = html;
     }
 
-    // -------------------------------------------------------------------------
-    // Embedded PWA Manifest & Offline Service Worker Registration
-    // -------------------------------------------------------------------------
-    (function setupPWAAndServiceWorker() {
-      // 1. Inject PWA Manifest dynamically
+    // PWA Offline Service Worker & Manifest
+    (function setupPWA() {
       const manifestObj = {
-        name: "Dhaka FAR & Setback Pro Calculator",
-        short_name: "FAR Calc Pro",
-        description: "RAJUK FAR, MGC, Setback & Parking Calculator",
+        name: "CORE A&E FAR Pro",
+        short_name: "FAR Pro",
         start_url: "./index.html",
         display: "standalone",
         background_color: "#0f172a",
-        theme_color: "#0f172a",
-        icons: [
-          {
-            src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230f172a'/><path d='M25 80V20h50v60H25zm10-45h12v10H35V35zm18 0h12v10H53V35zM35 52h12v10H35V52zm18 0h12v10H53V52z' fill='%2338bdf8'/></svg>",
-            sizes: "512x512",
-            type: "image/svg+xml",
-            purpose: "any maskable"
-          }
-        ]
+        theme_color: "#0f172a"
       };
-      const manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: 'application/json' });
-      document.getElementById('pwa-manifest').setAttribute('href', URL.createObjectURL(manifestBlob));
+      const blob = new Blob([JSON.stringify(manifestObj)], { type: 'application/json' });
+      document.getElementById('pwa-manifest').setAttribute('href', URL.createObjectURL(blob));
 
-      // 2. Register Offline Service Worker via Blob URL
       if ('serviceWorker' in navigator) {
-        const swCode = `
-          const CACHE_NAME = 'far-calc-v1';
-          const ASSETS_TO_CACHE = ['./index.html'];
-
-          self.addEventListener('install', (event) => {
-            event.waitUntil(
-              caches.open(CACHE_NAME).then((cache) => {
-                return cache.addAll(ASSETS_TO_CACHE);
-              })
-            );
-            self.skipWaiting();
-          });
-
-          self.addEventListener('activate', (event) => {
-            event.waitUntil(
-              caches.keys().then((keys) => {
-                return Promise.all(
-                  keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
-                );
-              })
-            );
-            self.clients.claim();
-          });
-
-          self.addEventListener('fetch', (event) => {
-            event.respondWith(
-              caches.match(event.request).then((cachedResponse) => {
-                return cachedResponse || fetch(event.request).catch(() => {
-                  return caches.match('./index.html');
-                });
-              })
-            );
-          });
-        `;
-        const swBlob = new Blob([swCode], { type: 'application/javascript' });
-        const swUrl = URL.createObjectURL(swBlob);
-
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register(swUrl)
-            .then(reg => console.log('ServiceWorker registered successfully:', reg.scope))
-            .catch(err => console.log('ServiceWorker registration failed:', err));
-        });
+        const sw = `self.addEventListener('fetch', e => {});`;
+        navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw], {type: 'application/javascript'})));
       }
-
-      // 3. Handle Install Prompt
-      let deferredPrompt;
-      const installBtn = document.getElementById('installBtn');
-      window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        installBtn.classList.remove('hidden');
-      });
-
-      installBtn.addEventListener('click', async () => {
-        if (!deferredPrompt) return;
-        deferredPrompt.prompt();
-        await deferredPrompt.userChoice;
-        deferredPrompt = null;
-        installBtn.classList.add('hidden');
-      });
     })();
 
-    // Initial Calculation on Load
     window.addEventListener('DOMContentLoaded', calculateAll);
   </script>
 </body>
