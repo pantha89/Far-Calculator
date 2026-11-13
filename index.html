@@ -46,8 +46,8 @@
           C
         </div>
         <div>
-          <h1 class="text-base sm:text-lg font-bold tracking-tight">CORE A&E | DAP Area-Based FAR Engine</h1>
-          <p class="text-xs text-slate-400">RAJUK DAP & BNBC Compliant 15-Parameter Tool</p>
+          <h1 class="text-base sm:text-lg font-bold tracking-tight">CORE A&E | 15-Parameter Feasibility Pro</h1>
+          <p class="text-xs text-slate-400">RAJUK DAP & BNBC Compliant Engine</p>
         </div>
       </div>
 
@@ -67,7 +67,7 @@
   <!-- Main Content Grid -->
   <main class="max-w-7xl mx-auto w-full px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow">
 
-    <!-- LEFT COLUMN: 15 INPUT PARAMETERS WITH DAP ZONE SELECTOR -->
+    <!-- LEFT COLUMN: 15 INPUT PARAMETERS -->
     <section class="lg:col-span-5 space-y-5">
       <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 print-card space-y-4">
         <h2 class="text-xs font-bold uppercase tracking-wider text-sky-600 flex items-center gap-2">
@@ -86,7 +86,7 @@
           </select>
         </div>
 
-        <!-- NEW: DAP Area / Zone Selector -->
+        <!-- DAP Area / Zone Selector -->
         <div>
           <label class="block text-xs font-semibold text-slate-700 mb-1">DAP Area / Zone Selection (Area-Based FAR)</label>
           <select id="dapZone" onchange="calculateAll()"
@@ -155,10 +155,14 @@
         </div>
 
         <!-- 10. Number of flats per floor -->
-        <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">10. Number of Flats per Floor</label>
-          <input type="number" id="flatsPerFloor" value="2" min="1" max="10" step="1" oninput="calculateAll()"
-            class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs font-semibold text-slate-900" />
+        <div class="p-3 bg-amber-50/60 rounded-lg border border-amber-200 space-y-1.5">
+          <label class="block text-xs font-bold text-amber-900">10. Number of Flats per Floor</label>
+          <div class="flex items-center gap-3">
+            <input type="range" id="flatsPerFloor" min="1" max="8" step="1" value="2" oninput="updateFlatCountDisplay(this.value); calculateAll();"
+              class="w-full accent-amber-600 cursor-pointer" />
+            <span id="flatCountBadge" class="bg-amber-600 text-white font-bold text-xs px-2.5 py-1 rounded-md shadow-sm">2 Units</span>
+          </div>
+          <p id="avgFlatSizeNote" class="text-[10px] text-amber-800 font-medium">Avg. Unit Size: ~720 Sq.Ft</p>
         </div>
       </div>
 
@@ -216,7 +220,7 @@
     <!-- RIGHT COLUMN: RESULTS, KPI & 15-PARAMETER SCHEDULE -->
     <section class="lg:col-span-7 space-y-6">
 
-      <!-- Top KPI Cards (4. Basic FAR, 5. Area FAR, 6. MGC, 7. MOS) -->
+      <!-- Top KPI Cards -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm print-card">
           <p class="text-[10px] font-semibold uppercase text-slate-400">4. Basic FAR</p>
@@ -285,8 +289,8 @@
             <span id="tblPlotArea" class="font-semibold text-slate-900">5.00 Katha (Standard)</span>
           </div>
           <div class="px-4 py-2.5 flex justify-between">
-            <span class="text-slate-600">2 & 3. Effective Road Width</span>
-            <span id="tblEffectiveRoad" class="font-semibold text-slate-900">30.0 ft</span>
+            <span class="text-slate-600">10. Flat Configuration</span>
+            <span id="tblFlatConfig" class="font-semibold text-amber-700">2 Units / Floor (Total 14 Flats)</span>
           </div>
           <div class="px-4 py-2.5 flex justify-between bg-sky-50/50">
             <span class="font-semibold text-sky-900">11. TBA Excluding Exemptions (Plot × Area FAR)</span>
@@ -314,7 +318,7 @@
     </section>
   </main>
 
-  <!-- Complete 15-Parameter & DAP Zone Script Engine -->
+  <!-- Complete 15-Parameter Script Engine -->
   <script>
     const SQFT_PER_KATHA = 720.0;
     const SQM_PER_SQFT = 0.092903;
@@ -360,21 +364,24 @@
       return 3.15;
     }
 
-    // DAP Area-Based FAR Modifier Matrix
     function getAreaBasedDapFar(baseFar, zoneType, roadM) {
       let adjustedFar = baseFar;
       if (zoneType === 'high_density') {
-        adjustedFar = Math.min(baseFar * 1.15, 6.0); // Higher density allowance in core urban
+        adjustedFar = Math.min(baseFar * 1.15, 6.0);
       } else if (zoneType === 'medium_density') {
-        adjustedFar = Math.min(baseFar, 4.0); // Capped for moderate density
+        adjustedFar = Math.min(baseFar, 4.0);
       } else if (zoneType === 'gulshan_banani') {
-        adjustedFar = Math.min(baseFar * 0.90, 4.5); // Restricted caps for Gulshan/Banani traffic management
+        adjustedFar = Math.min(baseFar * 0.90, 4.5);
       } else if (zoneType === 'dhanmondi_uttara') {
-        adjustedFar = Math.min(baseFar * 0.95, 4.8); // Planned residential caps
+        adjustedFar = Math.min(baseFar * 0.95, 4.8);
       } else if (zoneType === 'commercial_corridor') {
-        adjustedFar = Math.max(baseFar * 1.25, 5.5); // Commercial corridor booster
+        adjustedFar = Math.max(baseFar * 1.25, 5.5);
       }
       return adjustedFar;
+    }
+
+    function updateFlatCountDisplay(val) {
+      document.getElementById('flatCountBadge').textContent = val + (val == 1 ? ' Unit' : ' Units');
     }
 
     function setBasements(count) {
@@ -423,7 +430,6 @@
         katha = sqft / SQFT_PER_KATHA;
       }
 
-      // Effective Road Width
       const baseRoadFt = roadUnit === 'feet' ? rawRoad : rawRoad * METERS_TO_FEET;
       const addRoadsBonus = (addRd1 + addRd2 + addRd3) * 0.25;
       const effectiveRoadFt = baseRoadFt + addRoadsBonus;
@@ -431,7 +437,6 @@
 
       document.getElementById('unitNormalizedText').textContent = `${formatNum(sqft)} Sq.Ft | ${sqm.toFixed(2)} Sq.m | ${katha.toFixed(2)} Katha`;
 
-      // MGC & Setbacks
       const zoningKey = (bType === 'commercial') ? 'commercial' : 'residential';
       const rule = lookupMgcSetback(sqm, zoningKey);
       const mgc = rule.mgc;
@@ -442,11 +447,10 @@
       const mosPct = 100.0 - mgc;
       const mgcFootprintSqft = sqft * (mgc / 100.0);
 
-      // Basic FAR & Area FAR with DAP Zone and TOD integration
       const basicFar = getBasicFar(effectiveRoadM);
       let areaFar = getAreaBasedDapFar(basicFar, dapZone, effectiveRoadM);
       if (isTod) {
-        areaFar += 0.5; // TOD Bonus
+        areaFar += 0.5;
       }
 
       const tbaExcluding = sqft * areaFar;
@@ -460,8 +464,16 @@
       const tbaIncluding = tbaExcluding + verandaSqft + greenSqft + basementSqft + coreMepSqft;
 
       const netStories = mgcFootprintSqft > 0 ? (tbaExcluding / mgcFootprintSqft) : 0;
-      const totalFlats = Math.ceil(netStories * flatsPerFloor);
+      const totalFloors = Math.ceil(netStories);
+      
+      // 10. Number of flats per floor calculation
+      const totalFlats = totalFloors * flatsPerFloor;
+      const avgFloorArea = mgcFootprintSqft;
+      const avgUnitSize = avgFloorArea / flatsPerFloor;
 
+      document.getElementById('avgFlatSizeNote').textContent = `Avg. Unit Size: ~${Math.round(avgUnitSize)} Sq.Ft / floor`;
+
+      // 12. Parking based on flat counts
       const reqCars = Math.max(1, Math.floor(totalFlats * 0.75));
       const reqBikes = totalFlats * 2;
 
@@ -482,7 +494,7 @@
 
       // Schedule Table
       document.getElementById('tblPlotArea').textContent = `${katha.toFixed(2)} Katha (${formatNum(sqft)} Sq.Ft)`;
-      document.getElementById('tblEffectiveRoad').textContent = `${effectiveRoadFt.toFixed(1)} ft`;
+      document.getElementById('tblFlatConfig').textContent = `${flatsPerFloor} Units / Floor (Total ~${totalFlats} Flats)`;
       document.getElementById('tblTbaExcluding').textContent = `${formatNum(tbaExcluding)} Sq.Ft`;
       document.getElementById('tblVerandaArea').textContent = `+ ${formatNum(verandaSqft)} Sq.Ft`;
       document.getElementById('tblGreenArea').textContent = `+ ${formatNum(greenSqft)} Sq.Ft`;
@@ -490,7 +502,7 @@
       document.getElementById('tblTbaIncluding').textContent = `${formatNum(tbaIncluding)} Sq.Ft`;
 
       renderSetbackSvg(sbFront, sbRear, sbSide, mgc, effectiveRoadFt);
-      renderMassingSvg(currentBasements, Math.ceil(netStories));
+      renderMassingSvg(currentBasements, totalFloors);
     }
 
     function renderSetbackSvg(frontM, rearM, sideM, mgc, roadFt) {
