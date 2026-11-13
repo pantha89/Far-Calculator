@@ -3,14 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>CORE A&E - Dhaka DAP FAR & Feasibility Pro</title>
+  <title>CORE A&E - Enterprise FAR & Feasibility Pro</title>
 
-  <!-- Mobile App / PWA Meta Tags -->
+  <!-- PWA & Meta Tags -->
   <meta name="theme-color" content="#0f172a" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="DAP FAR Pro" />
-  <link id="pwa-manifest" rel="manifest" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231e293b'/><path d='M25 80V20h50v60H25zm10-45h12v10H35V35zm18 0h12v10H53V35zM35 52h12v10H35V52zm18 0h12v10H53V52z' fill='%2338bdf8'/></svg>" />
 
   <!-- Tailwind CSS CDN -->
@@ -18,22 +16,9 @@
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f8fafc;
-      color: #0f172a;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .blueprint-bg {
-      background-color: #0f172a;
-      background-image: radial-gradient(#334155 1px, transparent 1px);
-      background-size: 16px 16px;
-    }
-    @media print {
-      .no-print { display: none !important; }
-      body { background-color: #ffffff; }
-      .print-card { border: 1px solid #cbd5e1 !important; box-shadow: none !important; }
-    }
+    body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #0f172a; }
+    .blueprint-bg { background-color: #0f172a; background-image: radial-gradient(#334155 1px, transparent 1px); background-size: 16px 16px; }
+    @media print { .no-print { display: none !important; } body { background-color: #ffffff; } .print-card { border: 1px solid #cbd5e1 !important; box-shadow: none !important; } }
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -42,272 +27,288 @@
   <header class="bg-slate-900 text-white sticky top-0 z-30 shadow-md">
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center space-x-3">
-        <div class="w-9 h-9 rounded-lg bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-sky-400 font-bold text-lg">
-          C
-        </div>
+        <div class="w-9 h-9 rounded-lg bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-sky-400 font-bold text-lg">C</div>
         <div>
-          <h1 class="text-base sm:text-lg font-bold tracking-tight">CORE A&E | 15-Parameter Feasibility Pro</h1>
-          <p class="text-xs text-slate-400">RAJUK DAP & BNBC Compliant Engine</p>
+          <h1 class="text-base sm:text-lg font-bold tracking-tight">CORE A&E | Enterprise Feasibility Engine</h1>
+          <p class="text-[11px] text-slate-400">RAJUK/BNBC + CAAB + Financial JV Analyzer</p>
         </div>
       </div>
-
       <div class="flex items-center gap-2 no-print">
-        <button id="installBtn" class="hidden bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold text-xs px-3 py-2 rounded-lg transition shadow-sm flex items-center gap-1.5">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>
-          Install App
-        </button>
         <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-medium px-3 py-2 rounded-lg transition flex items-center gap-1.5">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z"/></svg>
-          Print / PDF
+          Print Report
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Main Content Grid -->
+  <!-- Main Content -->
   <main class="max-w-7xl mx-auto w-full px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow">
 
-    <!-- LEFT COLUMN: 15 INPUT PARAMETERS -->
-    <section class="lg:col-span-5 space-y-5">
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 print-card space-y-4">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-sky-600 flex items-center gap-2">
-          <span>Site, Zone & Road Parameters (1 to 10, 15)</span>
-        </h2>
+    <!-- LEFT COLUMN: INPUTS -->
+    <section class="lg:col-span-4 space-y-5">
+      
+      <!-- 1. SITE & ZONING -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 print-card space-y-3.5">
+        <h2 class="text-[11px] font-bold uppercase tracking-wider text-sky-600">1. Site, Zoning & Roads</h2>
 
-        <!-- 15. Building Type -->
-        <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">15. Building Type</label>
-          <select id="buildingType" onchange="calculateAll()"
-            class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-semibold text-slate-800 focus:ring-2 focus:ring-sky-500">
-            <option value="residential" selected>Residential (Occupancy A)</option>
-            <option value="commercial">Commercial (Occupancy E/F)</option>
-            <option value="mixed_use">Mixed-Use (Res + Com)</option>
-            <option value="industrial">Industrial / Factory</option>
-          </select>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[10px] font-semibold text-slate-700 mb-1">Building Type</label>
+            <select id="buildingType" onchange="calculateAll()" class="w-full bg-slate-50 border border-slate-300 rounded px-2 py-1.5 text-[11px] font-semibold text-slate-800">
+              <option value="residential" selected>Residential</option>
+              <option value="commercial">Commercial</option>
+              <option value="mixed_use">Mixed-Use</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[10px] font-semibold text-slate-700 mb-1">DAP Zone</label>
+            <select id="dapZone" onchange="calculateAll()" class="w-full bg-sky-50 border border-sky-300 rounded px-2 py-1.5 text-[11px] font-semibold text-sky-900">
+              <option value="standard" selected>Standard Zone</option>
+              <option value="high_density">High Density</option>
+              <option value="medium_density">Medium Density</option>
+              <option value="gulshan_banani">Gulshan/Banani</option>
+            </select>
+          </div>
         </div>
 
-        <!-- DAP Area / Zone Selector -->
-        <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">DAP Area / Zone Selection (Area-Based FAR)</label>
-          <select id="dapZone" onchange="calculateAll()"
-            class="w-full bg-sky-50 border border-sky-300 rounded-lg px-3 py-2 text-xs font-semibold text-sky-900 focus:ring-2 focus:ring-sky-500">
-            <option value="standard" selected>Standard Dhaka Metropolitan Area</option>
-            <option value="high_density">High Density Zone (Old Dhaka / Core Urban)</option>
-            <option value="medium_density">Medium Density Residential Zone</option>
-            <option value="gulshan_banani">Gulshan / Banani / Baridhara (Special Cap)</option>
-            <option value="dhanmondi_uttara">Dhanmondi / Uttara Planned Residential</option>
-            <option value="commercial_corridor">Commercial Core / Arterial Corridor</option>
-          </select>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[10px] font-semibold text-slate-700 mb-1">CAAB Height Limit</label>
+            <select id="caabZone" onchange="calculateAll()" class="w-full bg-rose-50 border border-rose-300 rounded px-2 py-1.5 text-[11px] font-semibold text-rose-900">
+              <option value="none" selected>No Restriction</option>
+              <option value="4">Funnel Zone (Max 4F)</option>
+              <option value="7">Approach Zone (Max 7F)</option>
+              <option value="10">Buffer Zone (Max 10F)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[10px] font-semibold text-slate-700 mb-1">Plot Frontage Type</label>
+            <select id="frontageType" onchange="toggleRoads(); calculateAll();" class="w-full bg-amber-50 border border-amber-300 rounded px-2 py-1.5 text-[11px] font-semibold text-amber-900">
+              <option value="1_side" selected>1-Side Open</option>
+              <option value="2_side">2-Side (Corner)</option>
+              <option value="3_side">3-Side Open</option>
+            </select>
+          </div>
         </div>
 
-        <!-- 1. Land Size -->
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">1. Land Size (Plot Area)</label>
-          <div class="flex rounded-lg shadow-sm">
-            <input type="number" id="plotArea" value="5" min="0.5" step="0.25"
-              class="w-full rounded-l-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-sky-500"
-              oninput="calculateAll()" />
-            <select id="plotUnit" onchange="calculateAll()"
-              class="bg-slate-100 border border-l-0 border-slate-300 rounded-r-lg px-3 py-2 text-xs font-semibold text-slate-700">
+          <label class="block text-[11px] font-semibold text-slate-700 mb-1">Total Land Size (Gross)</label>
+          <div class="flex rounded shadow-sm">
+            <input type="number" id="plotArea" value="5" min="0.5" step="0.25" class="w-full rounded-l border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-900" oninput="calculateAll()" />
+            <select id="plotUnit" onchange="calculateAll()" class="bg-slate-100 border border-l-0 border-slate-300 rounded-r px-2 py-1.5 text-[11px] font-semibold text-slate-700">
               <option value="katha" selected>Katha</option>
               <option value="sqft">Sq.Ft</option>
-              <option value="sqm">Sq.Meter</option>
-            </select>
-          </div>
-          <p id="unitNormalizedText" class="text-[10px] text-slate-500 mt-0.5">3,600 Sq.Ft | 334.45 Sq.m</p>
-        </div>
-
-        <!-- 2. Proposed Road Width -->
-        <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">2. Proposed Road Width</label>
-          <div class="flex rounded-lg shadow-sm">
-            <input type="number" id="roadWidth" value="30" min="6" step="1"
-              class="w-full rounded-l-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-900"
-              oninput="calculateAll()" />
-            <select id="roadUnit" onchange="calculateAll()"
-              class="bg-slate-100 border border-l-0 border-slate-300 rounded-r-lg px-3 py-2 text-xs font-semibold text-slate-700">
-              <option value="feet" selected>Feet (ft)</option>
-              <option value="meters">Meters (m)</option>
             </select>
           </div>
         </div>
 
-        <!-- 3. Additional Road Widths (1, 2, 3) -->
-        <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">3. Additional Road Widths (1, 2, 3)</label>
+        <div class="p-2.5 bg-slate-50 border border-slate-200 rounded space-y-2.5">
+          <label class="block text-[10px] font-semibold text-slate-700">Road 1 (Main) & Surrender (Ft)</label>
           <div class="grid grid-cols-3 gap-2">
-            <input type="number" id="addRoad1" value="0" placeholder="Rd 1 (ft)" min="0" step="1" oninput="calculateAll()"
-              class="border border-slate-300 rounded-lg px-2 py-1.5 text-xs text-center font-medium text-slate-800" />
-            <input type="number" id="addRoad2" value="0" placeholder="Rd 2 (ft)" min="0" step="1" oninput="calculateAll()"
-              class="border border-slate-300 rounded-lg px-2 py-1.5 text-xs text-center font-medium text-slate-800" />
-            <input type="number" id="addRoad3" value="0" placeholder="Rd 3 (ft)" min="0" step="1" oninput="calculateAll()"
-              class="border border-slate-300 rounded-lg px-2 py-1.5 text-xs text-center font-medium text-slate-800" />
+            <div>
+              <span class="text-[9px] text-slate-500">Plot Width</span>
+              <input type="number" id="frontageWidth" value="45" oninput="calculateAll()" class="w-full border border-slate-300 rounded px-2 py-1 text-[11px] font-semibold text-slate-900" />
+            </div>
+            <div>
+              <span class="text-[9px] text-rose-600">Existing Rd 1</span>
+              <input type="number" id="existingRoad" value="16" oninput="calculateAll()" class="w-full border border-slate-300 rounded px-2 py-1 text-[11px] font-semibold text-rose-700" />
+            </div>
+            <div>
+              <span class="text-[9px] text-sky-600">RAJUK Rd 1</span>
+              <input type="number" id="proposedRoad" value="20" oninput="calculateAll()" class="w-full border border-slate-300 rounded px-2 py-1 text-[11px] font-semibold text-sky-700" />
+            </div>
           </div>
         </div>
 
-        <!-- 8. Transit-Oriented Development (TOD) Facilities -->
-        <div class="flex items-center justify-between p-2.5 bg-sky-50 rounded-lg border border-sky-200">
-          <div>
-            <p class="text-xs font-semibold text-sky-900">8. TOD Facilities (Transit Zone)</p>
-            <p class="text-[10px] text-sky-700">Applies +0.5 Area FAR bonus</p>
+        <!-- 3-Side Road Inputs (Hidden by default) -->
+        <div id="extraRoadsDiv" class="hidden grid grid-cols-2 gap-2 p-2.5 bg-amber-50/50 border border-amber-200 rounded">
+          <div id="rd2Div">
+            <span class="text-[9px] font-semibold text-amber-800">Road 2 Width (Ft)</span>
+            <input type="number" id="road2" value="20" oninput="calculateAll()" class="w-full border border-slate-300 rounded px-2 py-1 text-[11px] font-semibold text-slate-900" />
           </div>
-          <input type="checkbox" id="todZone" onchange="calculateAll()" class="w-4 h-4 accent-sky-600 rounded cursor-pointer" />
+          <div id="rd3Div" class="hidden">
+            <span class="text-[9px] font-semibold text-amber-800">Road 3 Width (Ft)</span>
+            <input type="number" id="road3" value="16" oninput="calculateAll()" class="w-full border border-slate-300 rounded px-2 py-1 text-[11px] font-semibold text-slate-900" />
+          </div>
         </div>
 
-        <!-- 10. Number of flats per floor -->
-        <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">10. Number of Flats per Floor</label>
-          <input type="number" id="flatsPerFloor" value="2" min="1" max="10" step="1" oninput="calculateAll()"
-            class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-sky-500" />
-          <p id="avgFlatSizeNote" class="text-[10px] text-slate-500 mt-1">Avg. Unit Size: ~720 Sq.Ft</p>
+        <div class="flex items-center justify-between p-2 bg-sky-50 rounded border border-sky-200">
+          <span class="text-[10px] font-semibold text-sky-900">TOD Transit Bonus (+0.5)</span>
+          <input type="checkbox" id="todZone" onchange="calculateAll()" class="w-3.5 h-3.5 accent-sky-600" />
         </div>
       </div>
 
-      <!-- EXEMPTIONS, VERANDAS & PARKING PARAMETERS (11 to 14) -->
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 print-card space-y-4">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-600">
-          Exemptions & Standards (11 to 14)
-        </h2>
+      <!-- 2. EXEMPTIONS & LAYOUT -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 print-card space-y-3.5">
+        <h2 class="text-[11px] font-bold uppercase tracking-wider text-emerald-600">2. Layout & Exemptions</h2>
 
-        <!-- 13. Front Veranda, Side Veranda -->
-        <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-          <div>
-            <p class="text-xs font-semibold text-slate-800">13. Front & Side Verandas</p>
-            <p class="text-[10px] text-slate-500">Exempts cantilevered verandas (~8% footprint)</p>
-          </div>
-          <input type="checkbox" id="verandaExempt" checked onchange="calculateAll()" class="w-4 h-4 accent-sky-600 rounded cursor-pointer" />
-        </div>
-
-        <!-- 14. Additional 2.5% green area per floor -->
-        <div class="flex items-center justify-between p-2.5 bg-emerald-50 rounded-lg border border-emerald-200">
-          <div>
-            <p class="text-xs font-semibold text-emerald-900">14. Additional 2.5% Green Area</p>
-            <p class="text-[10px] text-emerald-700">Roof/balcony landscape exemption per floor</p>
-          </div>
-          <input type="checkbox" id="greenArea25" checked onchange="calculateAll()" class="w-4 h-4 accent-emerald-600 rounded cursor-pointer" />
-        </div>
-
-        <!-- 12. Number of parking spaces per unit/floor -->
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">12. Parking Requirements</label>
-          <select id="parkingStandard" onchange="calculateAll()"
-            class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-semibold text-slate-800">
-            <option value="standard" selected>Standard (0.75 Car/unit & 2 Bikes/unit)</option>
-            <option value="commercial">Commercial (1 Car per 100 sqm)</option>
+          <label class="block text-[11px] font-semibold text-slate-700 mb-1">Flats per Floor</label>
+          <input type="number" id="flatsPerFloor" value="2" min="1" step="1" oninput="calculateAll()" class="w-full border border-slate-300 rounded px-3 py-1.5 text-xs font-semibold text-slate-900" />
+        </div>
+
+        <div class="flex items-center justify-between p-2 bg-slate-50 rounded border border-slate-200">
+          <span class="text-[10px] font-semibold text-slate-800">Veranda Exempt (Max 1.5m)</span>
+          <input type="checkbox" id="verandaExempt" checked onchange="calculateAll()" class="w-3.5 h-3.5 accent-slate-600" />
+        </div>
+
+        <div class="flex items-center justify-between p-2 bg-emerald-50 rounded border border-emerald-200">
+          <span class="text-[10px] font-semibold text-emerald-900">2.5% Green Area Exempt</span>
+          <input type="checkbox" id="greenArea25" checked onchange="calculateAll()" class="w-3.5 h-3.5 accent-emerald-600" />
+        </div>
+
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-[10px] font-semibold text-slate-700">Basements</label>
+          </div>
+          <div class="grid grid-cols-5 gap-1">
+            <button type="button" onclick="setBasements(0)" id="bs-0" class="bs-btn py-1 rounded border border-slate-200 text-[10px] font-semibold text-slate-600">0</button>
+            <button type="button" onclick="setBasements(1)" id="bs-1" class="bs-btn py-1 rounded border border-sky-600 bg-sky-600 text-white text-[10px] font-semibold">1</button>
+            <button type="button" onclick="setBasements(2)" id="bs-2" class="bs-btn py-1 rounded border border-slate-200 text-[10px] font-semibold text-slate-600">2</button>
+            <button type="button" onclick="setBasements(3)" id="bs-3" class="bs-btn py-1 rounded border border-slate-200 text-[10px] font-semibold text-slate-600">3</button>
+            <button type="button" onclick="setBasements(4)" id="bs-4" class="bs-btn py-1 rounded border border-slate-200 text-[10px] font-semibold text-slate-600">4</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. FINANCIAL & JV -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 print-card space-y-3.5 border-l-4 border-l-indigo-500">
+        <h2 class="text-[11px] font-bold uppercase tracking-wider text-indigo-600">3. Financial & Joint Venture</h2>
+
+        <div>
+          <label class="block text-[10px] font-semibold text-slate-700 mb-1">Landowner : Developer Share</label>
+          <select id="jvRatio" onchange="calculateAll()" class="w-full bg-indigo-50 border border-indigo-200 rounded px-2 py-1.5 text-[11px] font-semibold text-indigo-900">
+            <option value="100">100% Own Project</option>
+            <option value="50" selected>50 : 50 Ratio</option>
+            <option value="55">55 : 45 (LO : Dev)</option>
+            <option value="60">60 : 40 (LO : Dev)</option>
           </select>
         </div>
 
-        <!-- Basement Selector -->
-        <div>
-          <div class="flex justify-between items-center mb-1">
-            <label class="text-xs font-semibold text-slate-700">Basement Parking Levels</label>
-            <span id="basementCountBadge" class="text-xs font-bold text-sky-600 bg-sky-50 px-2 py-0.5 rounded">1 Basement</span>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[10px] font-semibold text-slate-700 mb-1">Avg. Const. Cost / SqFt</label>
+            <input type="number" id="constCost" value="3500" step="100" oninput="calculateAll()" class="w-full border border-slate-300 rounded px-2 py-1.5 text-[11px] font-semibold text-slate-900" />
           </div>
-          <div class="grid grid-cols-5 gap-1.5">
-            <button type="button" onclick="setBasements(0)" id="bs-0" class="bs-btn py-1.5 rounded border border-slate-200 text-xs font-semibold text-slate-600">0</button>
-            <button type="button" onclick="setBasements(1)" id="bs-1" class="bs-btn py-1.5 rounded border border-sky-600 bg-sky-600 text-white text-xs font-semibold">1</button>
-            <button type="button" onclick="setBasements(2)" id="bs-2" class="bs-btn py-1.5 rounded border border-slate-200 text-xs font-semibold text-slate-600">2</button>
-            <button type="button" onclick="setBasements(3)" id="bs-3" class="bs-btn py-1.5 rounded border border-slate-200 text-xs font-semibold text-slate-600">3</button>
-            <button type="button" onclick="setBasements(4)" id="bs-4" class="bs-btn py-1.5 rounded border border-slate-200 text-xs font-semibold text-slate-600">4</button>
+          <div>
+            <label class="block text-[10px] font-semibold text-slate-700 mb-1">Est. Selling Price / SqFt</label>
+            <input type="number" id="salePrice" value="8500" step="500" oninput="calculateAll()" class="w-full border border-slate-300 rounded px-2 py-1.5 text-[11px] font-semibold text-slate-900" />
           </div>
         </div>
       </div>
     </section>
 
-    <!-- RIGHT COLUMN: RESULTS, KPI & 15-PARAMETER SCHEDULE -->
-    <section class="lg:col-span-7 space-y-6">
+    <!-- RIGHT COLUMN: RESULTS -->
+    <section class="lg:col-span-8 space-y-5">
 
-      <!-- Top KPI Cards -->
+      <!-- Safety Alerts -->
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 shadow-sm">
+        <h3 class="text-[10px] font-bold uppercase tracking-wider text-amber-900 mb-2">BNBC, RAJUK & CAAB Compliance Checklist</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-[10px]">
+          <div><span class="font-semibold text-slate-800">Fire / Stairs:</span><br><span id="fireStairText" class="text-slate-600">1 Stair</span></div>
+          <div><span class="font-semibold text-slate-800">Lifts:</span><br><span id="liftText" class="text-slate-600">Not Req.</span></div>
+          <div><span class="font-semibold text-slate-800">RWH & Solar:</span><br><span id="rwhText" class="text-slate-600">Optional</span></div>
+          <div><span class="font-semibold text-slate-800">Setback Rule:</span><br><span id="setbackRuleText" class="text-slate-600">Standard</span></div>
+        </div>
+      </div>
+
+      <!-- Financial KPIs -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm print-card">
-          <p class="text-[10px] font-semibold uppercase text-slate-400">4. Basic FAR</p>
-          <p id="kpiBasicFar" class="text-xl font-bold text-slate-900 mt-1">3.50</p>
+        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm print-card">
+          <p class="text-[10px] font-semibold uppercase text-slate-400">Total Built-Up Area</p>
+          <p id="kpiTba" class="text-[15px] font-bold text-slate-900 mt-1">0 Sq.Ft</p>
         </div>
-
-        <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm print-card">
-          <p class="text-[10px] font-semibold uppercase text-slate-400">5. Area FAR (DAP)</p>
-          <p id="kpiAreaFar" class="text-xl font-bold text-sky-600 mt-1">4.00</p>
-          <p id="kpiBonusTag" class="text-[9px] text-sky-500 font-medium">Zone Adjusted</p>
+        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm print-card">
+          <p class="text-[10px] font-semibold uppercase text-slate-400">Max Floors (St.)</p>
+          <p id="kpiFloors" class="text-[15px] font-bold text-slate-900 mt-1">G+0</p>
         </div>
-
-        <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm print-card">
-          <p class="text-[10px] font-semibold uppercase text-slate-400">6. MGC</p>
-          <p id="kpiMgc" class="text-xl font-bold text-slate-900 mt-1">60.0%</p>
+        <div class="bg-rose-50 p-3 rounded-xl border border-rose-200 shadow-sm print-card">
+          <p class="text-[10px] font-semibold uppercase text-rose-600">Est. Project Cost</p>
+          <p id="kpiCost" class="text-[15px] font-bold text-rose-700 mt-1">৳ 0 Cr</p>
         </div>
-
-        <div class="bg-slate-900 text-white p-3.5 rounded-xl shadow-sm print-card">
-          <p class="text-[10px] font-semibold uppercase text-emerald-400">7. Max Open Space</p>
-          <p id="kpiMos" class="text-xl font-bold text-white mt-1">40.0%</p>
+        <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200 shadow-sm print-card">
+          <p class="text-[10px] font-semibold uppercase text-emerald-600">Est. Gross Revenue</p>
+          <p id="kpiRevenue" class="text-[15px] font-bold text-emerald-700 mt-1">৳ 0 Cr</p>
         </div>
       </div>
 
-      <!-- 9. Setbacks & Visuals -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- 2D Blueprint -->
+      <!-- Blueprint Diagrams -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div class="blueprint-bg rounded-xl p-3 text-white border border-slate-800 shadow-sm flex flex-col justify-between">
           <div class="flex justify-between items-center mb-1">
-            <span class="text-[11px] font-bold uppercase tracking-wider text-sky-400">9. Setback & Footprint Plan</span>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-sky-400">Setbacks & Frontage Plan</span>
           </div>
           <div class="flex items-center justify-center my-1">
-            <svg id="setbackSvg" viewBox="0 0 260 200" class="w-full max-w-[240px] h-auto"></svg>
+            <svg id="setbackSvg" viewBox="0 0 260 200" class="w-full max-w-[200px] h-auto"></svg>
           </div>
-          <div class="grid grid-cols-3 gap-1 text-center bg-slate-900/90 p-2 rounded border border-slate-800 text-[10px]">
-            <div><span class="text-slate-400 block">Front</span><strong id="sbFrontText" class="text-sky-300">4.9 ft</strong></div>
-            <div><span class="text-slate-400 block">Rear</span><strong id="sbRearText" class="text-sky-300">6.5 ft</strong></div>
-            <div><span class="text-slate-400 block">Side</span><strong id="sbSideText" class="text-sky-300">4.1 ft</strong></div>
+          <div class="grid grid-cols-3 gap-1 text-center bg-slate-900/90 p-1.5 rounded border border-slate-800 text-[10px]">
+            <div><span class="text-slate-400 block" id="lblFrontSet">Front (Rd 1)</span><strong id="sbFrontText" class="text-sky-300">0 ft</strong></div>
+            <div><span class="text-slate-400 block" id="lblRearSet">Rear</span><strong id="sbRearText" class="text-sky-300">0 ft</strong></div>
+            <div><span class="text-slate-400 block">Side</span><strong id="sbSideText" class="text-sky-300">0 ft</strong></div>
           </div>
         </div>
 
-        <!-- Massing & Parking (12) -->
         <div class="blueprint-bg rounded-xl p-3 text-white border border-slate-800 shadow-sm flex flex-col justify-between">
           <div class="flex justify-between items-center mb-1">
-            <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-400">12. Parking & Massing</span>
-            <span id="massingBadge" class="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">1B+G+7F</span>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400">Massing & JV Split</span>
           </div>
           <div class="flex items-center justify-center my-1">
-            <svg id="massingSvg" viewBox="0 0 260 200" class="w-full max-w-[240px] h-auto"></svg>
+            <svg id="massingSvg" viewBox="0 0 260 200" class="w-full max-w-[200px] h-auto"></svg>
           </div>
-          <div class="grid grid-cols-2 gap-1 text-center bg-slate-900/90 p-2 rounded border border-slate-800 text-[10px]">
-            <div><span class="text-slate-400 block">Car Parking</span><strong id="parkingCarText" class="text-emerald-300">12 Slots</strong></div>
-            <div><span class="text-slate-400 block">Bike Parking</span><strong id="parkingBikeText" class="text-amber-300">28 Bikes</strong></div>
+          <div class="grid grid-cols-2 gap-1 text-center bg-slate-900/90 p-1.5 rounded border border-slate-800 text-[10px]">
+            <div><span class="text-slate-400 block">Total Flats</span><strong id="parkingCarText" class="text-emerald-300">0 Units</strong></div>
+            <div><span class="text-slate-400 block">Avg. Size</span><strong id="parkingBikeText" class="text-amber-300">~0 Sq.Ft</strong></div>
           </div>
         </div>
       </div>
 
-      <!-- 11. Total Built-up Area (TBA) Schedule Table -->
+      <!-- Schedule Table -->
       <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden print-card">
-        <div class="px-4 py-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">11. Total Built-up Area (TBA) Schedule</h3>
-          <span class="text-[10px] text-slate-500">Excluding & Including Exemptions</span>
+        <div class="px-4 py-2 bg-slate-50 border-b border-slate-200">
+          <h3 class="text-[11px] font-bold uppercase tracking-wider text-slate-700">Detailed Exemption & JV Schedule</h3>
         </div>
-        <div class="divide-y divide-slate-200 text-xs">
-          <div class="px-4 py-2.5 flex justify-between">
-            <span class="text-slate-600">1. Land Size & DAP Zone</span>
-            <span id="tblPlotArea" class="font-semibold text-slate-900">5.00 Katha (Standard)</span>
+        <div class="divide-y divide-slate-200 text-[11px]">
+          <div class="px-4 py-1.5 flex justify-between bg-rose-50/50">
+            <span class="text-slate-500">Gross Plot Area</span>
+            <span id="tblGrossPlot" class="font-semibold text-slate-700">0 Sq.Ft</span>
           </div>
-          <div class="px-4 py-2.5 flex justify-between">
-            <span class="text-slate-600">10. Flat Configuration</span>
-            <span id="tblFlatConfig" class="font-semibold text-amber-700">2 Units / Floor (Total 14 Flats)</span>
+          <div class="px-4 py-1.5 flex justify-between bg-rose-50/50 text-rose-800">
+            <span>(-) Road Surrender Area</span>
+            <span id="tblSurrenderArea" class="font-semibold">- 0 Sq.Ft</span>
           </div>
-          <div class="px-4 py-2.5 flex justify-between bg-sky-50/50">
-            <span class="font-semibold text-sky-900">11. TBA Excluding Exemptions (Plot × Area FAR)</span>
-            <span id="tblTbaExcluding" class="font-bold text-sky-700">14,400 Sq.Ft</span>
+          <div class="px-4 py-2 flex justify-between">
+            <span class="text-slate-900 font-bold">Net Calculable Land</span>
+            <span id="tblNetPlot" class="font-bold text-slate-900">0 Sq.Ft</span>
           </div>
-          <div class="px-4 py-2.5 flex justify-between">
-            <span class="text-slate-600">13. Front & Side Veranda Allowance (Exempt)</span>
-            <span id="tblVerandaArea" class="font-semibold text-emerald-700">+ 1,152 Sq.Ft</span>
+          
+          <div class="px-4 py-2 flex justify-between">
+            <span class="text-slate-600">Base FAR Area (Saleable / Excl. Exemptions)</span>
+            <span id="tblTbaExcluding" class="font-bold text-sky-700">0 Sq.Ft</span>
           </div>
-          <div class="px-4 py-2.5 flex justify-between">
-            <span class="text-slate-600">14. Additional 2.5% Green Area (Exempt)</span>
-            <span id="tblGreenArea" class="font-semibold text-emerald-700">+ 360 Sq.Ft</span>
+          
+          <!-- Exemptions -->
+          <div class="px-4 py-1.5 flex justify-between bg-slate-50/50">
+            <span class="text-slate-500 ml-4">+ Verandas, Green Area & Community</span>
+            <span id="tblVerandaArea" class="text-emerald-700">+ 0 Sq.Ft</span>
           </div>
-          <div class="px-4 py-2.5 flex justify-between">
-            <span class="text-slate-600">Basements & Service Cores (Exempt)</span>
-            <span id="tblCoreArea" class="font-semibold text-emerald-700">+ 4,500 Sq.Ft</span>
+          <div class="px-4 py-1.5 flex justify-between bg-slate-50/50">
+            <span class="text-slate-500 ml-4">+ Basements & Service Cores (Stairs/Lifts)</span>
+            <span id="tblCoreArea" class="text-emerald-700">+ 0 Sq.Ft</span>
           </div>
-          <div class="px-4 py-3 flex justify-between bg-slate-900 text-white font-bold text-sm">
-            <span>11. TBA Including All Exemptions (Gross Built Area)</span>
-            <span id="tblTbaIncluding" class="text-sky-400">20,412 Sq.Ft</span>
+          <div class="px-4 py-1.5 flex justify-between bg-slate-50/50">
+            <span class="text-slate-500 ml-4">+ MEP / Substation Allowance</span>
+            <span id="tblMepArea" class="text-emerald-700">+ 0 Sq.Ft</span>
+          </div>
+
+          <div class="px-4 py-2 flex justify-between bg-slate-900 text-white font-bold text-[12px]">
+            <span>Total Built-Up Area (TBA Including All)</span>
+            <span id="tblTbaIncluding" class="text-sky-400">0 Sq.Ft</span>
+          </div>
+          
+          <!-- JV Breakdown -->
+          <div class="px-4 py-2.5 bg-indigo-50 border-t border-indigo-100 flex justify-between items-center text-[11px]">
+            <span class="font-bold text-indigo-900">Joint Venture Breakdown (Flats)</span>
+            <span id="tblJvShare" class="font-bold text-indigo-700">LO: 0 Flats | Dev: 0 Flats</span>
           </div>
         </div>
       </div>
@@ -315,14 +316,11 @@
     </section>
   </main>
 
-  <!-- Complete 15-Parameter Script Engine -->
   <script>
     const SQFT_PER_KATHA = 720.0;
     const SQM_PER_SQFT = 0.092903;
-    const SQFT_PER_SQM = 10.7639;
     const METERS_TO_FEET = 3.28084;
     const FEET_TO_METERS = 0.3048;
-
     let currentBasements = 1;
 
     const MGC_SETBACKS = {
@@ -346,11 +344,25 @@
       ]
     };
 
+    function toggleRoads() {
+      const type = document.getElementById('frontageType').value;
+      const extraDiv = document.getElementById('extraRoadsDiv');
+      const r3Div = document.getElementById('rd3Div');
+      
+      if (type === '1_side') {
+        extraDiv.classList.add('hidden');
+      } else if (type === '2_side') {
+        extraDiv.classList.remove('hidden');
+        r3Div.classList.add('hidden');
+      } else if (type === '3_side') {
+        extraDiv.classList.remove('hidden');
+        r3Div.classList.remove('hidden');
+      }
+    }
+
     function lookupMgcSetback(sqm, type) {
       const list = MGC_SETBACKS[type] || MGC_SETBACKS.residential;
-      for (const r of list) {
-        if (sqm >= r.min && sqm < r.max) return r;
-      }
+      for (const r of list) { if (sqm >= r.min && sqm < r.max) return r; }
       return list[list.length - 1];
     }
 
@@ -361,215 +373,190 @@
       return 3.15;
     }
 
-    function getAreaBasedDapFar(baseFar, zoneType, roadM) {
+    function getAreaBasedDapFar(baseFar, zoneType) {
       let adjustedFar = baseFar;
-      if (zoneType === 'high_density') {
-        adjustedFar = Math.min(baseFar * 1.15, 6.0);
-      } else if (zoneType === 'medium_density') {
-        adjustedFar = Math.min(baseFar, 4.0);
-      } else if (zoneType === 'gulshan_banani') {
-        adjustedFar = Math.min(baseFar * 0.90, 4.5);
-      } else if (zoneType === 'dhanmondi_uttara') {
-        adjustedFar = Math.min(baseFar * 0.95, 4.8);
-      } else if (zoneType === 'commercial_corridor') {
-        adjustedFar = Math.max(baseFar * 1.25, 5.5);
-      }
+      if (zoneType === 'high_density') adjustedFar = Math.min(baseFar * 1.15, 6.0);
+      else if (zoneType === 'medium_density') adjustedFar = Math.min(baseFar, 4.0);
+      else if (zoneType === 'gulshan_banani') adjustedFar = Math.min(baseFar * 0.90, 4.5);
       return adjustedFar;
     }
+
+    function formatMoney(amount) { return '৳ ' + (amount / 10000000).toFixed(2) + ' Cr'; }
+    function formatNum(num) { return Math.round(num).toLocaleString('en-US'); }
 
     function setBasements(count) {
       currentBasements = count;
       document.querySelectorAll('.bs-btn').forEach(btn => {
-        btn.className = 'bs-btn py-1.5 rounded border border-slate-200 text-xs font-semibold text-slate-600';
+        btn.classList.replace('bg-sky-600', 'bg-white');
+        btn.classList.replace('text-white', 'text-slate-600');
       });
-      document.getElementById('bs-' + count).className = 'bs-btn py-1.5 rounded border border-sky-600 bg-sky-600 text-white text-xs font-semibold';
-      document.getElementById('basementCountBadge').textContent = count === 0 ? 'No Basement' : count + (count === 1 ? ' Basement' : ' Basements');
+      const activeBtn = document.getElementById('bs-' + count);
+      activeBtn.classList.replace('bg-white', 'bg-sky-600');
+      activeBtn.classList.replace('text-slate-600', 'text-white');
       calculateAll();
-    }
-
-    function formatNum(num) {
-      return Math.round(num).toLocaleString('en-US');
     }
 
     function calculateAll() {
       const rawArea = parseFloat(document.getElementById('plotArea').value) || 1;
       const plotUnit = document.getElementById('plotUnit').value;
-      const rawRoad = parseFloat(document.getElementById('roadWidth').value) || 30;
-      const roadUnit = document.getElementById('roadUnit').value;
+      const existRdFt = parseFloat(document.getElementById('existingRoad').value) || 16;
+      const propRdFt = parseFloat(document.getElementById('proposedRoad').value) || 20;
+      const frontWtFt = parseFloat(document.getElementById('frontageWidth').value) || 45;
+      
+      const frontageType = document.getElementById('frontageType').value;
+      const rd2Ft = parseFloat(document.getElementById('road2').value) || 20;
+      const rd3Ft = parseFloat(document.getElementById('road3').value) || 16;
+      
       const bType = document.getElementById('buildingType').value;
       const dapZone = document.getElementById('dapZone').value;
-      
-      // flatsPerFloor parsing from number input box
-      const flatsPerFloor = parseInt(document.getElementById('flatsPerFloor').value) || 2;
-      
+      const caabCap = document.getElementById('caabZone').value;
       const isTod = document.getElementById('todZone').checked;
+      
+      const flatsPerFloor = parseInt(document.getElementById('flatsPerFloor').value) || 2;
       const verandaEx = document.getElementById('verandaExempt').checked;
       const greenEx = document.getElementById('greenArea25').checked;
 
-      const addRd1 = parseFloat(document.getElementById('addRoad1').value) || 0;
-      const addRd2 = parseFloat(document.getElementById('addRoad2').value) || 0;
-      const addRd3 = parseFloat(document.getElementById('addRoad3').value) || 0;
+      const jvRatio = parseFloat(document.getElementById('jvRatio').value) / 100;
+      const constCost = parseFloat(document.getElementById('constCost').value) || 3500;
+      const salePrice = parseFloat(document.getElementById('salePrice').value) || 8500;
 
-      // Normalize Land
-      let sqft, sqm, katha;
-      if (plotUnit === 'katha') {
-        katha = rawArea;
-        sqft = rawArea * SQFT_PER_KATHA;
-        sqm = sqft * SQM_PER_SQFT;
-      } else if (plotUnit === 'sqft') {
-        sqft = rawArea;
-        sqm = rawArea * SQM_PER_SQFT;
-        katha = rawArea / SQFT_PER_KATHA;
-      } else {
-        sqm = rawArea;
-        sqft = rawArea * SQFT_PER_SQM;
-        katha = sqft / SQFT_PER_KATHA;
-      }
+      // 1. Gross & Road Surrender
+      let grossSqft = (plotUnit === 'katha') ? rawArea * SQFT_PER_KATHA : rawArea;
+      let grossKatha = grossSqft / SQFT_PER_KATHA;
+      let surrenderSqft = (existRdFt < propRdFt) ? ((propRdFt - existRdFt) / 2.0) * frontWtFt : 0;
+      let netSqft = Math.max(0, grossSqft - surrenderSqft);
+      let netSqm = netSqft * SQM_PER_SQFT;
+      let netKatha = netSqft / SQFT_PER_KATHA;
 
-      const baseRoadFt = roadUnit === 'feet' ? rawRoad : rawRoad * METERS_TO_FEET;
-      const addRoadsBonus = (addRd1 + addRd2 + addRd3) * 0.25;
-      const effectiveRoadFt = baseRoadFt + addRoadsBonus;
+      // 2. Effective Road Logic (Merging 3-Side open + Corner logic)
+      let effectiveRoadFt = propRdFt;
+      if (frontageType === '2_side') effectiveRoadFt = Math.max(propRdFt, rd2Ft);
+      if (frontageType === '3_side') effectiveRoadFt = Math.max(propRdFt, rd2Ft, rd3Ft);
       const effectiveRoadM = effectiveRoadFt * FEET_TO_METERS;
 
-      document.getElementById('unitNormalizedText').textContent = `${formatNum(sqft)} Sq.Ft | ${sqm.toFixed(2)} Sq.m | ${katha.toFixed(2)} Katha`;
-
-      const zoningKey = (bType === 'commercial') ? 'commercial' : 'residential';
-      const rule = lookupMgcSetback(sqm, zoningKey);
+      // 3. MGC & Setbacks
+      const rule = lookupMgcSetback(netSqm, (bType === 'commercial' ? 'commercial' : 'residential'));
       const mgc = rule.mgc;
-      const sbFront = rule.front;
-      const sbRear = rule.rear;
-      const sbSide = rule.side;
-
-      const mosPct = 100.0 - mgc;
-      const mgcFootprintSqft = sqft * (mgc / 100.0);
-
-      const basicFar = getBasicFar(effectiveRoadM);
-      let areaFar = getAreaBasedDapFar(basicFar, dapZone, effectiveRoadM);
-      if (isTod) {
-        areaFar += 0.5;
-      }
-
-      const tbaExcluding = sqft * areaFar;
-
-      // Exemptions
-      const verandaSqft = verandaEx ? mgcFootprintSqft * 0.08 : 0;
-      const greenSqft = greenEx ? tbaExcluding * 0.025 : 0;
-      const basementSqft = (sqft * 0.75) * currentBasements;
-      const coreMepSqft = tbaExcluding * 0.10;
-
-      const tbaIncluding = tbaExcluding + verandaSqft + greenSqft + basementSqft + coreMepSqft;
-
-      const netStories = mgcFootprintSqft > 0 ? (tbaExcluding / mgcFootprintSqft) : 0;
-      const totalFloors = Math.ceil(netStories);
+      const mgcFootprintSqft = netSqft * (mgc / 100.0);
       
-      // Flat calculations based on flatsPerFloor input
-      const totalFlats = totalFloors * flatsPerFloor;
-      const avgFloorArea = mgcFootprintSqft;
-      const avgUnitSize = avgFloorArea / flatsPerFloor;
-
-      const flatSizeNote = document.getElementById('avgFlatSizeNote');
-      if (flatSizeNote) {
-        flatSizeNote.textContent = `Avg. Unit Size: ~${Math.round(avgUnitSize)} Sq.Ft / floor`;
+      let sbFront = rule.front;
+      let sbRear = rule.rear;
+      let sbSide = rule.side;
+      
+      // 3-Side Open Setback Application
+      if (frontageType === '3_side') {
+        sbRear = rule.side; // Rear becomes a side (road facing)
+        document.getElementById('lblRearSet').textContent = 'Side (Rd 3)';
+      } else {
+        document.getElementById('lblRearSet').textContent = 'Rear';
       }
 
-      const reqCars = Math.max(1, Math.floor(totalFlats * 0.75));
-      const reqBikes = totalFlats * 2;
+      // 4. FAR & Area
+      let areaFar = getAreaBasedDapFar(getBasicFar(effectiveRoadM), dapZone);
+      if (isTod) areaFar += 0.5;
+      const tbaExcluding = netSqft * areaFar;
 
-      // Update KPIs
-      document.getElementById('kpiBasicFar').textContent = basicFar.toFixed(2);
-      document.getElementById('kpiAreaFar').textContent = areaFar.toFixed(2);
-      document.getElementById('kpiMgc').textContent = mgc.toFixed(1) + '%';
-      document.getElementById('kpiMos').textContent = mosPct.toFixed(1) + '%';
+      // 5. CAAB Limits & Floors
+      let totalFloors = Math.ceil(mgcFootprintSqft > 0 ? (tbaExcluding / mgcFootprintSqft) : 0);
+      if (caabCap !== 'none') {
+        totalFloors = Math.min(totalFloors, parseInt(caabCap));
+      }
 
-      // Setbacks
+      // High-Rise Setback Rules
+      let setbackRuleStr = "Standard";
+      if (totalFloors >= 10) {
+        sbRear = Math.max(sbRear, 2.0);
+        sbSide = Math.max(sbSide, 1.5);
+        setbackRuleStr = "<span class='text-rose-600 font-bold'>High-Rise Adj.</span>";
+      }
+      document.getElementById('setbackRuleText').innerHTML = setbackRuleStr;
+
+      // 6. RWH & Solar
+      document.getElementById('rwhText').innerHTML = (grossKatha >= 3.0) ? "<span class='text-emerald-600 font-bold'>Mandatory (>3 Katha)</span>" : "Optional";
+
+      const totalFlats = totalFloors * flatsPerFloor;
+      const avgUnitSize = mgcFootprintSqft / flatsPerFloor;
+      
+      // 7. Safety: Fire & Lifts
+      document.getElementById('fireStairText').innerHTML = (totalFloors >= 6 || mgcFootprintSqft > 5380) ? `<span class="text-rose-600 font-bold">2 Stairs Req.</span>` : '1 Stair';
+      document.getElementById('liftText').innerHTML = (totalFloors >= 6) ? `<span class="text-rose-600 font-bold">${Math.max(1, Math.ceil(totalFlats/15))} Lifts Req.</span>` : 'Not Req.';
+
+      // 8. Exemptions
+      const verandaSqft = verandaEx ? (mgcFootprintSqft * 0.08 * totalFloors) : 0;
+      const greenSqft = greenEx ? (tbaExcluding * 0.025) : 0;
+      const communitySqft = (totalFlats >= 20) ? (tbaExcluding * 0.05) : 0; 
+      const basementSqft = (netSqft * 0.75) * currentBasements;
+      const coreMepSqft = (tbaExcluding * 0.10);
+
+      let mepRoomSqft = (tbaExcluding > 15000 || bType === 'commercial') ? 250 : 0;
+      const tbaIncluding = tbaExcluding + verandaSqft + greenSqft + communitySqft + basementSqft + coreMepSqft + mepRoomSqft;
+
+      // 9. Financial & JV
+      const loFlats = Math.round(totalFlats * jvRatio);
+      const devFlats = totalFlats - loFlats;
+      const totalProjectCost = tbaIncluding * constCost;
+      const totalProjectRevenue = tbaExcluding * salePrice;
+
+      // Update UI Elements
+      document.getElementById('kpiTba').textContent = `${formatNum(tbaIncluding)} Sq.Ft`;
+      document.getElementById('kpiFloors').textContent = `G+${Math.max(0, totalFloors-1)}`;
+      document.getElementById('kpiCost').textContent = formatMoney(totalProjectCost);
+      document.getElementById('kpiRevenue').textContent = formatMoney(totalProjectRevenue);
+
+      document.getElementById('tblGrossPlot').textContent = `${grossKatha.toFixed(2)} Katha (${formatNum(grossSqft)} Sq.Ft)`;
+      document.getElementById('tblSurrenderArea').textContent = `- ${formatNum(surrenderSqft)} Sq.Ft`;
+      document.getElementById('tblNetPlot').textContent = `${formatNum(netSqft)} Sq.Ft`;
+      document.getElementById('tblTbaExcluding').textContent = `${formatNum(tbaExcluding)} Sq.Ft`;
+      
+      document.getElementById('tblVerandaArea').textContent = `+ ${formatNum(verandaSqft + greenSqft + communitySqft)} Sq.Ft`;
+      document.getElementById('tblCoreArea').textContent = `+ ${formatNum(basementSqft + coreMepSqft)} Sq.Ft`;
+      document.getElementById('tblMepArea').textContent = `+ ${formatNum(mepRoomSqft)} Sq.Ft`;
+      document.getElementById('tblTbaIncluding').textContent = `${formatNum(tbaIncluding)} Sq.Ft`;
+      
+      if(jvRatio === 1) {
+        document.getElementById('tblJvShare').textContent = `100% Owned | All ${totalFlats} Flats`;
+      } else {
+        document.getElementById('tblJvShare').textContent = `LO: ${loFlats} Flats | Dev: ${devFlats} Flats`;
+      }
+
       document.getElementById('sbFrontText').textContent = `${(sbFront * METERS_TO_FEET).toFixed(1)} ft`;
       document.getElementById('sbRearText').textContent = `${(sbRear * METERS_TO_FEET).toFixed(1)} ft`;
       document.getElementById('sbSideText').textContent = `${(sbSide * METERS_TO_FEET).toFixed(1)} ft`;
+      document.getElementById('parkingCarText').textContent = `${totalFlats} Units`;
+      document.getElementById('parkingBikeText').textContent = `~${Math.round(avgUnitSize)} Sq.Ft`;
 
-      // Parking
-      document.getElementById('parkingCarText').textContent = `${reqCars} Slots`;
-      document.getElementById('parkingBikeText').textContent = `${reqBikes} Bikes`;
-
-      // Schedule Table
-      document.getElementById('tblPlotArea').textContent = `${katha.toFixed(2)} Katha (${formatNum(sqft)} Sq.Ft)`;
-      document.getElementById('tblFlatConfig').textContent = `${flatsPerFloor} Units / Floor (Total ~${totalFlats} Flats)`;
-      document.getElementById('tblTbaExcluding').textContent = `${formatNum(tbaExcluding)} Sq.Ft`;
-      document.getElementById('tblVerandaArea').textContent = `+ ${formatNum(verandaSqft)} Sq.Ft`;
-      document.getElementById('tblGreenArea').textContent = `+ ${formatNum(greenSqft)} Sq.Ft`;
-      document.getElementById('tblCoreArea').textContent = `+ ${formatNum(basementSqft + coreMepSqft)} Sq.Ft`;
-      document.getElementById('tblTbaIncluding').textContent = `${formatNum(tbaIncluding)} Sq.Ft`;
-
-      renderSetbackSvg(sbFront, sbRear, sbSide, mgc, effectiveRoadFt);
+      renderSetbackSvg(sbFront, sbRear, sbSide, mgc, frontageType);
       renderMassingSvg(currentBasements, totalFloors);
     }
 
-    function renderSetbackSvg(frontM, rearM, sideM, mgc, roadFt) {
+    function renderSetbackSvg(frontM, rearM, sideM, mgc, frontageType) {
       const svg = document.getElementById('setbackSvg');
-      const fPx = Math.min(38, Math.max(18, frontM * 10));
-      const rPx = Math.min(36, Math.max(14, rearM * 9));
-      const sPx = Math.min(30, Math.max(12, sideM * 9));
-
-      const plotX = 35, plotY = 15, plotW = 190, plotH = 140;
-      const bX = plotX + sPx;
-      const bY = plotY + rPx;
-      const bW = plotW - (sPx * 2);
-      const bH = plotH - rPx - fPx;
-
       svg.innerHTML = `
-        <rect x="${plotX}" y="${plotY}" width="${plotW}" height="${plotH}" fill="#1e293b" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 2" />
-        <rect x="${bX}" y="${bY}" width="${bW}" height="${bH}" fill="rgba(56, 189, 248, 0.22)" stroke="#38bdf8" stroke-width="2" rx="3" />
-        <text x="130" y="${bY + bH / 2}" fill="#e0f2fe" font-size="9" font-weight="bold" text-anchor="middle">MGC ${mgc}%</text>
-        <rect x="15" y="162" width="230" height="24" fill="#334155" rx="4" />
-        <line x1="25" y1="174" x2="235" y2="174" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="8 6" />
-        <text x="130" y="177" fill="#f8fafc" font-size="8" font-weight="bold" text-anchor="middle">ROAD (${roadFt.toFixed(0)} FT)</text>
+        <rect x="25" y="15" width="150" height="130" fill="#1e293b" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 2" />
+        <rect x="40" y="30" width="120" height="95" fill="rgba(56, 189, 248, 0.22)" stroke="#38bdf8" stroke-width="2" rx="3" />
+        <text x="100" y="80" fill="#e0f2fe" font-size="10" font-weight="bold" text-anchor="middle">MGC ${mgc}%</text>
+        <rect x="5" y="155" width="190" height="20" fill="#334155" rx="4" />
+        <text x="100" y="168" fill="#f8fafc" font-size="8" font-weight="bold" text-anchor="middle">MAIN ROAD</text>
+        ${frontageType === '3_side' ? '<text x="100" y="25" fill="#fbbf24" font-size="7" text-anchor="middle">3-SIDE ROAD ACTIVE</text>' : ''}
       `;
     }
 
     function renderMassingSvg(basements, farFloors) {
       const svg = document.getElementById('massingSvg');
-      const displayFloors = Math.min(farFloors, 8);
-      document.getElementById('massingBadge').textContent = `${basements}B+G+${farFloors}F`;
-
-      const groundY = 140;
-      let html = `<line x1="20" y1="${groundY}" x2="240" y2="${groundY}" stroke="#10b981" stroke-width="2" />`;
-      
-      const bsH = 10;
+      const groundY = 145;
+      let html = `<line x1="10" y1="${groundY}" x2="190" y2="${groundY}" stroke="#10b981" stroke-width="2" />`;
       for (let i = 1; i <= basements; i++) {
-        const y = groundY + (i - 1) * bsH + 2;
-        html += `<rect x="55" y="${y}" width="150" height="${bsH - 2}" fill="#334155" stroke="#94a3b8" stroke-width="1" />`;
-        html += `<text x="130" y="${y + 7}" fill="#cbd5e1" font-size="6.5" text-anchor="middle">Basement ${i}</text>`;
+        html += `<rect x="40" y="${groundY + (i - 1) * 10 + 2}" width="120" height="8" fill="#334155" stroke="#94a3b8" />`;
       }
-
       let currentY = groundY;
-      const lvlH = 12;
-      for (let f = 1; f <= displayFloors; f++) {
-        currentY -= lvlH;
-        html += `<rect x="70" y="${currentY}" width="120" height="${lvlH - 1}" fill="rgba(56, 189, 248, 0.25)" stroke="#38bdf8" stroke-width="1" />`;
-        html += `<text x="130" y="${currentY + lvlH - 3}" fill="#e0f2fe" font-size="6.5" text-anchor="middle">Floor ${f}</text>`;
+      for (let f = 1; f <= Math.min(farFloors, 10); f++) {
+        currentY -= 12;
+        html += `<rect x="50" y="${currentY}" width="100" height="11" fill="rgba(56, 189, 248, 0.25)" stroke="#38bdf8" />`;
       }
       svg.innerHTML = html;
     }
 
-    // PWA Manifest & Service Worker
-    (function setupPWA() {
-      const manifestObj = {
-        name: "CORE A&E FAR Pro",
-        short_name: "FAR Pro",
-        start_url: "./index.html",
-        display: "standalone",
-        background_color: "#0f172a",
-        theme_color: "#0f172a"
-      };
-      const blob = new Blob([JSON.stringify(manifestObj)], { type: 'application/json' });
-      document.getElementById('pwa-manifest').setAttribute('href', URL.createObjectURL(blob));
-
-      if ('serviceWorker' in navigator) {
-        const sw = `self.addEventListener('fetch', e => {});`;
-        navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw], {type: 'application/javascript'})));
-      }
-    })();
-
-    window.addEventListener('DOMContentLoaded', calculateAll);
+    window.addEventListener('DOMContentLoaded', () => { toggleRoads(); calculateAll(); });
   </script>
 </body>
 </html>
