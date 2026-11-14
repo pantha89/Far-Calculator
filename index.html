@@ -249,15 +249,35 @@
         </div>
       </div>
 
-      <!-- Financial KPIs -->
+      <!-- ARCHITECTURAL KPIs (ROW 1) -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm print-card">
+          <p class="text-[10px] font-semibold uppercase text-slate-400">Basic FAR</p>
+          <p id="kpiBasicFar" class="text-[15px] font-bold text-slate-900 mt-1">0.00</p>
+        </div>
+        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm print-card">
+          <p class="text-[10px] font-semibold uppercase text-slate-400">Area FAR (DAP)</p>
+          <p id="kpiAreaFar" class="text-[15px] font-bold text-sky-600 mt-1">0.00</p>
+        </div>
+        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm print-card">
+          <p class="text-[10px] font-semibold uppercase text-slate-400">Effective MGC</p>
+          <p id="kpiMgc" class="text-[15px] font-bold text-slate-900 mt-1">0.0%</p>
+        </div>
+        <div class="bg-slate-900 text-white p-3 rounded-xl shadow-sm print-card">
+          <p class="text-[10px] font-semibold uppercase text-emerald-400">Max Floors (St.)</p>
+          <p id="kpiFloors" class="text-[15px] font-bold text-white mt-1">G+0</p>
+        </div>
+      </div>
+
+      <!-- FINANCIAL & AREA KPIs (ROW 2) -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 shadow-sm print-card">
+          <p class="text-[10px] font-semibold uppercase text-slate-400">Net Land Area</p>
+          <p id="kpiNetArea" class="text-[15px] font-bold text-slate-900 mt-1">0 Sq.Ft</p>
+        </div>
         <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm print-card">
           <p class="text-[10px] font-semibold uppercase text-slate-400">Total Built-Up Area</p>
           <p id="kpiTba" class="text-[15px] font-bold text-slate-900 mt-1">0 Sq.Ft</p>
-        </div>
-        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm print-card">
-          <p class="text-[10px] font-semibold uppercase text-slate-400">Max Floors (St.)</p>
-          <p id="kpiFloors" class="text-[15px] font-bold text-slate-900 mt-1">G+0</p>
         </div>
         <div class="bg-rose-50 p-3 rounded-xl border border-rose-200 shadow-sm print-card">
           <p class="text-[10px] font-semibold uppercase text-rose-600">Est. Project Cost</p>
@@ -447,178 +467,4 @@
       const bType = document.getElementById('buildingType').value;
       const dapZone = document.getElementById('dapZone').value;
       const caabCap = document.getElementById('caabZone').value;
-      const isTod = document.getElementById('todZone').checked;
-      
-      const verandaEx = document.getElementById('verandaExempt').checked;
-      const greenEx = document.getElementById('greenArea25').checked;
-
-      const jvRatio = parseFloat(document.getElementById('jvRatio').value) / 100;
-      const constCost = parseFloat(document.getElementById('constCost').value) || 3500;
-      const salePrice = parseFloat(document.getElementById('salePrice').value) || 8500;
-
-      // 1. Gross & Road Surrender
-      let grossSqft = (plotUnit === 'katha') ? rawArea * SQFT_PER_KATHA : rawArea;
-      let grossKatha = grossSqft / SQFT_PER_KATHA;
-      let surrenderSqft = (existRdFt < propRdFt) ? ((propRdFt - existRdFt) / 2.0) * frontWtFt : 0;
-      let netSqft = Math.max(0, grossSqft - surrenderSqft);
-      let netSqm = netSqft * SQM_PER_SQFT;
-
-      // 2. Effective Road Logic 
-      let effectiveRoadFt = propRdFt;
-      if (frontageType === '2_side') effectiveRoadFt = Math.max(propRdFt, rd2Ft);
-      if (frontageType === '3_side') effectiveRoadFt = Math.max(propRdFt, rd2Ft, rd3Ft);
-      const effectiveRoadM = effectiveRoadFt * FEET_TO_METERS;
-
-      // 3. MGC & Setbacks
-      const rule = lookupMgcSetback(netSqm, (bType === 'commercial' ? 'commercial' : 'residential'));
-      const mgc = rule.mgc;
-      const mgcFootprintSqft = netSqft * (mgc / 100.0);
-      
-      let sbFront = rule.front;
-      let sbRear = rule.rear;
-      let sbSide = rule.side;
-      
-      if (frontageType === '3_side') {
-        sbRear = rule.side;
-        document.getElementById('lblRearSet').textContent = 'Side (Rd 3)';
-      } else {
-        document.getElementById('lblRearSet').textContent = 'Rear';
-      }
-
-      // ----------------------------------------------------
-      // DYNAMIC FLAT SIZE & UNITS LOGIC (NEW IMPLEMENTATION)
-      // ----------------------------------------------------
-      const flatSlider = document.getElementById('flatsPerFloor');
-      
-      // Calculate max sensible flats based on minimum 500 sq.ft per flat
-      let maxFlats = Math.max(1, Math.floor(mgcFootprintSqft / 500)); 
-      flatSlider.max = maxFlats;
-      
-      let currentFlats = parseInt(flatSlider.value) || 1;
-      
-      // If land size reduced, cap the slider to new max automatically
-      if (currentFlats > maxFlats) {
-        currentFlats = maxFlats;
-        flatSlider.value = currentFlats;
-      }
-      
-      const avgUnitSize = mgcFootprintSqft / currentFlats;
-      
-      // Update the UI labels for the Flat Slider dynamically
-      document.getElementById('mgcFloorPlateLabel').textContent = `MGC Floor Plate: ${formatNum(mgcFootprintSqft)} Sq.Ft`;
-      document.getElementById('flatCountBadge').textContent = currentFlats + (currentFlats === 1 ? ' Unit' : ' Units');
-      document.getElementById('maxFlatsLabel').textContent = `Max ${maxFlats}`;
-      document.getElementById('avgFlatSizeNote').textContent = `Avg: ~${Math.round(avgUnitSize)} Sq.Ft`;
-      
-      const flatsPerFloor = currentFlats;
-      // ----------------------------------------------------
-
-      // 4. FAR & Area
-      let areaFar = getAreaBasedDapFar(getBasicFar(effectiveRoadM), dapZone);
-      if (isTod) areaFar += 0.5;
-      const tbaExcluding = netSqft * areaFar;
-
-      // 5. CAAB Limits & Floors
-      let totalFloors = Math.ceil(mgcFootprintSqft > 0 ? (tbaExcluding / mgcFootprintSqft) : 0);
-      if (caabCap !== 'none') {
-        totalFloors = Math.min(totalFloors, parseInt(caabCap));
-      }
-
-      // High-Rise Setback Rules
-      let setbackRuleStr = "Standard";
-      if (totalFloors >= 10) {
-        sbRear = Math.max(sbRear, 2.0);
-        sbSide = Math.max(sbSide, 1.5);
-        setbackRuleStr = "<span class='text-rose-600 font-bold'>High-Rise Adj.</span>";
-      }
-      document.getElementById('setbackRuleText').innerHTML = setbackRuleStr;
-
-      // 6. RWH & Solar
-      document.getElementById('rwhText').innerHTML = (grossKatha >= 3.0) ? "<span class='text-emerald-600 font-bold'>Mandatory (>3 Katha)</span>" : "Optional";
-
-      const totalFlats = totalFloors * flatsPerFloor;
-      
-      // 7. Safety: Fire & Lifts
-      document.getElementById('fireStairText').innerHTML = (totalFloors >= 6 || mgcFootprintSqft > 5380) ? `<span class="text-rose-600 font-bold">2 Stairs Req.</span>` : '1 Stair';
-      document.getElementById('liftText').innerHTML = (totalFloors >= 6) ? `<span class="text-rose-600 font-bold">${Math.max(1, Math.ceil(totalFlats/15))} Lifts Req.</span>` : 'Not Req.';
-
-      // 8. Exemptions
-      const verandaSqft = verandaEx ? (mgcFootprintSqft * 0.08 * totalFloors) : 0;
-      const greenSqft = greenEx ? (tbaExcluding * 0.025) : 0;
-      const communitySqft = (totalFlats >= 20) ? (tbaExcluding * 0.05) : 0; 
-      const basementSqft = (netSqft * 0.75) * currentBasements;
-      const coreMepSqft = (tbaExcluding * 0.10);
-
-      let mepRoomSqft = (tbaExcluding > 15000 || bType === 'commercial') ? 250 : 0;
-      const tbaIncluding = tbaExcluding + verandaSqft + greenSqft + communitySqft + basementSqft + coreMepSqft + mepRoomSqft;
-
-      // 9. Financial & JV
-      const loFlats = Math.round(totalFlats * jvRatio);
-      const devFlats = totalFlats - loFlats;
-      const totalProjectCost = tbaIncluding * constCost;
-      const totalProjectRevenue = tbaExcluding * salePrice;
-      const reqCars = Math.max(1, Math.floor(totalFlats * 0.75));
-
-      // Update UI Elements
-      document.getElementById('kpiTba').textContent = `${formatNum(tbaIncluding)} Sq.Ft`;
-      document.getElementById('kpiFloors').textContent = `G+${Math.max(0, totalFloors-1)}`;
-      document.getElementById('kpiCost').textContent = formatMoney(totalProjectCost);
-      document.getElementById('kpiRevenue').textContent = formatMoney(totalProjectRevenue);
-
-      document.getElementById('tblGrossPlot').textContent = `${formatNum(grossSqft)} Sq.Ft`;
-      document.getElementById('tblSurrenderArea').textContent = `- ${formatNum(surrenderSqft)} Sq.Ft`;
-      document.getElementById('tblNetPlot').textContent = `${formatNum(netSqft)} Sq.Ft`;
-      document.getElementById('tblTbaExcluding').textContent = `${formatNum(tbaExcluding)} Sq.Ft`;
-      
-      document.getElementById('tblVerandaArea').textContent = `+ ${formatNum(verandaSqft + greenSqft + communitySqft)} Sq.Ft`;
-      document.getElementById('tblCoreArea').textContent = `+ ${formatNum(basementSqft + coreMepSqft)} Sq.Ft`;
-      document.getElementById('tblMepArea').textContent = `+ ${formatNum(mepRoomSqft)} Sq.Ft`;
-      document.getElementById('tblTbaIncluding').textContent = `${formatNum(tbaIncluding)} Sq.Ft`;
-      
-      if(jvRatio === 1) {
-        document.getElementById('tblJvShare').textContent = `100% Owned | All ${totalFlats} Flats`;
-      } else {
-        document.getElementById('tblJvShare').textContent = `LO: ${loFlats} Flats | Dev: ${devFlats} Flats`;
-      }
-
-      document.getElementById('sbFrontText').textContent = `${(sbFront * METERS_TO_FEET).toFixed(1)} ft`;
-      document.getElementById('sbRearText').textContent = `${(sbRear * METERS_TO_FEET).toFixed(1)} ft`;
-      document.getElementById('sbSideText').textContent = `${(sbSide * METERS_TO_FEET).toFixed(1)} ft`;
-      document.getElementById('parkingCarText').textContent = `${totalFlats} Units`;
-      document.getElementById('parkingBikeText').textContent = `${reqCars} Slots`;
-
-      renderSetbackSvg(sbFront, sbRear, sbSide, mgc, frontageType);
-      renderMassingSvg(currentBasements, totalFloors);
-    }
-
-    function renderSetbackSvg(frontM, rearM, sideM, mgc, frontageType) {
-      const svg = document.getElementById('setbackSvg');
-      svg.innerHTML = `
-        <rect x="25" y="15" width="150" height="130" fill="#1e293b" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 2" />
-        <rect x="40" y="30" width="120" height="95" fill="rgba(56, 189, 248, 0.22)" stroke="#38bdf8" stroke-width="2" rx="3" />
-        <text x="100" y="80" fill="#e0f2fe" font-size="10" font-weight="bold" text-anchor="middle">MGC ${mgc}%</text>
-        <rect x="5" y="155" width="190" height="20" fill="#334155" rx="4" />
-        <text x="100" y="168" fill="#f8fafc" font-size="8" font-weight="bold" text-anchor="middle">MAIN ROAD</text>
-        ${frontageType === '3_side' ? '<text x="100" y="25" fill="#fbbf24" font-size="7" text-anchor="middle">3-SIDE ROAD ACTIVE</text>' : ''}
-      `;
-    }
-
-    function renderMassingSvg(basements, farFloors) {
-      const svg = document.getElementById('massingSvg');
-      const groundY = 145;
-      let html = `<line x1="10" y1="${groundY}" x2="190" y2="${groundY}" stroke="#10b981" stroke-width="2" />`;
-      for (let i = 1; i <= basements; i++) {
-        html += `<rect x="40" y="${groundY + (i - 1) * 10 + 2}" width="120" height="8" fill="#334155" stroke="#94a3b8" />`;
-      }
-      let currentY = groundY;
-      for (let f = 1; f <= Math.min(farFloors, 10); f++) {
-        currentY -= 12;
-        html += `<rect x="50" y="${currentY}" width="100" height="11" fill="rgba(56, 189, 248, 0.25)" stroke="#38bdf8" />`;
-      }
-      svg.innerHTML = html;
-    }
-
-    window.addEventListener('DOMContentLoaded', () => { toggleRoads(); calculateAll(); });
-  </script>
-</body>
-</html>
+      const isTod = document.getElementById('
