@@ -153,27 +153,29 @@
         <div class="absolute top-0 right-0 bg-emerald-500 text-white text-[9px] font-black px-2 py-1 rounded-bl-lg uppercase tracking-wider">Step 2</div>
         <h2 class="text-[12px] font-black uppercase tracking-widest text-emerald-700">Layout & Target Height</h2>
 
-        <!-- NEW: DYNAMIC TARGET FLOORS (SHRINKING MGC LOGIC) -->
+        <!-- DYNAMIC TARGET FLOORS WITH OPTIMAL BADGE -->
         <div class="p-3 bg-sky-50 border border-sky-200 rounded-lg shadow-sm">
           <div class="flex justify-between items-center mb-1.5">
             <label class="text-[11px] font-bold text-sky-900">Target Floors (Above GF)</label>
-            <span id="actualMgcBadge" class="text-[9px] font-bold text-sky-700 bg-sky-200 px-2 py-0.5 rounded">Utilized MGC: 0%</span>
+            <div class="flex gap-1.5">
+              <span id="optimalHeightBadge" class="text-[9px] font-bold text-emerald-700 bg-emerald-200 px-1.5 py-0.5 rounded cursor-pointer hover:bg-emerald-300 transition" onclick="document.getElementById('targetFloors').value = this.dataset.opt; calculateGodMode();" title="Click to auto-apply optimal market height">Opt: G+8</span>
+              <span id="actualMgcBadge" class="text-[9px] font-bold text-sky-700 bg-sky-200 px-1.5 py-0.5 rounded">MGC: 0%</span>
+            </div>
           </div>
           <input type="number" id="targetFloors" value="8" min="1" step="1" oninput="calculateGodMode()" class="w-full border border-sky-300 rounded-md px-3 py-1.5 text-xs font-bold text-slate-900" />
           <p class="text-[9px] text-sky-700 mt-1 font-semibold leading-tight">Increasing floors beyond max MGC will shrink the floor plate and flat sizes to obey FAR limits.</p>
         </div>
 
-        <!-- DYNAMIC FLAT SLIDER -->
         <div class="p-3.5 bg-gradient-to-r from-amber-100 to-orange-100 border border-amber-300 rounded-xl shadow-inner space-y-3">
           <div class="flex justify-between items-center">
             <label class="text-[12px] font-black text-amber-900">Flats per Floor</label>
-            <span id="flatCountBadge" class="bg-amber-600 text-white text-[11px] font-black px-3 py-1 rounded-md shadow-md">2 Units</span>
+            <span id="flatCountBadge" class="bg-amber-600 text-white text-[11px] font-black px-3 py-1 rounded-md shadow-md">1 Unit</span>
           </div>
           
           <div class="text-[10px] text-amber-800 font-bold bg-white/50 px-2 py-1 rounded w-fit" id="mgcFloorPlateLabel">Actual Floor Plate: -- Sq.Ft</div>
           
           <div class="py-1">
-            <input type="range" id="flatsPerFloor" min="1" max="10" step="1" value="2" oninput="calculateGodMode()" class="w-full" />
+            <input type="range" id="flatsPerFloor" min="1" max="10" step="1" value="1" oninput="calculateGodMode()" class="w-full" />
           </div>
           
           <div class="flex justify-between items-center">
@@ -375,7 +377,9 @@
     const SQM_PER_SQFT = 0.092903;
     const METERS_TO_FEET = 3.28084;
     const FEET_TO_METERS = 0.3048;
+    
     let currentBasements = 1;
+    let lastGrossKatha = -1; // Global tracker to snap units based on Land Size change
 
     // RAJUK MGC Rules
     const MGC_SETBACKS = {
@@ -524,16 +528,21 @@
       // 6. DYNAMIC HEIGHT (G+X) & SHRINKING FLOOR PLATE LOGIC
       // ====================================================
       
-      // Calculate absolute minimum floors if user maxed out the MGC
-      let minFloorsPossible = Math.ceil(tbaExcluding / maxMgcFootprintSqft);
+      let optimalFloors = Math.ceil(finalFar / 0.45);
+      if (caabCap !== 'none') {
+        optimalFloors = Math.min(optimalFloors, parseInt(caabCap));
+      }
       
-      // Calculate max absolute floors based on BNBC height limits / CAAB / Min Flat sizes
-      let maxFloorsPossible = (caabCap !== 'none') ? parseInt(caabCap) : 15; 
+      const optBadge = document.getElementById('optimalHeightBadge');
+      optBadge.textContent = `Opt: G+${Math.max(0, optimalFloors - 1)}`;
+      optBadge.dataset.opt = optimalFloors;
+
+      let minFloorsPossible = Math.ceil(tbaExcluding / maxMgcFootprintSqft);
+      let maxFloorsPossible = (caabCap !== 'none') ? parseInt(caabCap) : 25;
       
       const targetFloorsInput = document.getElementById('targetFloors');
       let targetFloors = parseInt(targetFloorsInput.value) || 8;
       
-      // Validate bounds
       if (targetFloors < minFloorsPossible) {
         targetFloors = minFloorsPossible;
         targetFloorsInput.value = targetFloors;
@@ -543,18 +552,33 @@
         targetFloorsInput.value = targetFloors;
       }
       
-      // Actual Floor Plate used to hit the Target Floors! (Shrinks as building gets taller)
       let actualFloorPlateSqft = tbaExcluding / targetFloors;
       let actualMgcPercent = (actualFloorPlateSqft / netSqft) * 100;
       
+      if(actualFloorPlateSqft > maxMgcFootprintSqft) {
+         actualFloorPlateSqft = maxMgcFootprintSqft;
+         actualMgcPercent = maxMgcAllowed;
+      }
+      
       document.getElementById('actualMgcBadge').textContent = `Utilized MGC: ${actualMgcPercent.toFixed(1)}%`;
 
-      // 7. DYNAMIC FLAT SLIDER (Based on ACTUAL Floor Plate)
+      // ====================================================
+      // 7. SMART AUTO-SNAP FLAT SLIDER LOGIC
+      // ====================================================
       const flatSlider = document.getElementById('flatsPerFloor');
       let maxAllowedFlats = Math.max(1, Math.floor(actualFloorPlateSqft / 500));
       flatSlider.max = maxAllowedFlats;
       
+      // Magic logic: Auto snap slider based on Gross Katha if Land Size changes significantly!
+      if (Math.abs(grossKatha - lastGrossKatha) > 0.01) {
+          let suggestedFlats = Math.ceil(grossKatha / 5.0); // e.g. 5=1, 10=2
+          suggestedFlats = Math.min(suggestedFlats, maxAllowedFlats);
+          flatSlider.value = suggestedFlats;
+          lastGrossKatha = grossKatha;
+      }
+      
       let selectedFlats = parseInt(flatSlider.value) || 1;
+      
       if (selectedFlats > maxAllowedFlats) {
         selectedFlats = maxAllowedFlats;
         flatSlider.value = selectedFlats;
@@ -581,22 +605,19 @@
       // 9. Safety: Fire Stairs & Lifts
       const totalFlats = targetFloors * flatsPerFloor;
       
-      // Fire Stairs: Using ACTUAL floor plate for 500sqm check
       if (targetFloors > 10 || actualFloorPlateSqft > 5380) {
         document.getElementById('fireStairText').innerHTML = `<span class="text-rose-600 font-black">2 Stairs Req.</span>`;
       } else {
         document.getElementById('fireStairText').textContent = '1 Stair';
       }
       
-      // Lifts
       let reqLifts = Math.max(1, Math.ceil(grossKatha / 5));
       document.getElementById('liftText').innerHTML = (targetFloors >= 6) ? `<span class="text-emerald-700 font-black">${reqLifts} Units Req.</span>` : 'Not Req.';
 
-      // Parking & Car Lift logic
       let reqCars = 0;
       if (currentBasements > 0 && grossKatha <= 5) {
         document.getElementById('carLiftText').innerHTML = `<span class="text-rose-600 font-black">Car Lift Req.</span>`;
-        reqCars = Math.round(grossKatha * 2.0); // 10 Cars
+        reqCars = Math.round(grossKatha * 2.0);
       } else if (currentBasements > 0) {
         document.getElementById('carLiftText').innerHTML = `<span class="text-emerald-700 font-black">Standard Ramp</span>`;
         reqCars = Math.round(grossKatha * 1.6);
@@ -605,17 +626,14 @@
         reqCars = Math.round(grossKatha * 1.5);
       }
       
-      // RWH
       document.getElementById('rwhText').innerHTML = (grossKatha >= 3.0) ? "<span class='text-emerald-700 font-black'>Req. (>3 Katha)</span>" : "Optional";
 
-      // 10. Ultimate Exemptions Math (Using actual floor plate)
+      // 10. Ultimate Exemptions Math
       const verandaSqft = verandaEx ? (actualFloorPlateSqft * 0.08 * targetFloors) : 0;
       const greenSqft = greenEx ? (tbaExcluding * 0.025) : 0;
       const communitySqft = (totalFlats >= 20) ? (tbaExcluding * 0.05) : 0; 
       const basementSqft = (netSqft * 0.75) * currentBasements;
       const coreMepSqft = (tbaExcluding * 0.10);
-      
-      // RAJUK Allowed Setback Encroachments for GF Ancillary
       const gfFacilitiesSqft = 323; 
       
       const tbaIncluding = tbaExcluding + verandaSqft + greenSqft + communitySqft + basementSqft + coreMepSqft + gfFacilitiesSqft;
@@ -628,7 +646,6 @@
       const constCostTotal = tbaIncluding * constCost;
       const totalProjectCost = totalLandValue + constCostTotal;
       
-      // Developers sell FAR area + Verandas. (Gross Saleable)
       const totalSaleableArea = tbaExcluding + verandaSqft; 
       const totalProjectRevenue = totalSaleableArea * salePrice;
 
@@ -637,15 +654,13 @@
       document.getElementById('kpiMgcBadge').textContent = `Max Allowable MGC: ${maxMgcAllowed.toFixed(1)}%`;
       
       document.getElementById('kpiTba').textContent = `${formatNum(tbaIncluding)} Sq.Ft`;
-      document.getElementById('kpiFloors').textContent = `G+${Math.max(0, targetFloors)}`;
+      document.getElementById('kpiFloors').textContent = `G+${Math.max(0, targetFloors-1)}`;
       document.getElementById('kpiCost').textContent = formatMoney(totalProjectCost);
       document.getElementById('kpiRevenue').textContent = formatMoney(totalProjectRevenue);
 
       document.getElementById('tblGrossPlot').textContent = `${formatNum(grossSqft)} Sq.Ft`;
       document.getElementById('tblSurrenderArea').textContent = `- ${formatNum(surrenderSqft)} Sq.Ft`;
       document.getElementById('tblNetPlot').textContent = `${formatNum(netSqft)} Sq.Ft`;
-      
-      // Update Table Label for Saleable
       document.getElementById('tblTbaExcluding').textContent = `${formatNum(tbaExcluding)} Sq.Ft`;
       
       document.getElementById('tblVerandaArea').textContent = `+ ${formatNum(verandaSqft + greenSqft + communitySqft)} Sq.Ft`;
