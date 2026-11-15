@@ -41,7 +41,7 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
-  <!-- Application Header (Screen Only) -->
+  <!-- Application Header -->
   <header class="bg-slate-900 text-white sticky top-0 z-30 shadow-xl border-b border-slate-700 no-print">
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center space-x-3">
@@ -59,7 +59,7 @@
     </div>
   </header>
 
-  <!-- Official Print Header (Hidden on Screen, Visible on Print) -->
+  <!-- Official Print Header (Hidden on Screen) -->
   <div class="hidden print-header-show flex-col items-center border-b-2 border-slate-800 pb-4 pt-4 mb-4">
     <h1 class="text-3xl font-black text-slate-900 tracking-tight">CORE A&E</h1>
     <p class="text-sm font-bold text-slate-600 uppercase tracking-widest mt-1">Architecture • Interior Design • Turnkey Construction</p>
@@ -76,7 +76,7 @@
   <!-- Main Content Grid -->
   <main class="max-w-7xl mx-auto w-full px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow">
 
-    <!-- LEFT COLUMN: INPUTS (Hidden on Print) -->
+    <!-- LEFT COLUMN: INPUTS -->
     <section class="lg:col-span-4 space-y-5 no-print">
       
       <!-- 1. LOCATION & SITE -->
@@ -84,7 +84,6 @@
         <div class="absolute top-0 right-0 bg-sky-500 text-white text-[9px] font-black px-2 py-1 rounded-bl-lg uppercase tracking-wider">Step 1</div>
         <h2 class="text-[12px] font-black uppercase tracking-widest text-sky-700 mb-3">Location & Site</h2>
 
-        <!-- NEW: SMART LOCATION DROPDOWN -->
         <div class="mb-3 p-3 bg-sky-50 border border-sky-200 rounded-lg">
           <label class="block text-[11px] font-bold text-sky-900 mb-1">Project Location (Auto DAP Map)</label>
           <select id="projectLocation" onchange="calculateGodMode()" class="w-full bg-white border border-sky-300 rounded-md px-2 py-2 text-[12px] font-bold text-slate-900 shadow-sm">
@@ -168,7 +167,7 @@
         </div>
       </div>
 
-      <!-- 2. FAR BONUSES & INCENTIVES (NEW) -->
+      <!-- 2. FAR BONUSES & INCENTIVES -->
       <div class="bg-white rounded-xl shadow-md border border-slate-200 p-4 relative overflow-hidden">
         <div class="absolute top-0 right-0 bg-indigo-500 text-white text-[9px] font-black px-2 py-1 rounded-bl-lg uppercase tracking-wider">Step 2</div>
         <h2 class="text-[12px] font-black uppercase tracking-widest text-indigo-700 mb-3">FAR Bonuses & Incentives</h2>
@@ -194,7 +193,6 @@
         <div class="absolute top-0 right-0 bg-emerald-500 text-white text-[9px] font-black px-2 py-1 rounded-bl-lg uppercase tracking-wider">Step 3</div>
         <h2 class="text-[12px] font-black uppercase tracking-widest text-emerald-700 mb-3">Layout & Height Engine</h2>
 
-        <!-- DYNAMIC TARGET FLOORS WITH OPTIMAL BADGE -->
         <div class="p-3 bg-sky-50 border border-sky-200 rounded-lg shadow-sm mb-3">
           <div class="flex justify-between items-center mb-1.5">
             <label class="text-[11px] font-bold text-sky-900">Target Floors (Above GF)</label>
@@ -219,6 +217,17 @@
             <span id="avgFlatSizeNote" class="text-[11px] text-amber-900 font-black bg-white px-2.5 py-1 rounded border border-amber-300 shadow-sm">Avg: -- Sq.Ft</span>
             <span class="text-[10px] text-amber-700 font-bold" id="maxFlatsLabel">Max 10</span>
           </div>
+        </div>
+
+        <!-- RESTORED CHECKBOXES: These were missing and caused the crash! -->
+        <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg border border-slate-200 mb-2">
+          <span class="text-[10px] font-bold text-slate-800">Veranda Exempt (Max 1.5m Depth)</span>
+          <input type="checkbox" id="verandaExempt" checked onchange="calculateGodMode()" class="w-4 h-4 accent-slate-700" />
+        </div>
+
+        <div class="flex items-center justify-between p-2.5 bg-emerald-50 rounded-lg border border-emerald-200 mb-4">
+          <span class="text-[10px] font-bold text-emerald-900">2.5% Green Area Exemption</span>
+          <input type="checkbox" id="greenArea25" checked onchange="calculateGodMode()" class="w-4 h-4 accent-emerald-600" />
         </div>
 
         <div>
@@ -266,7 +275,7 @@
       </div>
     </section>
 
-    <!-- RIGHT COLUMN: RESULTS (Full width on Print) -->
+    <!-- RIGHT COLUMN: RESULTS -->
     <section class="lg:col-span-8 space-y-5 print-col-full">
 
       <!-- Location & Plot Summary (Only shows clearly on Print) -->
@@ -347,7 +356,7 @@
         </div>
       </div>
 
-      <!-- The Ultimate Schedule Table (With Detailed Breakdown) -->
+      <!-- The Ultimate Schedule Table -->
       <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden print-card">
         <div class="px-5 py-3 bg-slate-50 border-b border-slate-200">
           <h3 class="text-[12px] font-black uppercase tracking-widest text-slate-800">Detailed Built-Up Area (TBA) Schedule</h3>
@@ -380,7 +389,6 @@
             <span id="tblVerandaArea" class="text-emerald-600 font-bold">+ 0 Sq.Ft</span>
           </div>
           
-          <!-- NEW: Service Cores Detailed Breakdown -->
           <div class="px-5 py-2 hover:bg-slate-50 transition">
             <div class="flex justify-between">
               <span class="text-slate-700 font-bold ml-4">5. Service Cores & Basements Breakdown:</span>
@@ -424,7 +432,6 @@
     let currentBasements = 1;
     let lastGrossKatha = -1;
 
-    // Smart DAP Location Mapping
     const LOCATION_DAP_MAP = {
       'gulshan': 'gulshan_banani',
       'banani': 'gulshan_banani',
@@ -437,7 +444,6 @@
       'other': 'standard'
     };
 
-    // RAJUK MGC Rules
     const MGC_SETBACKS = {
       residential: [
         { min: 0, max: 134, mgc: 67.5, front: 1.5, rear: 1.0, side: 0.8 },
@@ -512,58 +518,54 @@
       calculateGodMode();
     }
 
-    // THE ULTIMATE GOD MODE ENGINE
     function calculateGodMode() {
-      // 1. Base Inputs & Smart DAP
+      // Safely fetch DOM elements to prevent crashes
       const locationSelect = document.getElementById('projectLocation');
-      const locText = locationSelect.options[locationSelect.selectedIndex].text;
-      const dapZone = LOCATION_DAP_MAP[locationSelect.value] || 'standard';
+      const locText = locationSelect ? locationSelect.options[locationSelect.selectedIndex].text : 'Standard';
+      const dapZone = locationSelect ? (LOCATION_DAP_MAP[locationSelect.value] || 'standard') : 'standard';
       
-      const rawArea = parseFloat(document.getElementById('plotArea').value) || 1;
-      const plotUnit = document.getElementById('plotUnit').value;
-      const existRdFt = parseFloat(document.getElementById('existingRoad').value) || 16;
-      const propRdFt = parseFloat(document.getElementById('proposedRoad').value) || 20;
-      const frontWtFt = parseFloat(document.getElementById('frontageWidth').value) || 45;
+      const rawArea = parseFloat(document.getElementById('plotArea')?.value) || 1;
+      const plotUnit = document.getElementById('plotUnit')?.value || 'katha';
+      const existRdFt = parseFloat(document.getElementById('existingRoad')?.value) || 16;
+      const propRdFt = parseFloat(document.getElementById('proposedRoad')?.value) || 20;
+      const frontWtFt = parseFloat(document.getElementById('frontageWidth')?.value) || 45;
       
-      const frontageType = document.getElementById('frontageType').value;
-      const rd2Ft = parseFloat(document.getElementById('road2').value) || 20;
-      const rd3Ft = parseFloat(document.getElementById('road3').value) || 16;
+      const frontageType = document.getElementById('frontageType')?.value || '1_side';
+      const rd2Ft = parseFloat(document.getElementById('road2')?.value) || 20;
+      const rd3Ft = parseFloat(document.getElementById('road3')?.value) || 16;
       
-      const bType = document.getElementById('buildingType').value;
-      const caabCap = document.getElementById('caabZone').value;
+      const bType = document.getElementById('buildingType')?.value || 'residential';
+      const caabCap = document.getElementById('caabZone')?.value || 'none';
       
-      // Bonus Checks
-      const isTod = document.getElementById('todZone').checked;
-      const isGreen = document.getElementById('greenBuilding').checked;
-      const isAmalgamation = document.getElementById('amalgamation').checked;
+      const isTod = document.getElementById('todZone')?.checked || false;
+      const isGreen = document.getElementById('greenBuilding')?.checked || false;
+      const isAmalgamation = document.getElementById('amalgamation')?.checked || false;
       
-      const verandaEx = document.getElementById('verandaExempt').checked;
-      const greenEx = document.getElementById('greenArea25').checked;
+      // Fixed the missing checkbox crash! 
+      const verandaEx = document.getElementById('verandaExempt') ? document.getElementById('verandaExempt').checked : true;
+      const greenEx = document.getElementById('greenArea25') ? document.getElementById('greenArea25').checked : true;
 
-      const jvRatio = parseFloat(document.getElementById('jvRatio').value) / 100;
-      const landValuePerKatha = parseFloat(document.getElementById('landValue').value) || 0;
-      const constCost = parseFloat(document.getElementById('constCost').value) || 3500;
-      const salePrice = parseFloat(document.getElementById('salePrice').value) || 8500;
+      const jvRatio = (parseFloat(document.getElementById('jvRatio')?.value) || 50) / 100;
+      const landValuePerKatha = parseFloat(document.getElementById('landValue')?.value) || 0;
+      const constCost = parseFloat(document.getElementById('constCost')?.value) || 3500;
+      const salePrice = parseFloat(document.getElementById('salePrice')?.value) || 8500;
 
-      // 2. Gross Land & Road Surrender Processing
+      // Processing
       let grossSqft = (plotUnit === 'katha') ? rawArea * SQFT_PER_KATHA : rawArea;
       let grossKatha = grossSqft / SQFT_PER_KATHA;
       let surrenderSqft = (existRdFt < propRdFt) ? ((propRdFt - existRdFt) / 2.0) * frontWtFt : 0;
       let netSqft = Math.max(0, grossSqft - surrenderSqft);
       let netSqm = netSqft * SQM_PER_SQFT;
 
-      // Print Updates
-      document.getElementById('printLocation').textContent = locText.split('/')[0].trim();
-      document.getElementById('printLand').textContent = `${grossKatha.toFixed(2)} Katha`;
-      document.getElementById('printRoad').textContent = `${propRdFt} Ft`;
+      if(document.getElementById('printLocation')) document.getElementById('printLocation').textContent = locText.split('/')[0].trim();
+      if(document.getElementById('printLand')) document.getElementById('printLand').textContent = `${grossKatha.toFixed(2)} Katha`;
+      if(document.getElementById('printRoad')) document.getElementById('printRoad').textContent = `${propRdFt} Ft`;
 
-      // 3. Effective Road Math
       let effectiveRoadFt = propRdFt;
       if (frontageType === '2_side') effectiveRoadFt = Math.max(propRdFt, rd2Ft);
       if (frontageType === '3_side') effectiveRoadFt = Math.max(propRdFt, rd2Ft, rd3Ft);
       const effectiveRoadM = effectiveRoadFt * FEET_TO_METERS;
 
-      // 4. Maximum Ground Coverage (MGC) & Setback Lookup
       const rule = lookupMgcSetback(netSqm, (bType === 'commercial' ? 'commercial' : 'residential'));
       const maxMgcAllowed = rule.mgc;
       const maxMgcFootprintSqft = netSqft * (maxMgcAllowed / 100.0);
@@ -572,14 +574,13 @@
       let sbRear = rule.rear;
       let sbSide = rule.side;
       
-      if (frontageType === '3_side') {
+      if (frontageType === '3_side' && document.getElementById('lblRearSet')) {
         sbRear = rule.side;
         document.getElementById('lblRearSet').textContent = 'Side (Rd 3)';
-      } else {
+      } else if (document.getElementById('lblRearSet')) {
         document.getElementById('lblRearSet').textContent = 'Rear';
       }
 
-      // 5. ULTIMATE FAR Calculation with Bonuses
       const basicFar = getBasicFar(effectiveRoadM);
       const dapFar = getAreaBasedDapFar(basicFar, dapZone);
       
@@ -594,31 +595,30 @@
       let breakdownText = `Basic Road FAR: ${basicFar.toFixed(2)} | DAP Zone: ${dapFar.toFixed(2)}`;
       if (totalBonus > 0) breakdownText += ` | Bonuses: +${totalBonus.toFixed(2)}`;
       breakdownText += ` ➔ Final FAR: ${finalFar.toFixed(2)}`;
-      document.getElementById('farBreakdownText').textContent = breakdownText;
+      if(document.getElementById('farBreakdownText')) document.getElementById('farBreakdownText').textContent = breakdownText;
 
-      // 6. DYNAMIC HEIGHT (G+X) & SHRINKING FLOOR PLATE LOGIC
       let optimalFloors = Math.ceil(finalFar / 0.45);
-      if (caabCap !== 'none') {
-        optimalFloors = Math.min(optimalFloors, parseInt(caabCap));
-      }
+      if (caabCap !== 'none') optimalFloors = Math.min(optimalFloors, parseInt(caabCap));
       
       const optBadge = document.getElementById('optimalHeightBadge');
-      optBadge.textContent = `Opt: G+${Math.max(0, optimalFloors - 1)}`;
-      optBadge.dataset.opt = optimalFloors;
+      if (optBadge) {
+          optBadge.textContent = `Opt: G+${Math.max(0, optimalFloors - 1)}`;
+          optBadge.dataset.opt = optimalFloors;
+      }
 
       let minFloorsPossible = Math.ceil(tbaExcluding / maxMgcFootprintSqft);
       let maxFloorsPossible = (caabCap !== 'none') ? parseInt(caabCap) : 25;
       
       const targetFloorsInput = document.getElementById('targetFloors');
-      let targetFloors = parseInt(targetFloorsInput.value) || 8;
+      let targetFloors = parseInt(targetFloorsInput?.value) || 8;
       
       if (targetFloors < minFloorsPossible) {
         targetFloors = minFloorsPossible;
-        targetFloorsInput.value = targetFloors;
+        if(targetFloorsInput) targetFloorsInput.value = targetFloors;
       }
       if (targetFloors > maxFloorsPossible) {
         targetFloors = maxFloorsPossible;
-        targetFloorsInput.value = targetFloors;
+        if(targetFloorsInput) targetFloorsInput.value = targetFloors;
       }
       
       let actualFloorPlateSqft = tbaExcluding / targetFloors;
@@ -629,72 +629,67 @@
          actualMgcPercent = maxMgcAllowed;
       }
       
-      document.getElementById('actualMgcBadge').textContent = `Utilized MGC: ${actualMgcPercent.toFixed(1)}%`;
+      if(document.getElementById('actualMgcBadge')) document.getElementById('actualMgcBadge').textContent = `Utilized MGC: ${actualMgcPercent.toFixed(1)}%`;
 
-      // 7. SMART AUTO-SNAP FLAT SLIDER LOGIC
       const flatSlider = document.getElementById('flatsPerFloor');
       let maxAllowedFlats = Math.max(1, Math.floor(actualFloorPlateSqft / 500));
-      flatSlider.max = maxAllowedFlats;
+      if (flatSlider) flatSlider.max = maxAllowedFlats;
       
-      if (Math.abs(grossKatha - lastGrossKatha) > 0.01) {
+      if (Math.abs(grossKatha - lastGrossKatha) > 0.01 && flatSlider) {
           let suggestedFlats = Math.ceil(grossKatha / 5.0);
           suggestedFlats = Math.min(suggestedFlats, maxAllowedFlats);
           flatSlider.value = suggestedFlats;
           lastGrossKatha = grossKatha;
       }
       
-      let selectedFlats = parseInt(flatSlider.value) || 1;
-      if (selectedFlats > maxAllowedFlats) {
+      let selectedFlats = parseInt(flatSlider?.value) || 1;
+      if (selectedFlats > maxAllowedFlats && flatSlider) {
         selectedFlats = maxAllowedFlats;
         flatSlider.value = selectedFlats;
       }
       const avgUnitSize = actualFloorPlateSqft / selectedFlats;
       
-      document.getElementById('mgcFloorPlateLabel').textContent = `Actual Floor Plate: ${formatNum(actualFloorPlateSqft)} Sq.Ft`;
-      document.getElementById('flatCountBadge').textContent = selectedFlats + (selectedFlats === 1 ? ' Unit' : ' Units');
-      document.getElementById('maxFlatsLabel').textContent = `Max ${maxAllowedFlats}`;
-      document.getElementById('avgFlatSizeNote').textContent = `Avg: ~${Math.round(avgUnitSize)} Sq.Ft`;
+      if(document.getElementById('mgcFloorPlateLabel')) document.getElementById('mgcFloorPlateLabel').textContent = `Actual Floor Plate: ${formatNum(actualFloorPlateSqft)} Sq.Ft`;
+      if(document.getElementById('flatCountBadge')) document.getElementById('flatCountBadge').textContent = selectedFlats + (selectedFlats === 1 ? ' Unit' : ' Units');
+      if(document.getElementById('maxFlatsLabel')) document.getElementById('maxFlatsLabel').textContent = `Max ${maxAllowedFlats}`;
+      if(document.getElementById('avgFlatSizeNote')) document.getElementById('avgFlatSizeNote').textContent = `Avg: ~${Math.round(avgUnitSize)} Sq.Ft`;
       
       const flatsPerFloor = selectedFlats;
 
-      // 8. High-Rise Setback Enforcement (>10 Stories)
       let setbackRuleStr = "Standard";
       if (targetFloors >= 10) {
         sbRear = Math.max(sbRear, 2.0);
         sbSide = Math.max(sbSide, 1.5);
         setbackRuleStr = "<span class='text-rose-600 font-black'>High-Rise Adj.</span>";
       }
-      document.getElementById('setbackRuleText').innerHTML = setbackRuleStr;
+      if(document.getElementById('setbackRuleText')) document.getElementById('setbackRuleText').innerHTML = setbackRuleStr;
 
-      // 9. Safety: Fire Stairs & Lifts
       const totalFlats = targetFloors * flatsPerFloor;
       
       let numStairs = (targetFloors > 10 || actualFloorPlateSqft > 5380) ? 2 : 1;
-      document.getElementById('fireStairText').innerHTML = numStairs === 2 ? `<span class="text-rose-600 font-black">2 Stairs Req.</span>` : '1 Stair';
+      if(document.getElementById('fireStairText')) document.getElementById('fireStairText').innerHTML = numStairs === 2 ? `<span class="text-rose-600 font-black">2 Stairs Req.</span>` : '1 Stair';
       
       let numLifts = Math.max(1, Math.ceil(grossKatha / 5));
-      document.getElementById('liftText').innerHTML = (targetFloors >= 6) ? `<span class="text-emerald-700 font-black">${numLifts} Units Req.</span>` : 'Not Req.';
+      if(document.getElementById('liftText')) document.getElementById('liftText').innerHTML = (targetFloors >= 6) ? `<span class="text-emerald-700 font-black">${numLifts} Units Req.</span>` : 'Not Req.';
 
       let reqCars = 0;
       if (currentBasements > 0 && grossKatha <= 5) {
-        document.getElementById('carLiftText').innerHTML = `<span class="text-rose-600 font-black">Car Lift Req.</span>`;
+        if(document.getElementById('carLiftText')) document.getElementById('carLiftText').innerHTML = `<span class="text-rose-600 font-black">Car Lift Req.</span>`;
         reqCars = Math.round(grossKatha * 2.0);
       } else if (currentBasements > 0) {
-        document.getElementById('carLiftText').innerHTML = `<span class="text-emerald-700 font-black">Standard Ramp</span>`;
+        if(document.getElementById('carLiftText')) document.getElementById('carLiftText').innerHTML = `<span class="text-emerald-700 font-black">Standard Ramp</span>`;
         reqCars = Math.round(grossKatha * 1.6);
       } else {
-        document.getElementById('carLiftText').textContent = "Ground Parking";
+        if(document.getElementById('carLiftText')) document.getElementById('carLiftText').textContent = "Ground Parking";
         reqCars = Math.round(grossKatha * 1.5);
       }
       
-      document.getElementById('rwhText').innerHTML = (grossKatha >= 3.0) ? "<span class='text-emerald-700 font-black'>Req. (>3 Katha)</span>" : "Optional";
+      if(document.getElementById('rwhText')) document.getElementById('rwhText').innerHTML = (grossKatha >= 3.0) ? "<span class='text-emerald-700 font-black'>Req. (>3 Katha)</span>" : "Optional";
 
-      // 10. Ultimate Detailed Exemptions Math
       const verandaSqft = verandaEx ? (actualFloorPlateSqft * 0.08 * targetFloors) : 0;
       const greenSqft = greenEx ? (tbaExcluding * 0.025) : 0;
       const communitySqft = (totalFlats >= 20) ? (tbaExcluding * 0.05) : 0; 
       
-      // CORE BREAKDOWN
       const basementSqft = (netSqft * 0.75) * currentBasements;
       const stairSqft = numStairs * 150 * targetFloors; 
       const liftSqft = (targetFloors >= 6) ? (numLifts * 50 * targetFloors) : 0;
@@ -705,7 +700,6 @@
       
       const tbaIncluding = tbaExcluding + verandaSqft + greenSqft + communitySqft + totalCoreSqft + gfFacilitiesSqft;
 
-      // 11. JV & Financial Engine
       const loFlats = Math.round(totalFlats * jvRatio);
       const devFlats = totalFlats - loFlats;
       
@@ -716,44 +710,44 @@
       const totalSaleableArea = tbaExcluding + verandaSqft; 
       const totalProjectRevenue = totalSaleableArea * salePrice;
 
-      // 12. DOM RENDER & KPI UPDATES
-      document.getElementById('kpiAreaFarBadge').textContent = `Final FAR: ${finalFar.toFixed(2)}`;
-      document.getElementById('kpiMgcBadge').textContent = `Max Allowable MGC: ${maxMgcAllowed.toFixed(1)}%`;
+      if(document.getElementById('kpiAreaFarBadge')) document.getElementById('kpiAreaFarBadge').textContent = `Final FAR: ${finalFar.toFixed(2)}`;
+      if(document.getElementById('kpiMgcBadge')) document.getElementById('kpiMgcBadge').textContent = `Max Allowable MGC: ${maxMgcAllowed.toFixed(1)}%`;
       
-      document.getElementById('kpiTba').textContent = `${formatNum(tbaIncluding)} Sq.Ft`;
-      document.getElementById('kpiFloors').textContent = `G+${Math.max(0, targetFloors)}`;
-      document.getElementById('kpiCost').textContent = formatMoney(totalProjectCost);
-      document.getElementById('kpiRevenue').textContent = formatMoney(totalProjectRevenue);
+      if(document.getElementById('kpiTba')) document.getElementById('kpiTba').textContent = `${formatNum(tbaIncluding)} Sq.Ft`;
+      if(document.getElementById('kpiFloors')) document.getElementById('kpiFloors').textContent = `G+${Math.max(0, targetFloors)}`;
+      if(document.getElementById('kpiCost')) document.getElementById('kpiCost').textContent = formatMoney(totalProjectCost);
+      if(document.getElementById('kpiRevenue')) document.getElementById('kpiRevenue').textContent = formatMoney(totalProjectRevenue);
 
-      document.getElementById('tblGrossPlot').textContent = `${formatNum(grossSqft)} Sq.Ft`;
-      document.getElementById('tblSurrenderArea').textContent = `- ${formatNum(surrenderSqft)} Sq.Ft`;
-      document.getElementById('tblNetPlot').textContent = `${formatNum(netSqft)} Sq.Ft`;
-      document.getElementById('tblTbaExcluding').textContent = `${formatNum(tbaExcluding)} Sq.Ft`;
+      if(document.getElementById('tblGrossPlot')) document.getElementById('tblGrossPlot').textContent = `${formatNum(grossSqft)} Sq.Ft`;
+      if(document.getElementById('tblSurrenderArea')) document.getElementById('tblSurrenderArea').textContent = `- ${formatNum(surrenderSqft)} Sq.Ft`;
+      if(document.getElementById('tblNetPlot')) document.getElementById('tblNetPlot').textContent = `${formatNum(netSqft)} Sq.Ft`;
+      if(document.getElementById('tblTbaExcluding')) document.getElementById('tblTbaExcluding').textContent = `${formatNum(tbaExcluding)} Sq.Ft`;
       
-      document.getElementById('tblVerandaArea').textContent = `+ ${formatNum(verandaSqft + greenSqft + communitySqft)} Sq.Ft`;
+      if(document.getElementById('tblVerandaArea')) document.getElementById('tblVerandaArea').textContent = `+ ${formatNum(verandaSqft + greenSqft + communitySqft)} Sq.Ft`;
       
-      // Render Detailed Breakdown
-      document.getElementById('tblCoreTotal').textContent = `+ ${formatNum(totalCoreSqft)} Sq.Ft`;
-      document.getElementById('brkStairs').textContent = `${formatNum(stairSqft)} Sq.Ft`;
-      document.getElementById('brkLifts').textContent = `${formatNum(liftSqft)} Sq.Ft`;
-      document.getElementById('brkLobby').textContent = `${formatNum(lobbySqft)} Sq.Ft`;
-      document.getElementById('brkBasements').textContent = `${formatNum(basementSqft)} Sq.Ft`;
+      if(document.getElementById('tblCoreTotal')) document.getElementById('tblCoreTotal').textContent = `+ ${formatNum(totalCoreSqft)} Sq.Ft`;
+      if(document.getElementById('brkStairs')) document.getElementById('brkStairs').textContent = `${formatNum(stairSqft)} Sq.Ft`;
+      if(document.getElementById('brkLifts')) document.getElementById('brkLifts').textContent = `${formatNum(liftSqft)} Sq.Ft`;
+      if(document.getElementById('brkLobby')) document.getElementById('brkLobby').textContent = `${formatNum(lobbySqft)} Sq.Ft`;
+      if(document.getElementById('brkBasements')) document.getElementById('brkBasements').textContent = `${formatNum(basementSqft)} Sq.Ft`;
       
-      document.getElementById('tblGfArea').textContent = `+ ${formatNum(gfFacilitiesSqft)} Sq.Ft`;
-      document.getElementById('tblTbaIncluding').textContent = `${formatNum(tbaIncluding)} Sq.Ft`;
+      if(document.getElementById('tblGfArea')) document.getElementById('tblGfArea').textContent = `+ ${formatNum(gfFacilitiesSqft)} Sq.Ft`;
+      if(document.getElementById('tblTbaIncluding')) document.getElementById('tblTbaIncluding').textContent = `${formatNum(tbaIncluding)} Sq.Ft`;
       
-      if(jvRatio === 1) {
-        document.getElementById('tblJvShare').textContent = `100% Owned | All ${totalFlats} Flats`;
-      } else {
-        document.getElementById('tblJvShare').textContent = `LO: ${loFlats} Flats | Dev: ${devFlats} Flats`;
+      if(document.getElementById('tblJvShare')) {
+        if(jvRatio === 1) {
+          document.getElementById('tblJvShare').textContent = `100% Owned | All ${totalFlats} Flats`;
+        } else {
+          document.getElementById('tblJvShare').textContent = `LO: ${loFlats} Flats | Dev: ${devFlats} Flats`;
+        }
       }
 
-      document.getElementById('sbFrontText').textContent = `${(sbFront * METERS_TO_FEET).toFixed(1)} ft`;
-      document.getElementById('sbRearText').textContent = `${(sbRear * METERS_TO_FEET).toFixed(1)} ft`;
-      document.getElementById('sbSideText').textContent = `${(sbSide * METERS_TO_FEET).toFixed(1)} ft`;
+      if(document.getElementById('sbFrontText')) document.getElementById('sbFrontText').textContent = `${(sbFront * METERS_TO_FEET).toFixed(1)} ft`;
+      if(document.getElementById('sbRearText')) document.getElementById('sbRearText').textContent = `${(sbRear * METERS_TO_FEET).toFixed(1)} ft`;
+      if(document.getElementById('sbSideText')) document.getElementById('sbSideText').textContent = `${(sbSide * METERS_TO_FEET).toFixed(1)} ft`;
       
-      document.getElementById('parkingCarText').textContent = `${totalFlats} Flats`;
-      document.getElementById('parkingBikeText').textContent = `${reqCars} Slots`;
+      if(document.getElementById('parkingCarText')) document.getElementById('parkingCarText').textContent = `${totalFlats} Flats`;
+      if(document.getElementById('parkingBikeText')) document.getElementById('parkingBikeText').textContent = `${reqCars} Slots`;
 
       renderSetbackSvg(sbFront, sbRear, sbSide, maxMgcAllowed, frontageType);
       renderMassingSvg(currentBasements, targetFloors);
@@ -761,6 +755,7 @@
 
     function renderSetbackSvg(frontM, rearM, sideM, mgc, frontageType) {
       const svg = document.getElementById('setbackSvg');
+      if (!svg) return;
       svg.innerHTML = `
         <rect x="25" y="15" width="150" height="130" fill="#1e293b" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 2" />
         <rect x="40" y="30" width="120" height="95" fill="rgba(56, 189, 248, 0.22)" stroke="#38bdf8" stroke-width="2" rx="3" />
@@ -773,6 +768,7 @@
 
     function renderMassingSvg(basements, farFloors) {
       const svg = document.getElementById('massingSvg');
+      if (!svg) return;
       const groundY = 145;
       let html = `<line x1="10" y1="${groundY}" x2="190" y2="${groundY}" stroke="#10b981" stroke-width="2" />`;
       for (let i = 1; i <= basements; i++) {
