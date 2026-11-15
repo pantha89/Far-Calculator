@@ -24,22 +24,23 @@
       width: 100%; height: 6px; cursor: pointer; background: #fde68a; border-radius: 4px;
     }
 
-    /* Pop-Up Tooltip CSS */
-    .info-tooltip {
+    /* =========================================
+       FIXED: Pop-Up Tooltip CSS 
+       ========================================= */
+    .info-icon {
       position: relative;
       display: inline-flex;
       align-items: center;
       cursor: pointer;
       color: #94a3b8;
-      transition: color 0.2s;
+      outline: none;
     }
-    .info-tooltip:hover, .info-tooltip:active, .info-tooltip:focus { color: #0f172a; outline: none; }
+    .info-icon:hover { color: #0f172a; }
     
-    .tooltip-content {
-      visibility: hidden;
-      opacity: 0;
+    .info-popup {
+      display: none; /* Only shows when hovered/clicked */
       position: absolute;
-      bottom: 140%; 
+      bottom: 130%; 
       left: -10px;
       background-color: #0f172a; 
       color: #f8fafc;
@@ -48,15 +49,13 @@
       padding: 10px 12px;
       width: max-content;
       max-width: 260px;
-      z-index: 999;
+      z-index: 99999;
       font-size: 10px;
       line-height: 1.6;
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-      transition: opacity 0.2s, visibility 0.2s;
-      pointer-events: none;
     }
     
-    .tooltip-content::after {
+    .info-popup::after {
       content: "";
       position: absolute;
       top: 100%;
@@ -66,14 +65,13 @@
       border-color: #0f172a transparent transparent transparent;
     }
     
-    .info-tooltip:hover .tooltip-content,
-    .info-tooltip:active .tooltip-content,
-    .info-tooltip:focus .tooltip-content {
-      visibility: visible;
-      opacity: 1;
+    .info-icon:hover .info-popup,
+    .info-icon:focus .info-popup,
+    .info-icon:active .info-popup {
+      display: block; /* The foolproof way to show tooltip */
     }
     
-    .tooltip-content strong { color: #38bdf8; font-weight: 700; font-size: 10.5px; }
+    .info-popup strong { color: #38bdf8; font-weight: 700; font-size: 10.5px; }
 
     /* Print Formatting */
     @media print { 
@@ -87,13 +85,12 @@
       .blueprint-bg rect, .blueprint-bg line { stroke: #64748b !important; }
       .blueprint-bg .bg-slate-900\/90 { background-color: #ffffff; border: 1px solid #e2e8f0; }
       .blueprint-bg span, .blueprint-bg strong { color: #0f172a !important; }
-      .info-tooltip { display: none !important; } 
+      .info-icon { display: none !important; } 
     }
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-  <!-- Application Header -->
   <header class="bg-slate-900 text-white sticky top-0 z-30 shadow-xl border-b border-slate-700 no-print">
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center space-x-3">
@@ -111,7 +108,6 @@
     </div>
   </header>
 
-  <!-- Official Print Header -->
   <div class="hidden print-header-show flex-col items-center border-b-2 border-slate-800 pb-4 pt-4 mb-4">
     <h1 class="text-3xl font-black text-slate-900 tracking-tight">CORE A&E</h1>
     <p class="text-sm font-bold text-slate-600 uppercase tracking-widest mt-1">Architecture • Interior Design • Turnkey Construction</p>
@@ -267,11 +263,6 @@
           <div class="py-1">
             <input type="range" id="flatsPerFloor" min="1" max="10" step="1" value="1" oninput="calculateGodMode()" class="w-full" />
           </div>
-          <div class="flex justify-between items-center">
-            <span class="text-[10px] text-amber-700 font-bold">1</span>
-            <span id="avgFlatSizeNote" class="text-[11px] text-amber-900 font-black bg-white px-2.5 py-1 rounded border border-amber-300 shadow-sm">Avg: -- Sq.Ft</span>
-            <span class="text-[10px] text-amber-700 font-bold" id="maxFlatsLabel">Max 10</span>
-          </div>
         </div>
 
         <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg border border-slate-200 mb-2">
@@ -413,53 +404,56 @@
         </div>
       </div>
 
-      <div class="bg-white rounded-xl shadow-md border border-slate-200 print-card" style="position: relative; z-index: 20;">
+      <!-- ================================================== -->
+      <!-- FIXED: TABLE WRAPPER WITHOUT overflow-hidden -->
+      <!-- ================================================== -->
+      <div class="bg-white rounded-xl shadow-md border border-slate-200 print-card relative">
         <div class="px-5 py-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center rounded-t-xl">
           <h3 class="text-[12px] font-black uppercase tracking-widest text-slate-800">Built-Up Area (TBA) Schedule</h3>
           <span class="text-[9px] font-bold text-sky-600 bg-sky-100 px-2 py-0.5 rounded uppercase no-print">Hover (i) for Math</span>
         </div>
-        <div class="divide-y divide-slate-100 text-[11.5px]">
+        <div class="divide-y divide-slate-100 text-[11.5px] pb-1">
           
-          <div class="px-5 py-2.5 flex justify-between bg-rose-50/30 items-center hover:bg-rose-50/50 transition relative">
+          <div class="px-5 py-2.5 flex justify-between bg-rose-50/30 items-center hover:bg-rose-50/50 transition">
             <span class="text-slate-600 font-medium flex items-center gap-1.5">
               1. Gross Plot Area
-              <div class="info-tooltip" tabindex="0">
+              <div class="info-icon" tabindex="0">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <div class="tooltip-content" id="ttGross">--</div>
+                <div class="info-popup" id="ttGross">--</div>
               </div>
             </span>
             <span id="tblGrossPlot" class="font-bold text-slate-700">0 Sq.Ft</span>
           </div>
           
-          <div class="px-5 py-2.5 flex justify-between bg-rose-50/40 text-rose-800 items-center hover:bg-rose-50/60 transition relative">
+          <div class="px-5 py-2.5 flex justify-between bg-rose-50/40 text-rose-800 items-center hover:bg-rose-50/60 transition">
             <span class="font-medium flex items-center gap-1.5">
               2. (-) Road Surrender Area
-              <div class="info-tooltip text-rose-400" tabindex="0">
+              <div class="info-icon text-rose-400" tabindex="0">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <div class="tooltip-content" id="ttSurrender">--</div>
+                <div class="info-popup" id="ttSurrender">--</div>
               </div>
             </span>
             <span id="tblSurrenderArea" class="font-bold">- 0 Sq.Ft</span>
           </div>
           
-          <div class="px-5 py-3 flex justify-between border-y border-slate-200 items-center relative">
+          <div class="px-5 py-3 flex justify-between border-y border-slate-200 items-center">
             <span class="text-slate-900 font-black flex items-center gap-1.5">
               3. Net Calculable Land Area
-              <div class="info-tooltip" tabindex="0">
+              <div class="info-icon" tabindex="0">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <div class="tooltip-content" id="ttNet">--</div>
+                <div class="info-popup" id="ttNet">--</div>
               </div>
             </span>
             <span id="tblNetPlot" class="font-black text-slate-900 text-[13px]">0 Sq.Ft</span>
           </div>
           
-          <div class="px-5 py-3 flex justify-between bg-sky-50/40 border-b border-sky-100 items-center hover:bg-sky-50/60 transition relative">
+          <div class="px-5 py-3 flex justify-between bg-sky-50/40 border-b border-sky-100 items-center hover:bg-sky-50/60 transition">
             <div class="flex flex-col">
               <span class="text-sky-900 font-bold flex items-center gap-1.5">
                 4. Total FAR Area (Saleable Base)
-                <div class="info-tooltip text-sky-500" tabindex="0">
+                <div class="info-icon text-sky-500" tabindex="0">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                  <div class="tooltip-content" id="ttFar">--</div>
+                  <div class="info-popup" id="ttFar">--</div>
                 </div>
               </span>
               <span class="text-[10px] text-sky-700 mt-0.5" id="farBreakdownText">Basic: 0.00 | DAP: 0.00 ➔ Final FAR: 0.00</span>
@@ -467,45 +461,45 @@
             <span id="tblTbaExcluding" class="font-black text-sky-700 text-[14px]">0 Sq.Ft</span>
           </div>
           
-          <div class="px-5 py-2.5 flex justify-between items-center hover:bg-slate-50 transition relative">
+          <div class="px-5 py-2.5 flex justify-between items-center hover:bg-slate-50 transition">
             <span class="text-slate-500 ml-4 font-medium flex items-center gap-1.5">
               + Verandas, Green Area & Community
-              <div class="info-tooltip" tabindex="0">
+              <div class="info-icon" tabindex="0">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <div class="tooltip-content" id="ttVeranda">--</div>
+                <div class="info-popup" id="ttVeranda">--</div>
               </div>
             </span>
             <span id="tblVerandaArea" class="text-emerald-600 font-bold">+ 0 Sq.Ft</span>
           </div>
           
-          <div class="px-5 py-2.5 flex justify-between items-center hover:bg-slate-50 transition relative">
+          <div class="px-5 py-2.5 flex justify-between items-center hover:bg-slate-50 transition">
             <span class="text-slate-700 ml-4 font-bold flex items-center gap-1.5">
               + Service Cores & Basements
-              <div class="info-tooltip" tabindex="0">
+              <div class="info-icon" tabindex="0">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <div class="tooltip-content" id="ttCore">--</div>
+                <div class="info-popup" id="ttCore">--</div>
               </div>
             </span>
             <span id="tblCoreTotal" class="text-emerald-700 font-black">+ 0 Sq.Ft</span>
           </div>
           
-          <div class="px-5 py-2.5 flex justify-between items-center hover:bg-slate-50 transition relative">
+          <div class="px-5 py-2.5 flex justify-between items-center hover:bg-slate-50 transition">
             <span class="text-slate-500 ml-4 font-medium flex items-center gap-1.5">
               + GF Ancillary (Guard, EME limits)
-              <div class="info-tooltip" tabindex="0">
+              <div class="info-icon" tabindex="0">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <div class="tooltip-content" id="ttGf">--</div>
+                <div class="info-popup" id="ttGf">--</div>
               </div>
             </span>
             <span id="tblGfArea" class="text-emerald-600 font-bold">+ 0 Sq.Ft</span>
           </div>
 
-          <div class="px-5 py-3.5 flex justify-between items-center bg-slate-900 text-white shadow-inner relative">
+          <div class="px-5 py-3.5 flex justify-between items-center bg-slate-900 text-white shadow-inner">
             <span class="font-black text-[13px] flex items-center gap-1.5">
               5. Gross Built-Up Area (TBA)
-              <div class="info-tooltip text-slate-400" tabindex="0">
+              <div class="info-icon text-slate-400" tabindex="0">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <div class="tooltip-content" id="ttTotal">--</div>
+                <div class="info-popup" id="ttTotal">--</div>
               </div>
             </span>
             <span id="tblTbaIncluding" class="text-sky-400 font-black text-[14px]">0 Sq.Ft</span>
@@ -822,6 +816,7 @@
       if(document.getElementById('tblTbaExcluding')) document.getElementById('tblTbaExcluding').textContent = `${formatNum(tbaExcluding)} Sq.Ft`;
       
       if(document.getElementById('tblVerandaArea')) document.getElementById('tblVerandaArea').textContent = `+ ${formatNum(verandaSqft + greenSqft + communitySqft)} Sq.Ft`;
+      
       if(document.getElementById('tblCoreTotal')) document.getElementById('tblCoreTotal').textContent = `+ ${formatNum(totalCoreSqft)} Sq.Ft`;
       if(document.getElementById('tblGfArea')) document.getElementById('tblGfArea').textContent = `+ ${formatNum(gfFacilitiesSqft)} Sq.Ft`;
       if(document.getElementById('tblTbaIncluding')) document.getElementById('tblTbaIncluding').textContent = `${formatNum(tbaIncluding)} Sq.Ft`;
