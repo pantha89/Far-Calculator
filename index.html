@@ -173,6 +173,7 @@
         <h2 class="text-[12px] font-black uppercase tracking-widest text-indigo-700 mb-3">FAR Bonuses & Incentives</h2>
         
         <div class="space-y-2">
+          <!-- EXISTING BONUSES -->
           <div class="flex items-center justify-between p-2.5 bg-indigo-50 rounded-lg border border-indigo-200">
             <span class="text-[10px] font-bold text-indigo-900">TOD Transit Area (+0.5 FAR)</span>
             <input type="checkbox" id="todZone" onchange="calculateGodMode()" class="w-4 h-4 accent-indigo-600" />
@@ -184,6 +185,16 @@
           <div class="flex items-center justify-between p-2.5 bg-amber-50 rounded-lg border border-amber-200">
             <span class="text-[10px] font-bold text-amber-900">Plot Amalgamation (+0.05 FAR)</span>
             <input type="checkbox" id="amalgamation" onchange="calculateGodMode()" class="w-4 h-4 accent-amber-600" />
+          </div>
+          
+          <!-- NEW: PUBLIC AMENITIES BONUSES -->
+          <div class="flex items-center justify-between p-2.5 bg-fuchsia-50 rounded-lg border border-fuchsia-200">
+            <span class="text-[10px] font-bold text-fuchsia-900">New School/Amenity Provision (+0.25)</span>
+            <input type="checkbox" id="bonusSchool" onchange="calculateGodMode()" class="w-4 h-4 accent-fuchsia-600" />
+          </div>
+          <div class="flex items-center justify-between p-2.5 bg-lime-50 rounded-lg border border-lime-200">
+            <span class="text-[10px] font-bold text-lime-900">New Park/Playground Provision (+0.25)</span>
+            <input type="checkbox" id="bonusPark" onchange="calculateGodMode()" class="w-4 h-4 accent-lime-600" />
           </div>
         </div>
       </div>
@@ -219,7 +230,6 @@
           </div>
         </div>
 
-        <!-- RESTORED CHECKBOXES: These were missing and caused the crash! -->
         <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg border border-slate-200 mb-2">
           <span class="text-[10px] font-bold text-slate-800">Veranda Exempt (Max 1.5m Depth)</span>
           <input type="checkbox" id="verandaExempt" checked onchange="calculateGodMode()" class="w-4 h-4 accent-slate-700" />
@@ -278,7 +288,7 @@
     <!-- RIGHT COLUMN: RESULTS -->
     <section class="lg:col-span-8 space-y-5 print-col-full">
 
-      <!-- Location & Plot Summary (Only shows clearly on Print) -->
+      <!-- Location & Plot Summary -->
       <div class="hidden print-header-show grid-cols-3 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-sm mb-4">
         <div><span class="text-[10px] font-bold text-slate-500 block uppercase">Project Area</span><strong class="text-sm text-slate-900" id="printLocation">Mirpur</strong></div>
         <div><span class="text-[10px] font-bold text-slate-500 block uppercase">Land Size</span><strong class="text-sm text-slate-900" id="printLand">5 Katha</strong></div>
@@ -383,7 +393,6 @@
             <span id="tblTbaExcluding" class="font-black text-sky-700 text-[14px] self-center">0 Sq.Ft</span>
           </div>
           
-          <!-- Detailed Exemptions -->
           <div class="px-5 py-2 flex justify-between hover:bg-slate-50 transition">
             <span class="text-slate-500 ml-4 font-medium">+ Verandas, Green Area & Community Spc.</span>
             <span id="tblVerandaArea" class="text-emerald-600 font-bold">+ 0 Sq.Ft</span>
@@ -519,7 +528,6 @@
     }
 
     function calculateGodMode() {
-      // Safely fetch DOM elements to prevent crashes
       const locationSelect = document.getElementById('projectLocation');
       const locText = locationSelect ? locationSelect.options[locationSelect.selectedIndex].text : 'Standard';
       const dapZone = locationSelect ? (LOCATION_DAP_MAP[locationSelect.value] || 'standard') : 'standard';
@@ -540,8 +548,9 @@
       const isTod = document.getElementById('todZone')?.checked || false;
       const isGreen = document.getElementById('greenBuilding')?.checked || false;
       const isAmalgamation = document.getElementById('amalgamation')?.checked || false;
+      const isSchool = document.getElementById('bonusSchool')?.checked || false;
+      const isPark = document.getElementById('bonusPark')?.checked || false;
       
-      // Fixed the missing checkbox crash! 
       const verandaEx = document.getElementById('verandaExempt') ? document.getElementById('verandaExempt').checked : true;
       const greenEx = document.getElementById('greenArea25') ? document.getElementById('greenArea25').checked : true;
 
@@ -550,7 +559,6 @@
       const constCost = parseFloat(document.getElementById('constCost')?.value) || 3500;
       const salePrice = parseFloat(document.getElementById('salePrice')?.value) || 8500;
 
-      // Processing
       let grossSqft = (plotUnit === 'katha') ? rawArea * SQFT_PER_KATHA : rawArea;
       let grossKatha = grossSqft / SQFT_PER_KATHA;
       let surrenderSqft = (existRdFt < propRdFt) ? ((propRdFt - existRdFt) / 2.0) * frontWtFt : 0;
@@ -588,12 +596,14 @@
       if (isTod) totalBonus += 0.5;
       if (isGreen) totalBonus += 0.1;
       if (isAmalgamation) totalBonus += 0.05;
+      if (isSchool) totalBonus += 0.25;
+      if (isPark) totalBonus += 0.25;
       
       let finalFar = dapFar + totalBonus;
       const tbaExcluding = netSqft * finalFar;
 
       let breakdownText = `Basic Road FAR: ${basicFar.toFixed(2)} | DAP Zone: ${dapFar.toFixed(2)}`;
-      if (totalBonus > 0) breakdownText += ` | Bonuses: +${totalBonus.toFixed(2)}`;
+      if (totalBonus > 0) breakdownText += ` | Bonus: +${totalBonus.toFixed(2)}`;
       breakdownText += ` ➔ Final FAR: ${finalFar.toFixed(2)}`;
       if(document.getElementById('farBreakdownText')) document.getElementById('farBreakdownText').textContent = breakdownText;
 
@@ -629,7 +639,7 @@
          actualMgcPercent = maxMgcAllowed;
       }
       
-      if(document.getElementById('actualMgcBadge')) document.getElementById('actualMgcBadge').textContent = `Utilized MGC: ${actualMgcPercent.toFixed(1)}%`;
+      if(document.getElementById('actualMgcBadge')) document.getElementById('actualMgcBadge').textContent = `MGC: ${actualMgcPercent.toFixed(1)}%`;
 
       const flatSlider = document.getElementById('flatsPerFloor');
       let maxAllowedFlats = Math.max(1, Math.floor(actualFloorPlateSqft / 500));
