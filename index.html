@@ -24,9 +24,7 @@
       width: 100%; height: 6px; cursor: pointer; background: #fde68a; border-radius: 4px;
     }
 
-    /* =========================================
-       FIXED: Pop-Up Tooltip CSS (Black Background)
-       ========================================= */
+    /* Pop-Up Tooltip CSS */
     .info-tooltip {
       position: relative;
       display: inline-flex;
@@ -35,14 +33,14 @@
       color: #94a3b8;
       transition: color 0.2s;
     }
-    .info-tooltip:hover, .info-tooltip:active, .info-tooltip:focus { color: #0f172a; }
+    .info-tooltip:hover, .info-tooltip:active, .info-tooltip:focus { color: #0f172a; outline: none; }
     
     .tooltip-content {
       visibility: hidden;
       opacity: 0;
       position: absolute;
       bottom: 140%; 
-      left: -10px; /* Expands to the right to stay within screen */
+      left: -10px;
       background-color: #0f172a; 
       color: #f8fafc;
       text-align: left;
@@ -58,7 +56,6 @@
       pointer-events: none;
     }
     
-    /* The small triangle pointer */
     .tooltip-content::after {
       content: "";
       position: absolute;
@@ -69,7 +66,6 @@
       border-color: #0f172a transparent transparent transparent;
     }
     
-    /* Show tooltip on hover (PC) and active/focus (Mobile) */
     .info-tooltip:hover .tooltip-content,
     .info-tooltip:active .tooltip-content,
     .info-tooltip:focus .tooltip-content {
@@ -97,6 +93,7 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
+  <!-- Application Header -->
   <header class="bg-slate-900 text-white sticky top-0 z-30 shadow-xl border-b border-slate-700 no-print">
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center space-x-3">
@@ -114,6 +111,7 @@
     </div>
   </header>
 
+  <!-- Official Print Header -->
   <div class="hidden print-header-show flex-col items-center border-b-2 border-slate-800 pb-4 pt-4 mb-4">
     <h1 class="text-3xl font-black text-slate-900 tracking-tight">CORE A&E</h1>
     <p class="text-sm font-bold text-slate-600 uppercase tracking-widest mt-1">Architecture • Interior Design • Turnkey Construction</p>
@@ -129,7 +127,7 @@
 
   <main class="max-w-7xl mx-auto w-full px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow">
 
-    <!-- LEFT COLUMN: INPUTS -->
+    <!-- LEFT COLUMN -->
     <section class="lg:col-span-4 space-y-5 no-print">
       
       <div class="bg-white rounded-xl shadow-md border border-slate-200 p-4 relative">
@@ -236,11 +234,11 @@
             <input type="checkbox" id="amalgamation" onchange="calculateGodMode()" class="w-4 h-4 accent-amber-600" />
           </div>
           <div class="flex items-center justify-between p-2.5 bg-fuchsia-50 rounded-lg border border-fuchsia-200">
-            <span class="text-[10px] font-bold text-fuchsia-900">New School/Amenity (+0.25)</span>
+            <span class="text-[10px] font-bold text-fuchsia-900">New School/Amenity Provision (+0.25)</span>
             <input type="checkbox" id="bonusSchool" onchange="calculateGodMode()" class="w-4 h-4 accent-fuchsia-600" />
           </div>
           <div class="flex items-center justify-between p-2.5 bg-lime-50 rounded-lg border border-lime-200">
-            <span class="text-[10px] font-bold text-lime-900">New Park/Playground (+0.25)</span>
+            <span class="text-[10px] font-bold text-lime-900">New Park/Playground Provision (+0.25)</span>
             <input type="checkbox" id="bonusPark" onchange="calculateGodMode()" class="w-4 h-4 accent-lime-600" />
           </div>
         </div>
@@ -268,6 +266,11 @@
           <div class="text-[10px] text-amber-800 font-bold bg-white/50 px-2 py-1 rounded w-fit" id="mgcFloorPlateLabel">Actual Floor Plate: -- Sq.Ft</div>
           <div class="py-1">
             <input type="range" id="flatsPerFloor" min="1" max="10" step="1" value="1" oninput="calculateGodMode()" class="w-full" />
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-[10px] text-amber-700 font-bold">1</span>
+            <span id="avgFlatSizeNote" class="text-[11px] text-amber-900 font-black bg-white px-2.5 py-1 rounded border border-amber-300 shadow-sm">Avg: -- Sq.Ft</span>
+            <span class="text-[10px] text-amber-700 font-bold" id="maxFlatsLabel">Max 10</span>
           </div>
         </div>
 
@@ -333,7 +336,7 @@
 
       <div class="bg-rose-50 border border-rose-200 rounded-xl p-3.5 shadow-sm print-card">
         <h3 class="text-[11px] font-black uppercase tracking-widest text-rose-900 mb-2.5 flex items-center gap-2">
-          <svg class="w-4 h-4 no-print" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>
+          <svg class="w-4 h-4 no-print" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>
           BNBC, RAJUK & CAAB Compliance
         </h3>
         <div class="grid grid-cols-2 md:grid-cols-5 gap-2 text-[11px]">
@@ -349,7 +352,7 @@
         <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm print-card relative overflow-hidden flex flex-col justify-between">
           <div class="absolute w-1 h-full bg-slate-800 left-0 top-0 no-print"></div>
           <div>
-            <p class="text-[10px] font-bold uppercase text-slate-500">Gross Built-Up Area</p>
+            <p class="text-[10px] font-bold uppercase text-slate-500">Gross Built-Up</p>
             <p id="kpiTba" class="text-[16px] font-black text-slate-900 mt-1">0 Sq.Ft</p>
           </div>
         </div>
@@ -365,7 +368,7 @@
         <div class="bg-rose-50 p-3.5 rounded-xl border border-rose-200 shadow-sm print-card relative overflow-hidden flex flex-col justify-between">
           <div class="absolute w-1 h-full bg-rose-500 left-0 top-0 no-print"></div>
           <div>
-            <p class="text-[10px] font-bold uppercase text-rose-600">Est. Project Cost</p>
+            <p class="text-[10px] font-bold uppercase text-rose-600">Est. Cost</p>
             <p id="kpiCost" class="text-[16px] font-black text-rose-700 mt-1">৳ 0 Cr</p>
           </div>
         </div>
@@ -373,7 +376,7 @@
         <div class="bg-emerald-50 p-3.5 rounded-xl border border-emerald-200 shadow-sm print-card relative overflow-hidden flex flex-col justify-between">
           <div class="absolute w-1 h-full bg-emerald-500 left-0 top-0 no-print"></div>
           <div>
-            <p class="text-[10px] font-bold uppercase text-emerald-600">Gross Sales Revenue</p>
+            <p class="text-[10px] font-bold uppercase text-emerald-600">Sales Revenue</p>
             <p id="kpiRevenue" class="text-[16px] font-black text-emerald-700 mt-1">৳ 0 Cr</p>
           </div>
         </div>
@@ -410,7 +413,6 @@
         </div>
       </div>
 
-      <!-- REMOVED overflow-hidden HERE TO PREVENT CLIPPING -->
       <div class="bg-white rounded-xl shadow-md border border-slate-200 print-card" style="position: relative; z-index: 20;">
         <div class="px-5 py-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center rounded-t-xl">
           <h3 class="text-[12px] font-black uppercase tracking-widest text-slate-800">Built-Up Area (TBA) Schedule</h3>
@@ -820,7 +822,6 @@
       if(document.getElementById('tblTbaExcluding')) document.getElementById('tblTbaExcluding').textContent = `${formatNum(tbaExcluding)} Sq.Ft`;
       
       if(document.getElementById('tblVerandaArea')) document.getElementById('tblVerandaArea').textContent = `+ ${formatNum(verandaSqft + greenSqft + communitySqft)} Sq.Ft`;
-      
       if(document.getElementById('tblCoreTotal')) document.getElementById('tblCoreTotal').textContent = `+ ${formatNum(totalCoreSqft)} Sq.Ft`;
       if(document.getElementById('tblGfArea')) document.getElementById('tblGfArea').textContent = `+ ${formatNum(gfFacilitiesSqft)} Sq.Ft`;
       if(document.getElementById('tblTbaIncluding')) document.getElementById('tblTbaIncluding').textContent = `${formatNum(tbaIncluding)} Sq.Ft`;
@@ -836,6 +837,7 @@
       if(document.getElementById('sbFrontText')) document.getElementById('sbFrontText').textContent = `${(sbFront * METERS_TO_FEET).toFixed(1)} ft`;
       if(document.getElementById('sbRearText')) document.getElementById('sbRearText').textContent = `${(sbRear * METERS_TO_FEET).toFixed(1)} ft`;
       if(document.getElementById('sbSideText')) document.getElementById('sbSideText').textContent = `${(sbSide * METERS_TO_FEET).toFixed(1)} ft`;
+      
       if(document.getElementById('parkingCarText')) document.getElementById('parkingCarText').textContent = `${totalFlats} Flats`;
       if(document.getElementById('parkingBikeText')) document.getElementById('parkingBikeText').textContent = `${reqCars} Slots`;
 
