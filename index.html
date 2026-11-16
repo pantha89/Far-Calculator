@@ -24,9 +24,7 @@
       width: 100%; height: 6px; cursor: pointer; background: #fde68a; border-radius: 4px;
     }
 
-    /* =========================================
-       NEW: PURE JS GLOBAL TOOLTIP CSS 
-       ========================================= */
+    /* PURE JS GLOBAL TOOLTIP CSS */
     .info-icon {
       display: inline-flex;
       align-items: center;
@@ -39,7 +37,7 @@
     
     #globalTT {
       display: none;
-      position: fixed; /* This prevents ANY clipping issues */
+      position: fixed; 
       background-color: #0f172a; 
       color: #f8fafc;
       text-align: left;
@@ -47,15 +45,18 @@
       padding: 10px 12px;
       width: max-content;
       max-width: 280px;
-      z-index: 999999;
+      z-index: 9999999;
       font-size: 10px;
       line-height: 1.6;
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
       pointer-events: none;
     }
-    
     #globalTT strong { color: #38bdf8; font-weight: 700; font-size: 10.5px; }
     #globalTT .ref-text { color: #94a3b8; font-size: 9px; font-style: italic; margin-top: 4px; display: block; border-top: 1px solid #334155; padding-top: 4px; }
+
+    /* Modal Animation */
+    @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+    .modal-animate { animation: modalFadeIn 0.2s ease-out forwards; }
 
     /* Print Formatting */
     @media print { 
@@ -69,13 +70,13 @@
       .blueprint-bg rect, .blueprint-bg line { stroke: #64748b !important; }
       .blueprint-bg .bg-slate-900\/90 { background-color: #ffffff; border: 1px solid #e2e8f0; }
       .blueprint-bg span, .blueprint-bg strong { color: #0f172a !important; }
-      .info-icon, #globalTT { display: none !important; } 
+      .info-icon, #globalTT, #rulesModal { display: none !important; } 
     }
   </style>
 </head>
 <body class="min-h-screen flex flex-col relative">
 
-  <!-- THE JAVASCRIPT GLOBAL TOOLTIP BOX -->
+  <!-- THE GLOBAL TOOLTIP CONTAINER -->
   <div id="globalTT"></div>
 
   <!-- Application Header -->
@@ -89,6 +90,10 @@
         </div>
       </div>
       <div class="flex items-center gap-2">
+        <button onclick="document.getElementById('rulesModal').classList.remove('hidden')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 shadow-lg text-xs font-bold px-4 py-2 rounded-lg transition-all flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+          Read Rules
+        </button>
         <button onclick="window.print()" class="bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-900/50 text-xs font-bold px-4 py-2 rounded-lg transition-all flex items-center gap-2">
           Print PDF Report
         </button>
@@ -112,10 +117,9 @@
 
   <main class="max-w-7xl mx-auto w-full px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow">
 
-    <!-- LEFT COLUMN: INPUTS -->
+    <!-- LEFT COLUMN -->
     <section class="lg:col-span-4 space-y-5 no-print">
       
-      <!-- 1. LOCATION & SITE -->
       <div class="bg-white rounded-xl shadow-md border border-slate-200 p-4 relative">
         <div class="absolute top-0 right-0 bg-sky-500 text-white text-[9px] font-black px-2 py-1 rounded-bl-lg uppercase tracking-wider">Step 1</div>
         <h2 class="text-[12px] font-black uppercase tracking-widest text-sky-700 mb-3">Location & Site</h2>
@@ -163,8 +167,7 @@
             </select>
           </div>
         </div>
-
-        <!-- NEW: SMART CONVERTER WIDGET -->
+        
         <div class="mb-3 p-2 bg-slate-50 border border-slate-200 rounded text-[9px] font-semibold text-slate-600 flex justify-between items-center" id="unitConverterWidget">
            <span>Equiv: <strong class="text-slate-800" id="convDecimal">0.00 Dec</strong></span>
            <span>|</span>
@@ -212,7 +215,6 @@
         </div>
       </div>
 
-      <!-- 2. FAR BONUSES & INCENTIVES -->
       <div class="bg-white rounded-xl shadow-md border border-slate-200 p-4 relative">
         <div class="absolute top-0 right-0 bg-indigo-500 text-white text-[9px] font-black px-2 py-1 rounded-bl-lg uppercase tracking-wider">Step 2</div>
         <h2 class="text-[12px] font-black uppercase tracking-widest text-indigo-700 mb-3">FAR Bonuses & Incentives</h2>
@@ -240,7 +242,6 @@
         </div>
       </div>
 
-      <!-- 3. LAYOUT & HEIGHT -->
       <div class="bg-white rounded-xl shadow-md border border-slate-200 p-4 relative">
         <div class="absolute top-0 right-0 bg-emerald-500 text-white text-[9px] font-black px-2 py-1 rounded-bl-lg uppercase tracking-wider">Step 3</div>
         <h2 class="text-[12px] font-black uppercase tracking-widest text-emerald-700 mb-3">Layout & Height Engine</h2>
@@ -264,7 +265,6 @@
           <div class="py-1">
             <input type="range" id="flatsPerFloor" min="1" max="10" step="1" value="1" oninput="calculateGodMode()" class="w-full" />
           </div>
-          <!-- NEW: SMART DENSITY LIMITER ALERT -->
           <div id="densityAlert" class="hidden text-[9px] font-bold text-rose-700 bg-rose-100 px-2 py-1 rounded border border-rose-300 mt-2">
             Max Units Cap Reached (DAP Rule)
           </div>
@@ -291,7 +291,6 @@
         </div>
       </div>
 
-      <!-- 4. FINANCIAL & JV -->
       <div class="bg-white rounded-xl shadow-md border border-slate-200 p-4 relative border-l-4 border-l-slate-800">
         <div class="absolute top-0 right-0 bg-slate-800 text-white text-[9px] font-black px-2 py-1 rounded-bl-lg uppercase tracking-wider">Step 4</div>
         <h2 class="text-[12px] font-black uppercase tracking-widest text-slate-800 mb-3">Financial Estimates</h2>
@@ -324,7 +323,6 @@
     <!-- RIGHT COLUMN: RESULTS -->
     <section class="lg:col-span-8 space-y-5 print-col-full">
 
-      <!-- Location & Plot Summary -->
       <div class="hidden print-header-show grid-cols-3 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-sm mb-4">
         <div><span class="text-[10px] font-bold text-slate-500 block uppercase">Project Area</span><strong class="text-sm text-slate-900" id="printLocation">Mirpur</strong></div>
         <div><span class="text-[10px] font-bold text-slate-500 block uppercase">Land Size</span><strong class="text-sm text-slate-900" id="printLand">5 Katha</strong></div>
@@ -345,7 +343,6 @@
         </div>
       </div>
 
-      <!-- MGC CONFLICT ALERT -->
       <div id="mgcConflictAlert" class="hidden bg-amber-50 border border-amber-300 rounded-xl p-3.5 shadow-sm text-[11px]">
          <p class="font-bold text-amber-900 flex items-center gap-1.5"><span class="text-[14px]">⚠️</span> MGC vs Setback Conflict Detected!</p>
          <p class="text-amber-800 font-medium mt-1">Based on setbacks, the net buildable area is smaller than the RAJUK allowed MGC. The floor plate has been automatically reduced to fit within boundaries.</p>
@@ -359,7 +356,6 @@
             <p id="kpiTba" class="text-[16px] font-black text-slate-900 mt-1">0 Sq.Ft</p>
           </div>
         </div>
-        
         <div class="bg-slate-900 text-white p-3.5 rounded-xl shadow-md print-card relative overflow-hidden flex flex-col justify-between">
           <div class="absolute w-1 h-full bg-sky-500 left-0 top-0 no-print"></div>
           <div>
@@ -367,7 +363,6 @@
             <p id="kpiFloors" class="text-[16px] font-black text-white mt-1">G+0</p>
           </div>
         </div>
-        
         <div class="bg-rose-50 p-3.5 rounded-xl border border-rose-200 shadow-sm print-card relative overflow-hidden flex flex-col justify-between">
           <div class="absolute w-1 h-full bg-rose-500 left-0 top-0 no-print"></div>
           <div>
@@ -375,7 +370,6 @@
             <p id="kpiCost" class="text-[16px] font-black text-rose-700 mt-1">৳ 0 Cr</p>
           </div>
         </div>
-        
         <div class="bg-emerald-50 p-3.5 rounded-xl border border-emerald-200 shadow-sm print-card relative overflow-hidden flex flex-col justify-between">
           <div class="absolute w-1 h-full bg-emerald-500 left-0 top-0 no-print"></div>
           <div>
@@ -513,7 +507,6 @@
         </div>
       </div>
 
-      <!-- OFFICIAL GAZETTE REFERENCE SECTION -->
       <div class="hidden print-header-show flex-col text-[9px] text-slate-500 font-medium mt-6 border-t border-slate-300 pt-3">
         <p class="font-bold text-slate-700 mb-1 uppercase tracking-wider">Compliance References & Statutory Authorities</p>
         <p>• Area-based FAR & Density Cap computed as per DAP 2022-2035 (Volume I, Appendix 3.6).</p>
@@ -524,6 +517,88 @@
 
     </section>
   </main>
+
+  <!-- =========================================
+       NEW: RULES & GUIDELINES MODAL 
+       ========================================= -->
+  <div id="rulesModal" class="hidden fixed inset-0 z-[99999] bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4 modal-animate">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[85vh] flex flex-col overflow-hidden relative border border-slate-200">
+      
+      <!-- Modal Header -->
+      <div class="bg-slate-900 px-6 py-4 flex justify-between items-center">
+         <div>
+           <h2 class="text-white font-black text-lg">RAJUK & DAP Building Guidelines</h2>
+           <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest mt-0.5">Reference Manual for Core A&E</p>
+         </div>
+         <button onclick="document.getElementById('rulesModal').classList.add('hidden')" class="text-slate-400 hover:text-white transition-colors bg-slate-800 hover:bg-rose-600 rounded-full w-8 h-8 flex items-center justify-center font-bold">
+           ✕
+         </button>
+      </div>
+      
+      <!-- Modal Body (Scrollable) -->
+      <div class="p-6 overflow-y-auto text-[13px] text-slate-700 space-y-6">
+        
+        <section>
+          <h3 class="font-black text-sky-700 text-[14px] uppercase border-b border-slate-200 pb-1 mb-2">1. Floor Area Ratio (FAR) & DAP Regulations</h3>
+          <p class="mb-2">According to the <strong class="text-slate-900">DAP 2022-2035 (Volume I, Appendix 3.6)</strong>, FAR is determined by the road width and the specific density zone of the plot. The allowed area multipliers are:</p>
+          <ul class="list-disc pl-5 space-y-1 font-medium">
+            <li><span class="text-slate-900 font-bold">High Density (e.g., Puran Dhaka):</span> Base FAR × 1.15 (Max Cap: 6.0)</li>
+            <li><span class="text-slate-900 font-bold">Standard Area (e.g., Mirpur, Uttara):</span> Normal Base FAR applies.</li>
+            <li><span class="text-slate-900 font-bold">Medium Density (e.g., Dhanmondi):</span> Base FAR is capped at a maximum of 4.0.</li>
+            <li><span class="text-slate-900 font-bold">Gulshan/Banani/Baridhara:</span> Base FAR × 0.90 (Max Cap: 4.5).</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3 class="font-black text-emerald-700 text-[14px] uppercase border-b border-slate-200 pb-1 mb-2">2. Maximum Ground Coverage (MGC)</h3>
+          <p class="mb-2">MGC restricts how much of the net land area can be built upon at the ground level. Dictated by the <strong class="text-slate-900">Dhaka Building Construction Rules 2025</strong>:</p>
+          <div class="bg-slate-50 p-3 rounded border border-slate-200 grid grid-cols-2 gap-4">
+            <div>
+              <span class="block font-bold text-slate-800 mb-1 border-b border-slate-200 pb-1">Residential</span>
+              <ul class="space-y-0.5">
+                 <li>Under 2 Katha: ~67.5%</li>
+                 <li>3 to 4 Katha: ~62.5%</li>
+                 <li>5 to 6 Katha: ~57.5%</li>
+                 <li>Above 10 Katha: 50.0%</li>
+              </ul>
+            </div>
+            <div>
+              <span class="block font-bold text-slate-800 mb-1 border-b border-slate-200 pb-1">Commercial</span>
+              <ul class="space-y-0.5">
+                 <li>Under 3 Katha: ~60.0%</li>
+                 <li>5 to 8 Katha: ~52.5%</li>
+                 <li>Above 10 Katha: 50.0%</li>
+                 <li>Above 20 Katha: 45.0%</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3 class="font-black text-amber-700 text-[14px] uppercase border-b border-slate-200 pb-1 mb-2">3. FAR Incentives & Bonuses</h3>
+          <p class="mb-2">As per the <strong class="text-slate-900">DAP Amendment Gazette (14 Dec 2025)</strong>, developers can achieve bonus FAR by providing public amenities or adhering to sustainable practices:</p>
+          <ul class="list-disc pl-5 space-y-1 font-medium">
+            <li><span class="text-slate-900 font-bold">TOD Transit Zone:</span> +0.50 FAR (Plot must be within 500m of a transit station).</li>
+            <li><span class="text-slate-900 font-bold">Green Building Certification:</span> +0.10 FAR (Requires official certification).</li>
+            <li><span class="text-slate-900 font-bold">Plot Amalgamation:</span> +0.05 FAR for combining multiple smaller plots.</li>
+            <li><span class="text-slate-900 font-bold">Public School / Park:</span> +0.25 FAR each, provided a specific portion of land is surrendered/developed for public use.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3 class="font-black text-rose-700 text-[14px] uppercase border-b border-slate-200 pb-1 mb-2">4. Service Core & Exemption Rules</h3>
+          <p class="font-medium">The following areas are <strong class="text-slate-900 font-bold">exempted</strong> from the FAR calculation (they do not consume your FAR limit) but are added to the Total Built-Up Area (TBA) for construction cost purposes:</p>
+          <ul class="list-disc pl-5 space-y-1 font-medium mt-2">
+            <li><span class="text-slate-900 font-bold">Verandas:</span> Up to 8% of the respective floor area, provided depth does not exceed 1.5 meters.</li>
+            <li><span class="text-slate-900 font-bold">Green Area/Terrace:</span> Up to 2.5% of the total FAR area.</li>
+            <li><span class="text-slate-900 font-bold">Stairs & Lifts:</span> Completely exempted. Buildings >10 stories require mandatory 2 fire stairs.</li>
+            <li><span class="text-slate-900 font-bold">Basements:</span> Exempted if used strictly for parking or building services (Sub-station, Pump room).</li>
+          </ul>
+        </section>
+
+      </div>
+    </div>
+  </div>
 
   <script>
     let ttData = {}; 
@@ -566,9 +641,6 @@
        if (!e.target.closest('.info-icon')) hideTT();
     });
 
-    // ====================================================
-    // CORE ENGINE LOGIC
-    // ====================================================
     const SQFT_PER_KATHA = 720.0;
     const SQM_PER_SQFT = 0.092903;
     const METERS_TO_FEET = 3.28084;
@@ -935,7 +1007,6 @@
       renderSetbackSvg(sbFront, sbRear, sbSide, maxMgcAllowed, frontageType);
       renderMassingSvg(currentBasements, targetFloors);
 
-      // POPULATING TOOLTIP DATA
       ttData['gross'] = `
         <strong>1. Gross Plot Area:</strong><br>
         ${rawArea} ${plotUnit === 'katha' ? 'Katha' : 'Sq.Ft'}<br>
