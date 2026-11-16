@@ -76,10 +76,8 @@
 </head>
 <body class="min-h-screen flex flex-col relative">
 
-  <!-- THE GLOBAL TOOLTIP CONTAINER -->
   <div id="globalTT"></div>
 
-  <!-- Application Header -->
   <header class="bg-slate-900 text-white sticky top-0 z-30 shadow-xl border-b border-slate-700 no-print">
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center space-x-3">
@@ -92,7 +90,7 @@
       <div class="flex items-center gap-2">
         <button onclick="document.getElementById('rulesModal').classList.remove('hidden')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 shadow-lg text-xs font-bold px-4 py-2 rounded-lg transition-all flex items-center gap-2">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-          Read Rules
+          Digital Library
         </button>
         <button onclick="window.print()" class="bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-900/50 text-xs font-bold px-4 py-2 rounded-lg transition-all flex items-center gap-2">
           Print PDF Report
@@ -101,7 +99,6 @@
     </div>
   </header>
 
-  <!-- Official Print Header (Hidden on Screen) -->
   <div class="hidden print-header-show flex-col items-center border-b-2 border-slate-800 pb-4 pt-4 mb-4">
     <h1 class="text-3xl font-black text-slate-900 tracking-tight">CORE A&E</h1>
     <p class="text-sm font-bold text-slate-600 uppercase tracking-widest mt-1">Architecture • Interior Design • Turnkey Construction</p>
@@ -519,88 +516,145 @@
   </main>
 
   <!-- =========================================
-       NEW: RULES & GUIDELINES MODAL 
+       NEW: DIGITAL LIBRARY & IN-APP PDF VIEWER
        ========================================= -->
-  <div id="rulesModal" class="hidden fixed inset-0 z-[99999] bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4 modal-animate">
-    <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[85vh] flex flex-col overflow-hidden relative border border-slate-200">
+  <div id="rulesModal" class="hidden fixed inset-0 z-[99999] bg-slate-900/90 backdrop-blur-md flex items-center justify-center p-4 modal-animate">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-5xl h-[90vh] flex flex-col overflow-hidden relative border border-slate-200">
       
       <!-- Modal Header -->
-      <div class="bg-slate-900 px-6 py-4 flex justify-between items-center">
+      <div class="bg-slate-900 px-6 py-4 flex justify-between items-center shrink-0">
          <div>
-           <h2 class="text-white font-black text-lg">RAJUK & DAP Building Guidelines</h2>
-           <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest mt-0.5">Reference Manual for Core A&E</p>
+           <h2 class="text-white font-black text-lg">Digital Document Library</h2>
+           <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest mt-0.5">RAJUK, BNBC & DAP Official Manuals</p>
          </div>
-         <button onclick="document.getElementById('rulesModal').classList.add('hidden')" class="text-slate-400 hover:text-white transition-colors bg-slate-800 hover:bg-rose-600 rounded-full w-8 h-8 flex items-center justify-center font-bold">
+         <button onclick="closeModalAndPdf()" class="text-slate-400 hover:text-white transition-colors bg-slate-800 hover:bg-rose-600 rounded-full w-8 h-8 flex items-center justify-center font-bold">
            ✕
          </button>
       </div>
       
-      <!-- Modal Body (Scrollable) -->
-      <div class="p-6 overflow-y-auto text-[13px] text-slate-700 space-y-6">
+      <!-- DEFAULT VIEW: RULE SUMMARIES & PDF CARDS -->
+      <div id="libraryHome" class="p-6 overflow-y-auto flex-grow text-[13px] text-slate-700 space-y-6">
         
-        <section>
-          <h3 class="font-black text-sky-700 text-[14px] uppercase border-b border-slate-200 pb-1 mb-2">1. Floor Area Ratio (FAR) & DAP Regulations</h3>
-          <p class="mb-2">According to the <strong class="text-slate-900">DAP 2022-2035 (Volume I, Appendix 3.6)</strong>, FAR is determined by the road width and the specific density zone of the plot. The allowed area multipliers are:</p>
-          <ul class="list-disc pl-5 space-y-1 font-medium">
-            <li><span class="text-slate-900 font-bold">High Density (e.g., Puran Dhaka):</span> Base FAR × 1.15 (Max Cap: 6.0)</li>
-            <li><span class="text-slate-900 font-bold">Standard Area (e.g., Mirpur, Uttara):</span> Normal Base FAR applies.</li>
-            <li><span class="text-slate-900 font-bold">Medium Density (e.g., Dhanmondi):</span> Base FAR is capped at a maximum of 4.0.</li>
-            <li><span class="text-slate-900 font-bold">Gulshan/Banani/Baridhara:</span> Base FAR × 0.90 (Max Cap: 4.5).</li>
-          </ul>
-        </section>
+        <div>
+           <h3 class="font-black text-slate-800 text-[15px] uppercase mb-4 flex items-center gap-2">
+             <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 
+             Quick Rule Summary
+           </h3>
+           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+             <section>
+               <h4 class="font-bold text-sky-700 border-b border-slate-200 pb-1 mb-2">FAR & DAP Regulations</h4>
+               <ul class="list-disc pl-5 space-y-1 font-medium text-slate-600">
+                 <li><strong class="text-slate-800">High Density:</strong> Base FAR × 1.15 (Max 6.0)</li>
+                 <li><strong class="text-slate-800">Medium Density:</strong> Capped at 4.0</li>
+                 <li><strong class="text-slate-800">Gulshan/Banani:</strong> Base FAR × 0.90 (Max 4.5)</li>
+                 <li><strong class="text-slate-800">Bonuses:</strong> TOD (+0.50), Green Bldg (+0.10)</li>
+               </ul>
+             </section>
+             <section>
+               <h4 class="font-bold text-emerald-700 border-b border-slate-200 pb-1 mb-2">Exemptions (BNBC Code)</h4>
+               <ul class="list-disc pl-5 space-y-1 font-medium text-slate-600">
+                 <li><strong class="text-slate-800">Verandas:</strong> Up to 8% of floor plate (Max depth 1.5m)</li>
+                 <li><strong class="text-slate-800">Green Area:</strong> Up to 2.5% of total FAR area</li>
+                 <li><strong class="text-slate-800">Cores:</strong> Stairs and Lifts are fully exempted.</li>
+               </ul>
+             </section>
+           </div>
+        </div>
 
-        <section>
-          <h3 class="font-black text-emerald-700 text-[14px] uppercase border-b border-slate-200 pb-1 mb-2">2. Maximum Ground Coverage (MGC)</h3>
-          <p class="mb-2">MGC restricts how much of the net land area can be built upon at the ground level. Dictated by the <strong class="text-slate-900">Dhaka Building Construction Rules 2025</strong>:</p>
-          <div class="bg-slate-50 p-3 rounded border border-slate-200 grid grid-cols-2 gap-4">
-            <div>
-              <span class="block font-bold text-slate-800 mb-1 border-b border-slate-200 pb-1">Residential</span>
-              <ul class="space-y-0.5">
-                 <li>Under 2 Katha: ~67.5%</li>
-                 <li>3 to 4 Katha: ~62.5%</li>
-                 <li>5 to 6 Katha: ~57.5%</li>
-                 <li>Above 10 Katha: 50.0%</li>
-              </ul>
-            </div>
-            <div>
-              <span class="block font-bold text-slate-800 mb-1 border-b border-slate-200 pb-1">Commercial</span>
-              <ul class="space-y-0.5">
-                 <li>Under 3 Katha: ~60.0%</li>
-                 <li>5 to 8 Katha: ~52.5%</li>
-                 <li>Above 10 Katha: 50.0%</li>
-                 <li>Above 20 Katha: 45.0%</li>
-              </ul>
-            </div>
+        <div class="mt-8 border-t border-slate-200 pt-6">
+          <h3 class="font-black text-slate-800 text-[15px] uppercase mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+            Official PDF Gazettes (In-App Reader)
+          </h3>
+          <p class="text-[11px] text-slate-500 mb-4 font-medium italic">* Click to read the original gazettes directly within this tool.</p>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+             <!-- Note: Replace the URLs below with the actual PDF links hosted on your coredesignersbd.com server -->
+             <div class="border border-slate-200 p-3.5 rounded-lg flex flex-col justify-between bg-slate-50 shadow-sm">
+                <div class="mb-3">
+                   <h4 class="font-black text-slate-800 text-[13px]">DAP 2022-2035 (Volume I)</h4>
+                   <p class="text-[10px] font-medium text-slate-500 mt-1">Contains Area-based FAR zones and density maps.</p>
+                </div>
+                <button onclick="openPdfViewer('YOUR_PDF_LINK_HERE.pdf')" class="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-4 py-2 rounded flex items-center justify-center gap-2 transition-colors">
+                   Read Full PDF
+                </button>
+             </div>
+
+             <div class="border border-slate-200 p-3.5 rounded-lg flex flex-col justify-between bg-slate-50 shadow-sm">
+                <div class="mb-3">
+                   <h4 class="font-black text-slate-800 text-[13px]">DAP Amendment Gazette 2025</h4>
+                   <p class="text-[10px] font-medium text-slate-500 mt-1">Updates on Plot Amalgamation & TOD Bonuses.</p>
+                </div>
+                <button onclick="openPdfViewer('YOUR_PDF_LINK_HERE.pdf')" class="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-4 py-2 rounded flex items-center justify-center gap-2 transition-colors">
+                   Read Full PDF
+                </button>
+             </div>
+
+             <div class="border border-slate-200 p-3.5 rounded-lg flex flex-col justify-between bg-slate-50 shadow-sm">
+                <div class="mb-3">
+                   <h4 class="font-black text-slate-800 text-[13px]">Dhaka Bldg. Construction Rules</h4>
+                   <p class="text-[10px] font-medium text-slate-500 mt-1">BNBC 2025 guidelines for MGC and Setbacks.</p>
+                </div>
+                <button onclick="openPdfViewer('YOUR_PDF_LINK_HERE.pdf')" class="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-4 py-2 rounded flex items-center justify-center gap-2 transition-colors">
+                   Read Full PDF
+                </button>
+             </div>
+
+             <div class="border border-slate-200 p-3.5 rounded-lg flex flex-col justify-between bg-slate-50 shadow-sm">
+                <div class="mb-3">
+                   <h4 class="font-black text-slate-800 text-[13px]">CAAB Height Restriction Map</h4>
+                   <p class="text-[10px] font-medium text-slate-500 mt-1">CAAB Funnel and Buffer zone height limits.</p>
+                </div>
+                <button onclick="openPdfViewer('YOUR_PDF_LINK_HERE.pdf')" class="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-4 py-2 rounded flex items-center justify-center gap-2 transition-colors">
+                   Read Full PDF
+                </button>
+             </div>
           </div>
-        </section>
-
-        <section>
-          <h3 class="font-black text-amber-700 text-[14px] uppercase border-b border-slate-200 pb-1 mb-2">3. FAR Incentives & Bonuses</h3>
-          <p class="mb-2">As per the <strong class="text-slate-900">DAP Amendment Gazette (14 Dec 2025)</strong>, developers can achieve bonus FAR by providing public amenities or adhering to sustainable practices:</p>
-          <ul class="list-disc pl-5 space-y-1 font-medium">
-            <li><span class="text-slate-900 font-bold">TOD Transit Zone:</span> +0.50 FAR (Plot must be within 500m of a transit station).</li>
-            <li><span class="text-slate-900 font-bold">Green Building Certification:</span> +0.10 FAR (Requires official certification).</li>
-            <li><span class="text-slate-900 font-bold">Plot Amalgamation:</span> +0.05 FAR for combining multiple smaller plots.</li>
-            <li><span class="text-slate-900 font-bold">Public School / Park:</span> +0.25 FAR each, provided a specific portion of land is surrendered/developed for public use.</li>
-          </ul>
-        </section>
-
-        <section>
-          <h3 class="font-black text-rose-700 text-[14px] uppercase border-b border-slate-200 pb-1 mb-2">4. Service Core & Exemption Rules</h3>
-          <p class="font-medium">The following areas are <strong class="text-slate-900 font-bold">exempted</strong> from the FAR calculation (they do not consume your FAR limit) but are added to the Total Built-Up Area (TBA) for construction cost purposes:</p>
-          <ul class="list-disc pl-5 space-y-1 font-medium mt-2">
-            <li><span class="text-slate-900 font-bold">Verandas:</span> Up to 8% of the respective floor area, provided depth does not exceed 1.5 meters.</li>
-            <li><span class="text-slate-900 font-bold">Green Area/Terrace:</span> Up to 2.5% of the total FAR area.</li>
-            <li><span class="text-slate-900 font-bold">Stairs & Lifts:</span> Completely exempted. Buildings >10 stories require mandatory 2 fire stairs.</li>
-            <li><span class="text-slate-900 font-bold">Basements:</span> Exempted if used strictly for parking or building services (Sub-station, Pump room).</li>
-          </ul>
-        </section>
-
+        </div>
       </div>
+
+      <!-- IN-APP PDF VIEWER (Hidden by Default) -->
+      <div id="pdfViewerArea" class="hidden flex-col h-full w-full bg-slate-100">
+         <div class="bg-slate-200 border-b border-slate-300 px-4 py-2 flex justify-between items-center shrink-0">
+             <span class="text-xs font-bold text-slate-600 uppercase tracking-widest">RAJUK Document Viewer</span>
+             <button onclick="closePdfViewer()" class="bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold px-4 py-1.5 rounded transition">
+                ← Back to Library
+             </button>
+         </div>
+         <iframe id="pdfIframe" src="" class="w-full h-full flex-grow border-0 rounded-b-xl" type="application/pdf"></iframe>
+      </div>
+
     </div>
   </div>
 
   <script>
+    // ====================================================
+    // IN-APP PDF VIEWER CONTROLLER
+    // ====================================================
+    function openPdfViewer(pdfUrl) {
+       document.getElementById('libraryHome').classList.add('hidden');
+       document.getElementById('pdfViewerArea').classList.remove('hidden');
+       document.getElementById('pdfViewerArea').classList.add('flex');
+       // Set the iframe source to the selected PDF
+       document.getElementById('pdfIframe').src = pdfUrl;
+    }
+
+    function closePdfViewer() {
+       // Clear iframe memory
+       document.getElementById('pdfIframe').src = "";
+       document.getElementById('pdfViewerArea').classList.add('hidden');
+       document.getElementById('pdfViewerArea').classList.remove('flex');
+       document.getElementById('libraryHome').classList.remove('hidden');
+    }
+
+    function closeModalAndPdf() {
+       document.getElementById('rulesModal').classList.add('hidden');
+       closePdfViewer();
+    }
+
+    // ====================================================
+    // JS TOOLTIP SYSTEM
+    // ====================================================
     let ttData = {}; 
 
     function showTT(e, key) {
@@ -622,12 +676,8 @@
       let finalX = x + 15;
       let finalY = y + 15;
 
-      if (finalX + 260 > window.innerWidth) {
-         finalX = window.innerWidth - 280;
-      }
-      if (finalY + 120 > window.innerHeight) {
-         finalY = y - 100;
-      }
+      if (finalX + 260 > window.innerWidth) finalX = window.innerWidth - 280;
+      if (finalY + 120 > window.innerHeight) finalY = y - 100;
 
       tt.style.left = finalX + 'px';
       tt.style.top = finalY + 'px';
