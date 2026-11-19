@@ -24,7 +24,7 @@
       width: 100%; height: 6px; cursor: pointer; background: #fde68a; border-radius: 4px;
     }
 
-    /* BULLETPROOF GLOBAL JS TOOLTIP */
+    /* GLOBAL JS TOOLTIP */
     .info-icon {
       display: inline-flex;
       align-items: center;
@@ -69,7 +69,7 @@
       .blueprint-bg rect, .blueprint-bg line { stroke: #64748b !important; }
       .blueprint-bg .bg-slate-900\/90 { background-color: #ffffff; border: 1px solid #e2e8f0; }
       .blueprint-bg span, .blueprint-bg strong { color: #0f172a !important; }
-      .info-icon, #globalTT, #rulesModal { display: none !important; }
+      .info-icon, #globalTT, #rulesModal, #authModal { display: none !important; }
     }
   </style>
 </head>
@@ -87,19 +87,43 @@
           <p class="text-[10px] sm:text-[11px] text-amber-200/70 font-semibold tracking-widest uppercase">Complete Section A–B–C Compliance & Financial Suite</p>
         </div>
       </div>
-      <div class="flex items-center gap-2">
+
+      <div class="flex flex-wrap items-center gap-2">
         <!-- DISPLAY UNIT TOGGLE -->
         <div class="flex bg-slate-800 rounded-lg p-0.5 border border-slate-700 text-[11px] font-bold">
           <button type="button" id="btnUnitSqft" onclick="setDisplayUnit('sqft')" class="px-2.5 py-1.5 rounded-md bg-sky-600 text-white transition">Sq.Ft</button>
           <button type="button" id="btnUnitSqm" onclick="setDisplayUnit('sqm')" class="px-2.5 py-1.5 rounded-md text-slate-300 hover:text-white transition">Sq.m</button>
         </div>
+
         <button onclick="document.getElementById('rulesModal').classList.remove('hidden')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 shadow-lg text-xs font-bold px-3 py-2 rounded-lg transition-all flex items-center gap-1.5">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
           Digital Library
         </button>
-        <button onclick="window.print()" class="bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-900/50 text-xs font-bold px-3.5 py-2 rounded-lg transition-all flex items-center gap-1.5">
+
+        <button onclick="handlePrintReport()" class="bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-900/50 text-xs font-bold px-3.5 py-2 rounded-lg transition-all flex items-center gap-1.5">
           Print PDF Report
         </button>
+
+        <!-- AUTH / TRIAL CONTROLS (GUEST STATE) -->
+        <div id="authGuestControls" class="flex items-center gap-1.5 pl-1 border-l border-slate-700">
+          <button onclick="openAuthModal('login')" class="text-slate-300 hover:text-white text-xs font-bold px-2.5 py-2 rounded-lg hover:bg-slate-800 transition">
+            Log in
+          </button>
+          <button onclick="openAuthModal('trial')" class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 text-xs font-black px-3 py-2 rounded-lg shadow transition">
+            Free Trial
+          </button>
+        </div>
+
+        <!-- AUTH / TRIAL CONTROLS (LOGGED-IN STATE) -->
+        <div id="authUserControls" class="hidden items-center gap-2 pl-2 border-l border-slate-700">
+          <div class="text-right leading-tight">
+            <span id="authUserName" class="block text-[11px] font-bold text-white">User</span>
+            <span id="authTrialBadge" class="block text-[9px] font-black text-amber-300 uppercase">Trial: 7d left</span>
+          </div>
+          <button onclick="logoutDemoUser()" class="bg-slate-800 hover:bg-rose-600 text-slate-300 hover:text-white text-[10px] font-bold px-2.5 py-1.5 rounded-md border border-slate-700 transition">
+            Log out
+          </button>
+        </div>
       </div>
     </div>
   </header>
@@ -175,7 +199,6 @@
           </div>
         </div>
 
-        <!-- SMART CONVERTER WIDGET -->
         <div class="mb-3 p-2 bg-slate-50 border border-slate-200 rounded text-[9px] font-semibold text-slate-600 flex justify-between items-center" id="unitConverterWidget">
            <span><strong class="text-slate-800" id="convDecimal">0.00 Dec</strong></span>
            <span>|</span>
@@ -290,7 +313,6 @@
         <div class="absolute top-0 right-0 bg-emerald-500 text-white text-[9px] font-black px-2 py-1 rounded-bl-lg uppercase tracking-wider">Step 3</div>
         <h2 class="text-[12px] font-black uppercase tracking-widest text-emerald-700 mb-3">Layout, Density & Floors</h2>
 
-        <!-- Unit/Katha & 30% Incentive -->
         <div class="grid grid-cols-2 gap-2.5 mb-3 p-2.5 bg-emerald-50/70 border border-emerald-200 rounded-lg">
           <div>
             <label class="block text-[9px] font-bold text-emerald-900 mb-1">A.21 DAP Unit / Katha</label>
@@ -322,7 +344,6 @@
           </div>
         </div>
 
-        <!-- FLATS PER FLOOR SLIDER -->
         <div class="p-3 bg-gradient-to-r from-amber-100 to-orange-100 border border-amber-300 rounded-xl shadow-inner space-y-2 mb-3">
           <div class="flex justify-between items-center">
             <label class="text-[11px] font-black text-amber-900">A.23 Proposed Units / Floor</label>
@@ -340,7 +361,6 @@
           </div>
         </div>
 
-        <!-- 2025 EXEMPTION TOGGLES -->
         <div class="space-y-1.5 mb-3">
           <div class="flex items-center justify-between p-2 bg-slate-50 rounded-lg border border-slate-200">
             <span class="text-[10px] font-bold text-slate-800">Front Verandah (30% Facade) & Extra (2.5%)</span>
@@ -397,7 +417,6 @@
     <!-- RIGHT COLUMN: RESULTS -->
     <section class="lg:col-span-8 space-y-5 print-col-full">
 
-      <!-- PRINT SUMMARY -->
       <div class="hidden print-header-show grid-cols-4 gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200 mb-3 text-xs">
         <div><span class="text-[9px] font-bold text-slate-500 block uppercase">Project Area</span><strong id="printLocation">Uttara</strong></div>
         <div><span class="text-[9px] font-bold text-slate-500 block uppercase">Gross Land</span><strong id="printLand">12.00 Katha</strong></div>
@@ -484,9 +503,7 @@
         </div>
       </div>
 
-      <!-- ================================================== -->
-      <!-- SECTION A: COMPLETE A.1 – A.30 PARAMETER SHEET     -->
-      <!-- ================================================== -->
+      <!-- SECTION A: COMPLETE A.1 – A.30 PARAMETER SHEET -->
       <div class="bg-white rounded-xl shadow-md border border-slate-200 print-card">
         <div class="px-5 py-3 bg-slate-900 text-white flex justify-between items-center rounded-t-xl">
           <h3 class="text-[11px] font-black uppercase tracking-widest">Section A — Complete Plot, 3-Tier FAR & Density Sheet (A.1–A.30)</h3>
@@ -547,9 +564,7 @@
         </div>
       </div>
 
-      <!-- ================================================== -->
-      <!-- SECTION B: 2025 RULES — DESIGN LIMIT VS PROPOSAL   -->
-      <!-- ================================================== -->
+      <!-- SECTION B: 2025 RULES — DESIGN LIMIT VS PROPOSAL -->
       <div class="bg-white rounded-xl shadow-md border border-slate-200 print-card overflow-x-auto">
         <div class="px-5 py-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center rounded-t-xl">
           <h3 class="text-[11px] font-black uppercase tracking-widest text-slate-800">Section B — Dhaka Metropolitan Building Construction Rules, 2025</h3>
@@ -617,9 +632,7 @@
         </table>
       </div>
 
-      <!-- ================================================== -->
-      <!-- SECTION C: FLOOR-BY-FLOOR FAR-IN VS FAR-EX MATRIX  -->
-      <!-- ================================================== -->
+      <!-- SECTION C: FLOOR-BY-FLOOR FAR-IN VS FAR-EX MATRIX -->
       <div class="bg-white rounded-xl shadow-md border border-slate-200 print-card overflow-x-auto">
         <div class="px-5 py-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center rounded-t-xl">
           <h3 class="text-[11px] font-black uppercase tracking-widest text-slate-800">Section C — Floor-by-Floor Area Matrix (FAR-In vs FAR-Ex)</h3>
@@ -660,13 +673,15 @@
     </section>
   </main>
 
-  <!-- DIGITAL LIBRARY & IN-APP PDF VIEWER MODAL -->
+  <!-- ================================================== -->
+  <!-- DIGITAL LIBRARY & IN-APP PDF VIEWER MODAL          -->
+  <!-- ================================================== -->
   <div id="rulesModal" class="hidden fixed inset-0 z-[99999] bg-slate-900/90 backdrop-blur-md flex items-center justify-center p-4 modal-animate">
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-5xl h-[90vh] flex flex-col overflow-hidden relative border border-slate-200">
       <div class="bg-slate-900 px-6 py-4 flex justify-between items-center shrink-0">
          <div>
            <h2 class="text-white font-black text-lg">Digital Document Library</h2>
-           <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest mt-0.5">RAJUK 2025, BNBC & DAP Official Manuals</p>
+           <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest mt-0.5">RAJUK 2025, BNBC & DAP Official Gazettes & Manuals</p>
          </div>
          <button onclick="closeModalAndPdf()" class="text-slate-400 hover:text-white transition-colors bg-slate-800 hover:bg-rose-600 rounded-full w-8 h-8 flex items-center justify-center font-bold">✕</button>
       </div>
@@ -691,42 +706,304 @@
         </div>
 
         <div class="border-t border-slate-200 pt-5">
-          <h3 class="font-black text-slate-800 text-[14px] uppercase mb-3">Official PDF Gazettes (Google Drive In-App Reader)</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-            <div class="border border-slate-200 p-3 rounded-lg flex justify-between items-center bg-slate-50"><span class="font-bold text-xs">Doc 1</span><button onclick="openPdfViewer('https://drive.google.com/file/d/1zVw_cbOE8qz7qk1LVQgeGy0G1tXiSeBa/preview')" class="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-3 py-1.5 rounded">Read PDF</button></div>
-            <div class="border border-slate-200 p-3 rounded-lg flex justify-between items-center bg-slate-50"><span class="font-bold text-xs">Doc 2</span><button onclick="openPdfViewer('https://drive.google.com/file/d/1qDpCCk37W0q70GWdhf8Z_nWJVWM4IJng/preview')" class="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-3 py-1.5 rounded">Read PDF</button></div>
-            <div class="border border-slate-200 p-3 rounded-lg flex justify-between items-center bg-slate-50"><span class="font-bold text-xs">Doc 3</span><button onclick="openPdfViewer('https://drive.google.com/file/d/1YXAJY_OpqBjvcy0PiCR8c8HlTMALj4nz/preview')" class="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-3 py-1.5 rounded">Read PDF</button></div>
-            <div class="border border-slate-200 p-3 rounded-lg flex justify-between items-center bg-slate-50"><span class="font-bold text-xs">Doc 4</span><button onclick="openPdfViewer('https://drive.google.com/file/d/18_9FIR469NuJQHawcr1dhEGQW130eQSB/preview')" class="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-3 py-1.5 rounded">Read PDF</button></div>
-            <div class="border border-slate-200 p-3 rounded-lg flex justify-between items-center bg-slate-50"><span class="font-bold text-xs">Doc 5</span><button onclick="openPdfViewer('https://drive.google.com/file/d/11qcpQ5pBBjcoPVz1u95q3ioW-UbO1pSp/preview')" class="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-3 py-1.5 rounded">Read PDF</button></div>
-            <div class="border border-slate-200 p-3 rounded-lg flex justify-between items-center bg-slate-50"><span class="font-bold text-xs">Doc 6</span><button onclick="openPdfViewer('https://drive.google.com/file/d/1yzFA2w-7Gdx976p5QG-F_xihuJwit7L8/preview')" class="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-3 py-1.5 rounded">Read PDF</button></div>
-            <div class="border border-slate-200 p-3 rounded-lg flex justify-between items-center bg-slate-50"><span class="font-bold text-xs">Doc 7</span><button onclick="openPdfViewer('https://drive.google.com/file/d/1phzpD-9KPKtfKa2kGabPOClBHrs0XEyr/preview')" class="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-3 py-1.5 rounded">Read PDF</button></div>
-            <div class="border border-slate-200 p-3 rounded-lg flex justify-between items-center bg-slate-50"><span class="font-bold text-xs">Doc 8</span><button onclick="openPdfViewer('https://drive.google.com/file/d/1SxsIgLwzv0tLMK5Dqpbw9GIGT-NA0STy/preview')" class="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-3 py-1.5 rounded">Read PDF</button></div>
-            <div class="border border-slate-200 p-3 rounded-lg flex justify-between items-center bg-slate-50"><span class="font-bold text-xs">Doc 9</span><button onclick="openPdfViewer('https://drive.google.com/file/d/1yLFF56DPVA63OHZZaVFDuC2oXQUzQeVr/preview')" class="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-3 py-1.5 rounded">Read PDF</button></div>
-            <div class="border border-slate-200 p-3 rounded-lg flex justify-between items-center bg-slate-50"><span class="font-bold text-xs">Doc 10</span><button onclick="openPdfViewer('https://drive.google.com/file/d/1ncIkmZXCDspv_FoqjkRX_xN-xQSoynPR/preview')" class="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-3 py-1.5 rounded">Read PDF</button></div>
-            <div class="border border-slate-200 p-3 rounded-lg flex justify-between items-center bg-slate-50"><span class="font-bold text-xs">Doc 11</span><button onclick="openPdfViewer('https://drive.google.com/file/d/1egYAjlsqcT4ItvZAn8fPmNiETXvtz26S/preview')" class="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-3 py-1.5 rounded">Read PDF</button></div>
-            <div class="border border-slate-200 p-3 rounded-lg flex justify-between items-center bg-slate-50"><span class="font-bold text-xs">Doc 12</span><button onclick="openPdfViewer('https://drive.google.com/file/d/1i_jOSYbMtPOH3T1M193GKY_56gEQXftR/preview')" class="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-3 py-1.5 rounded">Read PDF</button></div>
+          <div class="flex flex-wrap justify-between items-center gap-2 mb-3">
+            <h3 class="font-black text-slate-800 text-[14px] uppercase">Official Reference Documents (In-App Reader)</h3>
+            <span class="text-[10px] font-semibold text-slate-500">12 Verified Regulatory Documents</span>
           </div>
+          <!-- Dynamically populated from LIBRARY_DOCS array -->
+          <div id="libraryDocsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
         </div>
       </div>
 
       <div id="pdfViewerArea" class="hidden flex-col h-full w-full bg-slate-100">
          <div class="bg-slate-200 border-b border-slate-300 px-4 py-2 flex justify-between items-center shrink-0">
-             <span class="text-xs font-bold text-slate-600 uppercase tracking-widest">RAJUK Document Viewer</span>
-             <button onclick="closePdfViewer()" class="bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold px-4 py-1.5 rounded transition">← Back to Library</button>
+             <span id="pdfViewerTitle" class="text-xs font-bold text-slate-700 uppercase tracking-wider truncate pr-3">RAJUK Document Viewer</span>
+             <button onclick="closePdfViewer()" class="bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold px-4 py-1.5 rounded transition shrink-0">← Back to Library</button>
          </div>
          <iframe id="pdfIframe" src="" class="w-full h-full flex-grow border-0 rounded-b-xl"></iframe>
       </div>
     </div>
   </div>
 
+  <!-- ================================================== -->
+  <!-- FUTURE-READY LOGIN & FREE TRIAL MODAL              -->
+  <!-- ================================================== -->
+  <div id="authModal" class="hidden fixed inset-0 z-[999999] bg-slate-900/85 backdrop-blur-sm flex items-center justify-center p-4 modal-animate">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-slate-200">
+      <div class="bg-slate-900 px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center text-white font-black text-sm">C</div>
+          <div>
+            <h2 class="text-white font-black text-sm tracking-tight">CORE A&E Pro Access</h2>
+            <p class="text-[10px] text-amber-300/80 font-semibold">RAJUK 2025 Feasibility Suite</p>
+          </div>
+        </div>
+        <button onclick="closeAuthModal()" class="text-slate-400 hover:text-white bg-slate-800 hover:bg-rose-600 rounded-full w-7 h-7 flex items-center justify-center font-bold text-xs transition">✕</button>
+      </div>
+
+      <!-- Tabs -->
+      <div class="grid grid-cols-2 border-b border-slate-200 bg-slate-50 text-xs font-bold">
+        <button type="button" id="tabBtnLogin" onclick="switchAuthTab('login')" class="py-3 text-sky-700 border-b-2 border-sky-600 bg-white">Log In</button>
+        <button type="button" id="tabBtnTrial" onclick="switchAuthTab('trial')" class="py-3 text-slate-500 hover:text-slate-800">Start 7-Day Free Trial</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" onsubmit="handleAuthSubmit(event, 'login')" class="p-6 space-y-4">
+        <div>
+          <label class="block text-[11px] font-bold text-slate-700 mb-1">Work Email</label>
+          <input type="email" id="loginEmail" required placeholder="architect@firm.com" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs font-medium focus:outline-none focus:border-sky-500" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-700 mb-1">Password</label>
+          <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs font-medium focus:outline-none focus:border-sky-500" />
+        </div>
+        <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-2.5 rounded-lg shadow transition">
+          Sign In to Workspace
+        </button>
+        <p class="text-[10px] text-center text-slate-400">Preview Mode active — ready for Firebase / Supabase / Custom API hook.</p>
+      </form>
+
+      <!-- Free Trial Form -->
+      <form id="trialForm" onsubmit="handleAuthSubmit(event, 'trial')" class="hidden p-6 space-y-3.5">
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-2.5 text-[10.5px] text-amber-900 font-medium">
+          <strong class="font-black">7-Day Pro Trial includes:</strong> Unlimited RAJUK 2025 Section A–B–C reports, Branded PDF Export & Full Digital Library access.
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-700 mb-1">Full Name / Studio Name</label>
+          <input type="text" id="trialName" required placeholder="e.g., Ar. Prabir Saha / CORE A&E" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs font-medium focus:outline-none focus:border-amber-500" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-700 mb-1">Work Email</label>
+          <input type="email" id="trialEmail" required placeholder="you@company.com" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs font-medium focus:outline-none focus:border-amber-500" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-700 mb-1">Create Password</label>
+          <input type="password" id="trialPassword" required minlength="6" placeholder="Min. 6 characters" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs font-medium focus:outline-none focus:border-amber-500" />
+        </div>
+        <button type="submit" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black text-xs py-2.5 rounded-lg shadow transition">
+          Activate 7-Day Free Trial
+        </button>
+        <p class="text-[10px] text-center text-slate-400">No credit card required. Instant access.</p>
+      </form>
+    </div>
+  </div>
+
   <script>
+    // ====================================================
+    // 1. FUTURE-READY AUTH & TRIAL CONFIGURATION
+    //    Flip these flags to true whenever you want to
+    //    enable paid/trial gating or connect a backend.
+    // ====================================================
+    const AUTH_CONFIG = {
+      requireLoginToPrint: false,     // Set true to require login/trial before PDF printing
+      requireLoginToLibrary: false,   // Set true to require login/trial for Digital Library
+      trialDurationDays: 7,
+      storageKey: 'core_ae_user_session'
+    };
+
+    function getCurrentUser() {
+      try {
+        const raw = localStorage.getItem(AUTH_CONFIG.storageKey);
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) { return null; }
+    }
+
+    function updateAuthUI() {
+      const user = getCurrentUser();
+      const guestEl = document.getElementById('authGuestControls');
+      const userEl = document.getElementById('authUserControls');
+      if (user) {
+        guestEl.classList.add('hidden');
+        userEl.classList.remove('hidden');
+        userEl.classList.add('flex');
+        const daysLeft = Math.max(0, Math.ceil((user.trialEndsAt - Date.now()) / (1000 * 60 * 60 * 24)));
+        document.getElementById('authUserName').textContent = user.name;
+        document.getElementById('authTrialBadge').textContent = user.plan === 'trial' ? `Trial: ${daysLeft}d left` : 'PRO ACTIVE';
+      } else {
+        guestEl.classList.remove('hidden');
+        userEl.classList.add('hidden');
+        userEl.classList.remove('flex');
+      }
+    }
+
+    function openAuthModal(tab = 'login') {
+      switchAuthTab(tab);
+      document.getElementById('authModal').classList.remove('hidden');
+    }
+
+    function closeAuthModal() {
+      document.getElementById('authModal').classList.add('hidden');
+    }
+
+    function switchAuthTab(tab) {
+      const isLogin = tab === 'login';
+      document.getElementById('loginForm').classList.toggle('hidden', !isLogin);
+      document.getElementById('trialForm').classList.toggle('hidden', isLogin);
+      document.getElementById('tabBtnLogin').className = isLogin
+        ? 'py-3 text-sky-700 border-b-2 border-sky-600 bg-white'
+        : 'py-3 text-slate-500 hover:text-slate-800';
+      document.getElementById('tabBtnTrial').className = !isLogin
+        ? 'py-3 text-amber-700 border-b-2 border-amber-500 bg-white'
+        : 'py-3 text-slate-500 hover:text-slate-800';
+    }
+
+    function handleAuthSubmit(e, mode) {
+      e.preventDefault();
+      // Replace this block with your real Firebase / Supabase / REST API call in the future
+      const now = Date.now();
+      const trialEndsAt = now + (AUTH_CONFIG.trialDurationDays * 24 * 60 * 60 * 1000);
+      let sessionData;
+
+      if (mode === 'trial') {
+        const name = document.getElementById('trialName').value.trim();
+        const email = document.getElementById('trialEmail').value.trim();
+        sessionData = { name, email, plan: 'trial', trialEndsAt };
+      } else {
+        const email = document.getElementById('loginEmail').value.trim();
+        const name = email.split('@')[0];
+        sessionData = { name, email, plan: 'pro', trialEndsAt };
+      }
+
+      localStorage.setItem(AUTH_CONFIG.storageKey, JSON.stringify(sessionData));
+      updateAuthUI();
+      closeAuthModal();
+    }
+
+    function logoutDemoUser() {
+      localStorage.removeItem(AUTH_CONFIG.storageKey);
+      updateAuthUI();
+    }
+
+    function handlePrintReport() {
+      if (AUTH_CONFIG.requireLoginToPrint && !getCurrentUser()) {
+        openAuthModal('trial');
+        return;
+      }
+      window.print();
+    }
+
+    // ====================================================
+    // 2. DIGITAL LIBRARY DOCUMENTS (EASY TO RENAME)
+    //    Edit any 'title' or 'desc' below to match your
+    //    exact Google Drive PDF file.
+    // ====================================================
+    const LIBRARY_DOCS = [
+      {
+        title: "DAP 2022–2035 (Volume I — Policies & FAR)",
+        category: "DAP",
+        badgeClass: "bg-sky-100 text-sky-800",
+        desc: "Area-based FAR, density caps & Appendix 3.6.",
+        url: "https://drive.google.com/file/d/1zVw_cbOE8qz7qk1LVQgeGy0G1tXiSeBa/preview"
+      },
+      {
+        title: "DAP 2022–2035 (Volume II — Zoning & Maps)",
+        category: "DAP",
+        badgeClass: "bg-sky-100 text-sky-800",
+        desc: "Detailed area land-use zoning & corridor maps.",
+        url: "https://drive.google.com/file/d/1qDpCCk37W0q70GWdhf8Z_nWJVWM4IJng/preview"
+      },
+      {
+        title: "DAP Amendment Gazette (14 Dec 2025)",
+        category: "GAZETTE 2025",
+        badgeClass: "bg-amber-100 text-amber-800",
+        desc: "Plot FAR, unification, TOD & road widening bonuses.",
+        url: "https://drive.google.com/file/d/1YXAJY_OpqBjvcy0PiCR8c8HlTMALj4nz/preview"
+      },
+      {
+        title: "Dhaka Metropolitan Building Construction Rules, 2025",
+        category: "RAJUK 2025",
+        badgeClass: "bg-rose-100 text-rose-800",
+        desc: "MGC, setbacks, open/green space, verandah & parking.",
+        url: "https://drive.google.com/file/d/18_9FIR469NuJQHawcr1dhEGQW130eQSB/preview"
+      },
+      {
+        title: "BNBC 2020 — Part 3 (General Building Req.)",
+        category: "BNBC",
+        badgeClass: "bg-emerald-100 text-emerald-800",
+        desc: "Occupancy classification, ventilation & room standards.",
+        url: "https://drive.google.com/file/d/11qcpQ5pBBjcoPVz1u95q3ioW-UbO1pSp/preview"
+      },
+      {
+        title: "BNBC 2020 — Part 4 (Fire Protection & Egress)",
+        category: "BNBC",
+        badgeClass: "bg-emerald-100 text-emerald-800",
+        desc: "Fire stairs, travel distance & high-rise safety.",
+        url: "https://drive.google.com/file/d/1yzFA2w-7Gdx976p5QG-F_xihuJwit7L8/preview"
+      },
+      {
+        title: "BNBC 2020 — Part 6 (Structural Design)",
+        category: "BNBC",
+        badgeClass: "bg-emerald-100 text-emerald-800",
+        desc: "Seismic, wind load & foundation design provisions.",
+        url: "https://drive.google.com/file/d/1phzpD-9KPKtfKa2kGabPOClBHrs0XEyr/preview"
+      },
+      {
+        title: "RAJUK Plan Approval & Submission Checklist",
+        category: "RAJUK",
+        badgeClass: "bg-indigo-100 text-indigo-800",
+        desc: "Required sheets, clearances & approval workflow.",
+        url: "https://drive.google.com/file/d/1SxsIgLwzv0tLMK5Dqpbw9GIGT-NA0STy/preview"
+      },
+      {
+        title: "CAAB Height Restriction & Funnel Zone Guide",
+        category: "CAAB",
+        badgeClass: "bg-purple-100 text-purple-800",
+        desc: "Airport approach, buffer & maximum elevation caps.",
+        url: "https://drive.google.com/file/d/1yLFF56DPVA63OHZZaVFDuC2oXQUzQeVr/preview"
+      },
+      {
+        title: "RAJUK FAR-In & FAR-Ex Calculation Reference",
+        category: "RAJUK 2025",
+        badgeClass: "bg-rose-100 text-rose-800",
+        desc: "Floor-by-floor FAR inclusion & exemption matrix.",
+        url: "https://drive.google.com/file/d/1ncIkmZXCDspv_FoqjkRX_xN-xQSoynPR/preview"
+      },
+      {
+        title: "Parking, Driveway & Basement Ramp Standards",
+        category: "BNBC / RAJUK",
+        badgeClass: "bg-slate-200 text-slate-800",
+        desc: "A3 multi-family car ratios, ramps & car-lift norms.",
+        url: "https://drive.google.com/file/d/1egYAjlsqcT4ItvZAn8fPmNiETXvtz26S/preview"
+      },
+      {
+        title: "Fire Service, DoE, RWH & Utility NOC Guide",
+        category: "CLEARANCE",
+        badgeClass: "bg-teal-100 text-teal-800",
+        desc: "Rainwater harvesting, solar & statutory NOC rules.",
+        url: "https://drive.google.com/file/d/1i_jOSYbMtPOH3T1M193GKY_56gEQXftR/preview"
+      }
+    ];
+
+    function renderLibraryDocs() {
+      const grid = document.getElementById('libraryDocsGrid');
+      if (!grid) return;
+      grid.innerHTML = LIBRARY_DOCS.map((doc) => `
+        <div class="border border-slate-200 p-3.5 rounded-lg flex flex-col justify-between bg-slate-50 hover:bg-white hover:shadow-md transition">
+          <div class="mb-3">
+            <span class="inline-block text-[9px] font-black uppercase px-2 py-0.5 rounded ${doc.badgeClass} mb-1.5">${doc.category}</span>
+            <h4 class="font-bold text-slate-900 text-[12px] leading-snug">${doc.title}</h4>
+            <p class="text-[10px] text-slate-500 mt-1">${doc.desc}</p>
+          </div>
+          <button onclick="openPdfViewer('${doc.url}', '${doc.title.replace(/'/g, "\\'")}')" class="w-full bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-3 py-1.5 rounded transition">
+            Read Document
+          </button>
+        </div>
+      `).join('');
+    }
+
     // ====================================================
     // MODAL & PDF VIEWER
     // ====================================================
-    function openPdfViewer(pdfUrl) {
+    function openPdfViewer(pdfUrl, title = 'RAJUK Document Viewer') {
+      if (AUTH_CONFIG.requireLoginToLibrary && !getCurrentUser()) {
+        closeModalAndPdf();
+        openAuthModal('trial');
+        return;
+      }
       document.getElementById('libraryHome').classList.add('hidden');
       document.getElementById('pdfViewerArea').classList.remove('hidden');
       document.getElementById('pdfViewerArea').classList.add('flex');
+      document.getElementById('pdfViewerTitle').textContent = title;
       document.getElementById('pdfIframe').src = pdfUrl;
     }
     function closePdfViewer() {
@@ -766,7 +1043,7 @@
     // CONSTANTS & PRESETS (2025 RULES)
     // ====================================================
     const SQFT_PER_KATHA = 720.0;
-    const SQM_PER_KATHA = 66.914167; // Exact RAJUK Uttara 12 Kt = 802.97 sqm
+    const SQM_PER_KATHA = 66.914167;
     const SQFT_PER_SQM = 10.7639;
     const FEET_TO_METERS = 0.3048;
 
@@ -907,7 +1184,6 @@
       const bType = document.getElementById('buildingType')?.value || 'residential';
       const caabCap = document.getElementById('caabZone')?.value || 'none';
 
-      // 1. LAND CONVERSION (Sq.m Base)
       let grossSqm = 0;
       if (plotUnit === 'katha') grossSqm = rawArea * SQM_PER_KATHA;
       else if (plotUnit === 'sqm') grossSqm = rawArea;
@@ -921,13 +1197,11 @@
       setText('convSqm', `${grossSqm.toFixed(2)} Sqm`);
       setText('convSqft', `${Math.round(grossSqft).toLocaleString('en-US')} Sqft`);
 
-      // Road Widening Surrender
       const frontWtM = frontWtFt * FEET_TO_METERS;
       const surrenderDepthM = (existRdFt < propRdFt) ? ((propRdFt - existRdFt) / 2.0) * FEET_TO_METERS : 0;
       const surrenderSqm = surrenderDepthM * frontWtM;
       const netSqm = Math.max(10, grossSqm - surrenderSqm);
 
-      // 2. 3-TIER FAR & CAPPING (Section A)
       const areaFar = parseFloat(document.getElementById('areaFarInput')?.value) || 3.5;
       const roadFar = parseFloat(document.getElementById('roadFarInput')?.value) || 4.0;
       const plotFar = parseFloat(document.getElementById('plotFarInput')?.value) || areaFar;
@@ -948,7 +1222,6 @@
 
       const allowableFarInSqm = netSqm * finalFar;
 
-      // 3. MGC, SETBACKS & CONFLICT CHECK
       const rule = lookupMgcSetback(netSqm, bType === 'commercial' ? 'commercial' : 'residential');
       const maxMgcPct = rule.mgc;
       const mgcLimitSqm = netSqm * (maxMgcPct / 100.0);
@@ -962,10 +1235,8 @@
           document.getElementById('targetFloors').value = aptFloors;
         }
       }
-      // Total storeys above ground (GF + Apt Floors = 13 St for Uttara 12-floor apt + Mezzanine)
       const totalStoreys = 1 + aptFloors;
 
-      // Directional Setbacks (High-rise >= 10 storeys => 3.00m all around per 2025 Rules)
       let sbNorth = rule.front, sbEast = rule.side, sbSouth = rule.rear, sbWest = rule.side;
       let setbackRuleStr = "Standard";
       if (totalStoreys >= 10) {
@@ -983,7 +1254,6 @@
       }
       setHtml('setbackRuleText', setbackRuleStr);
 
-      // MGC vs Setback Conflict
       const plotDepthM = netSqm / frontWtM;
       const buildableW = frontWtM - (sbEast + sbWest);
       const buildableD = plotDepthM - (sbNorth + sbSouth);
@@ -991,20 +1261,18 @@
       const effectiveMgcCapSqm = Math.min(mgcLimitSqm, buildableSqm);
       document.getElementById('mgcConflictAlert')?.classList.toggle('hidden', buildableSqm >= mgcLimitSqm);
 
-      // Optimal Apt Floors
       const optApt = Math.max(1, Math.ceil(allowableFarInSqm / (effectiveMgcCapSqm * 0.78)));
       const optBadge = document.getElementById('optimalHeightBadge');
       if (optBadge) { optBadge.textContent = `Opt: ${optApt}`; optBadge.dataset.opt = optApt; }
 
-      // 4. SECTION C: FLOOR-BY-FLOOR FAR-IN VS FAR-EX CALCULATION (2025 RULES)
       const isHighRise = totalStoreys >= 10;
       const numStairs = (totalStoreys > 10 || effectiveMgcCapSqm > 500) ? 2 : 1;
       const numLifts = Math.max(1, Math.ceil(grossKatha / 5));
 
-      const mainCoreSqm = (numLifts >= 2 ? 23.23 : 18.59); // Lift + Lobby + Main Stair (FAR-In on GF/Mezz/Typical)
-      const fireStairSqm = isHighRise ? 18.59 : 0;         // Dedicated Fire Stair (FAR-Ex)
+      const mainCoreSqm = (numLifts >= 2 ? 23.23 : 18.59);
+      const fireStairSqm = isHighRise ? 18.59 : 0;
 
-      // C.1 Basement (All FAR-Ex)
+      // C.1 Basement
       const bsParkingSqm = currentBasements > 0 ? (netSqm * 0.69445) : 0;
       const bsCoreSqm = currentBasements > 0 ? 18.59 : 0;
       const bsDriverSqm = currentBasements > 0 ? (grossKatha >= 5 ? 27.88 : 13.94) : 0;
@@ -1022,7 +1290,7 @@
       const gfFarExSqm = gfParkingSqm + gfFireStairSqm + gfEmeSqm + gfReceptionPumpSqm + gfSecuritySqm;
       const gfTotalSqm = gfFarInSqm + gfFarExSqm;
 
-      // C.3 Mezzanine (Community Floor)
+      // C.3 Mezzanine
       const mezzCoreFarInSqm = hasMezzanine ? mainCoreSqm : 0;
       const mezzFireStairSqm = hasMezzanine ? fireStairSqm : 0;
       const mezzCommFarInSqm = hasMezzanine ? Math.min(102.23, effectiveMgcCapSqm * 0.28) : 0;
@@ -1030,20 +1298,19 @@
       const mezzFarExSqm = mezzFireStairSqm;
       const mezzTotalSqm = mezzFarInSqm + mezzFarExSqm;
 
-      // C.4 Typical Apartment Floors (1 to aptFloors)
+      // C.4 Typical Floors
       const remainingFarInForApts = Math.max(0, allowableFarInSqm - gfFarInSqm - mezzFarInSqm);
       const targetTypFarInPerFloor = Math.min(effectiveMgcCapSqm, remainingFarInForApts / aptFloors);
       const proposedTypFarInPerFloor = Math.min(effectiveMgcCapSqm, targetTypFarInPerFloor * 0.9813);
       const typCoreFarInSqm = mainCoreSqm;
       const typAptAreaSqm = Math.max(20, proposedTypFarInPerFloor - typCoreFarInSqm);
 
-      // 2025 Verandah & Planter Exemptions (per typical floor)
       const verExChecked = document.getElementById('verandaExempt')?.checked;
       const planterExChecked = document.getElementById('planterExempt')?.checked;
 
-      const frontVerLimitSqm = (frontWtM * 0.30) * 1.5;          // 30% of Front Facade × 1.5m depth
-      const extraVerLimitSqm = proposedTypFarInPerFloor * 0.025; // 2.5% of Apt Floor
-      const planterLimitSqm  = proposedTypFarInPerFloor * 0.025; // 2.5% of Apt Floor
+      const frontVerLimitSqm = (frontWtM * 0.30) * 1.5;
+      const extraVerLimitSqm = proposedTypFarInPerFloor * 0.025;
+      const planterLimitSqm  = proposedTypFarInPerFloor * 0.025;
 
       const frontVerPropSqm = verExChecked ? frontVerLimitSqm : 0;
       const extraVerPropSqm = verExChecked ? extraVerLimitSqm : 0;
@@ -1056,10 +1323,9 @@
       const typAllFarExSqm = typFarExPerFloorSqm * aptFloors;
       const typAllTotalSqm = typAllFarInSqm + typAllFarExSqm;
 
-      // Proposed Footprint (MGC Proposal)
       const proposedMgcSqm = Math.min(effectiveMgcCapSqm, proposedTypFarInPerFloor + 15.0);
 
-      // C.5 Roof (All FAR-Ex)
+      // C.5 Roof
       const roofChileKothaSqm = 13.94;
       const roofMachineRoomSqm = totalStoreys >= 6 ? 27.88 : 0;
       const roofTotalSqm = roofChileKothaSqm + roofMachineRoomSqm;
@@ -1069,7 +1335,7 @@
       const grandFarExSqm = bsAllTotalSqm + gfFarExSqm + mezzFarExSqm + typAllFarExSqm + roofTotalSqm;
       const grandTbaSqm = grandFarInSqm + grandFarExSqm;
 
-      // 5. DENSITY & UNITS
+      // DENSITY & UNITS
       const unitPerKatha = parseFloat(document.getElementById('unitPerKatha')?.value) || 1.5;
       const inc30 = document.getElementById('unitIncentive30')?.checked;
       const allowableUnits = grossKatha * unitPerKatha * (inc30 ? 1.30 : 1.0);
@@ -1092,10 +1358,8 @@
       setText('mgcFloorPlateLabel', `Proposed Floor Plate: ${fmtArea(proposedTypFarInPerFloor)}`);
       setText('avgFlatSizeNote', `Avg Apt: ~${fmtArea(avgUnitSqm)}`);
 
-      // Parking (A3 Multi-family: 1 car / 200 sqm unit)
       const reqParkingA3 = Math.max(proposedTotalUnits, Math.ceil((typAptAreaSqm * aptFloors) / 200));
 
-      // Compliance Badges
       setHtml('fireStairText', numStairs === 2 ? `<span class="text-rose-600 font-black">2 Stairs Req.</span>` : '1 Stair');
       setHtml('liftText', totalStoreys >= 6 ? `<span class="text-emerald-700 font-black">${numLifts} Units Req.</span>` : 'Not Req.');
       if (currentBasements > 0 && grossKatha <= 5) setHtml('carLiftText', `<span class="text-rose-600 font-black">Car Lift Req.</span>`);
@@ -1103,7 +1367,7 @@
       else setText('carLiftText', 'Ground Parking');
       setHtml('rwhText', grossKatha >= 3 ? `<span class="text-emerald-700 font-black">Req. (>3 Kt)</span>` : 'Optional');
 
-      // 6. FINANCIALS & JV
+      // FINANCIALS & JV
       const jvRatio = (parseFloat(document.getElementById('jvRatio')?.value) || 50) / 100;
       const landValuePerKatha = parseFloat(document.getElementById('landValue')?.value) || 0;
       const constCostPerSqft = parseFloat(document.getElementById('constCost')?.value) || 3500;
@@ -1121,7 +1385,6 @@
       const loFlats = Math.round(proposedTotalUnits * jvRatio);
       const devFlats = proposedTotalUnits - loFlats;
 
-      // 7. UPDATE DOM — KPIs & PRINT
       const storeyLabel = `${totalStoreys} St (${currentBasements}B+G+${hasMezzanine ? 'M+' : ''}${aptFloors})`;
       setText('printLocation', locText);
       setText('printLand', `${grossKatha.toFixed(2)} Katha (${grossSqm.toFixed(2)} sqm)`);
@@ -1158,7 +1421,7 @@
       setText('secAStoreys', `${currentBasements}B + 1G + ${hasMezzanine ? '1M' : '0M'} + ${aptFloors}F (${totalStoreys} St) | ${reqParkingA3} Cars`);
       setText('tblJvShare', jvRatio === 1 ? `100% Own (${proposedTotalUnits} Flats)` : `LO: ${loFlats} Flats | Dev: ${devFlats} Flats`);
 
-      // SECTION B DOM (Limit vs Proposal)
+      // SECTION B DOM
       const mosLimitSqm = netSqm - mgcLimitSqm;
       const mosPropSqm = netSqm - proposedMgcSqm;
       setText('b1Limit', fmtArea(allowableFarInSqm));
@@ -1180,7 +1443,7 @@
       setText('b9Limit', `${sbNorth.toFixed(2)} / ${sbEast.toFixed(2)} / ${sbSouth.toFixed(2)} / ${sbWest.toFixed(2)} m`);
       setText('b9Prop', `${(sbNorth+0.05).toFixed(2)} / ${(sbEast+0.05).toFixed(2)} / ${(sbSouth+0.05).toFixed(2)} / ${(sbWest+0.05).toFixed(2)} m`);
 
-      // SECTION C DOM (Floor-by-Floor Matrix)
+      // SECTION C DOM
       let cHtml = '';
       if (currentBasements > 0) {
         cHtml += `
@@ -1231,11 +1494,9 @@
       setText('cGrandFarEx', fmtArea(grandFarExSqm));
       setText('cGrandTotal', fmtArea(grandTbaSqm));
 
-      // RENDER BLUEPRINTS
       renderSetbackSvg(maxMgcPct, frontageType);
       renderMassingSvg(currentBasements, totalStoreys);
 
-      // POPULATE TOOLTIPS
       ttData['gross'] = `
         <strong>A.1–A.2 Gross Plot Area:</strong><br>
         ${grossKatha.toFixed(2)} Katha × 66.914 sqm = ${grossSqm.toFixed(2)} sqm<br>
@@ -1311,6 +1572,8 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      renderLibraryDocs();
+      updateAuthUI();
       toggleRoads();
       calculateGodMode();
     });
